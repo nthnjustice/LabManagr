@@ -1,0 +1,20 @@
+.writing-log-item {
+  p, a {
+    margin-bottom: -0.25rem;
+    margin-top: -0.25rem;
+  }
+
+  a {
+    cursor: pointer;
+    font-size: 75%;
+  }
+}
+
+#writing-log-page-numbers {
+  display: flex;
+
+  a {
+    cursor: pointer;
+    margin-left: 1rem;
+  }
+}
