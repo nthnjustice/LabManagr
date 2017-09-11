@@ -1,9 +1,10 @@
-import React from 'react';
 import {Meteor} from 'meteor/meteor';
+import React from 'react';
 
 export default class LoginForm extends React.Component {
   constructor(props) {
     super(props);
+
     this.state = {
       error: '',
       emailErr: '*',
@@ -68,9 +69,9 @@ export default class LoginForm extends React.Component {
 
         <div className="row red lighten-5">
           {
-            this.state.error ?
-              <p id="login-form-error" className="center-align red-text text-darken-4">{this.state.error}</p>
-            : undefined
+            this.state.error
+              ? <p id="login-form-error" className="center-align red-text text-darken-4">{this.state.error}</p>
+              : undefined
           }
         </div>
 

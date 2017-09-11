@@ -153,9 +153,9 @@ export default class Log extends React.Component {
 
             <div id="log-form-error-wrapper" className="row red lighten-5">
               {
-                this.state.error ?
-                  <p id="log-form-error" className="center-align red-text text-darken-4">{this.state.error}</p>
-                : undefined
+                this.state.error
+                  ? <p id="log-form-error" className="center-align red-text text-darken-4">{this.state.error}</p>
+                  : undefined
               }
             </div>
 

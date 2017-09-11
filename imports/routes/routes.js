@@ -3,13 +3,13 @@ import React from 'react';
 import {Router as Router, Route, Switch, Redirect} from 'react-router-dom';
 import createBrowserHistory from 'history/createBrowserHistory';
 
-const history = createBrowserHistory();
+import Login from '../ui/Login/Login';
+import Signup from '../ui/Signup/Signup';
+import RecoverAccount from '../ui/RecoverAccount/RecoverAccount';
+import Dashboard from '../ui/Dashboard/Dashboard';
+import PageNotFound from '../ui/PageNotFound/PageNotFound';
 
-import Login from '../ui/Session/Login/Login';
-import Signup from '../ui/Session/Signup/Signup';
-import Recover from '../ui/Recover';
-import Dashboard from '../ui/Dashboard';
-import NotFound from '../ui/NotFound';
+const history = createBrowserHistory();
 
 const unauthenticatedPages = ['/', '/signup', '/recover'];
 const authenticatedPages = ['/dashboard'];
@@ -31,9 +31,9 @@ export const routes = (
     <Switch>
       <Route exact path="/" component={Login}/>
       <Route path="/signup" component={Signup}/>
-      <Route path="/recover" component={Recover}/>
+      <Route path="/recover" component={RecoverAccount}/>
       <Route path="/dashboard" component={Dashboard}/>
-      <Route component={NotFound}/>
+      <Route component={PageNotFound}/>
     </Switch>
   </Router>
 );

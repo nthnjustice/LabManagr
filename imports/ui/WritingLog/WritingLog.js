@@ -1,11 +1,13 @@
 import React from 'react';
 
 import Log from './Log';
-import Live from './Live/Live';
-import Goals from './Goals/Goals';
-import WritingLogsList from './WritingLogsList';
+import Live from './Live';
+import Goals from './Goals';
+import UserLogs from './UserLogs';
+import WeeklyLogs from './WeeklyLogs';
+import TotalLogs from './TotalLogs';
 
-export default class WritingLogWrapper extends React.Component {
+export default class WritingLog extends React.Component {
   render() {
     return(
       <div className="row">
@@ -23,8 +25,11 @@ export default class WritingLogWrapper extends React.Component {
         </div>
 
         <div className="col l3">
-          <WritingLogsList/>
+          <UserLogs/>
         </div>
+
+        <WeeklyLogs/>
+        <TotalLogs/>
 
       </div>
     );

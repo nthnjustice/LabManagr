@@ -1,12 +1,13 @@
-import React from 'react';
 import {Meteor} from 'meteor/meteor';
 import {Tracker} from 'meteor/tracker';
+import React from 'react';
 
 import {WritingLogs} from '../../api/writingLogs';
 
-export default class WritingLogsList extends React.Component {
+export default class UserLogs extends React.Component {
   constructor(props) {
     super(props);
+
     this.state = {
       logs: [],
       currentPage: 1,
@@ -91,15 +92,16 @@ export default class WritingLogsList extends React.Component {
         <h5>Posted Writing Logs</h5>
         <div className="divider"></div>
         {
-          this.state.logs ?
-          <span>
-            <ul className="collection">
-              {renderLogs}
-            </ul>
-            <ul id="writing-log-page-numbers">
-              {renderPageNumbers}
-            </ul>
-          </span>
+          this.state.logs
+          ?
+            <span>
+              <ul className="collection">
+                {renderLogs}
+              </ul>
+              <ul id="writing-log-page-numbers">
+                {renderPageNumbers}
+              </ul>
+            </span>
           : this.renderPreloader()
         }
 

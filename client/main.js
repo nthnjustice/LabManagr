@@ -1,22 +1,22 @@
 import {Meteor} from 'meteor/meteor';
-import ReactDOM from 'react-dom';
 import {Tracker} from 'meteor/tracker';
+import ReactDOM from 'react-dom';
 
 import {routes, onAuthChange} from '../imports/routes/routes';
 
 function orderAssets() {
-  const link = [
+  const links = [
     'https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.1/css/materialize.min.css'
   ];
-  const headFirstChild = document.querySelector('head').firstChild;
+  const firstChild = $('head link').first();
 
-  $.each(link, function(i, val) {
-    let styleTag = document.createElement('link');
+  links.map(link => {
+    let tag = $('<link/>');
 
-    styleTag.setAttribute('rel', 'stylesheet');
-    styleTag.setAttribute('href', val);
+    tag.attr('rel', 'stylesheet');
+    tag.attr('href', link);
 
-    document.querySelector('head').insertBefore(styleTag, headFirstChild);
+    firstChild.before(tag);
   });
 
   return true;

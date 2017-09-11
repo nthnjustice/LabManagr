@@ -1,9 +1,10 @@
-import React from 'react';
 import {Meteor} from 'meteor/meteor';
+import React from 'react';
 
 export default class SignupForm extends React.Component {
   constructor(props) {
     super(props);
+    
     this.state = {
       firstErr: '*',
       firstVal: '',

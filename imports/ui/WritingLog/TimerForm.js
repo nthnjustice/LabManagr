@@ -1,10 +1,11 @@
 import React from 'react';
 
-import {secureStopwatchTime, resetStopwatch} from './Stopwatch';
+import {secureTimerTime} from './Timer';
 
-export default class StopwatchForm extends React.Component {
+export default class TimerForm extends React.Component {
   constructor(props) {
     super(props);
+    
     this.state = {
       titleErr: '*',
       titleVal: ''
@@ -23,12 +24,11 @@ export default class StopwatchForm extends React.Component {
     e.preventDefault();
 
     let title = this.refs.title.value.trim();
-    let milliseconds = secureStopwatchTime();
+    let seconds = secureTimerTime();
 
     let titleVal = this.validateTitle(title);
 
     if (titleVal) {
-      let seconds = Math.round(milliseconds / 1000)
       let minTot = Math.round(seconds / 60)
       let hours = Math.floor(minTot / 60);
       let minutes = minTot % 60;
@@ -43,9 +43,9 @@ export default class StopwatchForm extends React.Component {
               titleVal: ''
             });
 
-            resetStopwatch();
-            $('#stopwatch-title').val(undefined);
-            $('#stopwatch-title-label').removeClass('active');
+            $('#timer-title').val(undefined);
+            $('#timer-title-label').removeClass('active');
+            $('#timer-modal').modal('close');
 
             let $msg = $('<span class="green-text text-accent-3">Writing Log Saved</span>')
             Materialize.toast($msg, 5000, 'rounded');
@@ -59,24 +59,22 @@ export default class StopwatchForm extends React.Component {
   }
   render() {
     return(
-      <div className="section">
-        <form onSubmit={this.onSubmit.bind(this)} noValidate>
+      <form onSubmit={this.onSubmit.bind(this)} noValidate>
 
-          <div className="input-field col l10 offset-l1">
-            <input id="stopwatch-title" className={this.state.titleVal} type="text" ref="title" name="stopwatch-title"/>
-            <label id="stopwatch-title-label" htmlFor="stopwatch-title">
-              Title <span className="red-text">{this.state.titleErr}</span>
-            </label>
-          </div>
+        <div className="input-field col l8 offset-l2">
+          <input id="timer-title" className={this.state.titleVal} type="text" ref="title" name="timer-title"/>
+          <label id="timer-title-label" htmlFor="timer-title">
+            Title <span className="red-text">{this.state.titleErr}</span>
+          </label>
+        </div>
 
-          <div className="section row center">
-            <button id="stopwatch-submit" className="btn waves-effect waves-light disabled" type="submit">
-              Post <i className="material-icons right">send</i>
-            </button>
-          </div>
+        <div className="section row center">
+          <button className="btn waves-effect waves-light" type="submit">
+            Post <i className="material-icons right">send</i>
+          </button>
+        </div>
 
-        </form>
-      </div>
+      </form>
     );
   }
 }

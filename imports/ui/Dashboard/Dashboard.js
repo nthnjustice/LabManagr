@@ -1,13 +1,13 @@
 import React from 'react';
 
-import SideNav from './SideNav';
-import TopNav from './TopNav';
-import BulletinBoard from './BulletinBoard/Temp';
-import WritingLogWrapper from './WritingLog/WritingLogWrapper';
+import SideNav from '../SideNav/SideNav';
+import TopNav from '../TopNav/TopNav';
+import BulletinBoard from '../BulletinBoard/BulletinBoard';
+import WritingLog from '../WritingLog/WritingLog';
 
 const modules = {
   'Bulletin Board': <BulletinBoard/>,
-  'Writing Log': <WritingLogWrapper/>
+  'Writing Log': <WritingLog/>
 };
 
 export default class Dashboard extends React.Component {
@@ -18,6 +18,11 @@ export default class Dashboard extends React.Component {
       module: modules['Writing Log'],
       moduleName: 'Writing Log'
     };
+  }
+  componentWillMount() {
+    if (!Meteor.userId()) {
+      this.props.history.replace('/');
+    }
   }
   loadModule(name) {
     this.setState({moduleName: name});

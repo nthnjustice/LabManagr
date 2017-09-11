@@ -2,12 +2,12 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 import {Meteor} from 'meteor/meteor';
 
-import VerticalAlign from './VerticalAlign';
+import VerticalAlign from '../VerticalAlign/VerticalAlign';
 
 export default class Recover extends React.Component {
   componentWillMount() {
     if (Meteor.userId()) {
-      this.props.history.replace('/test');
+      this.props.history.replace('/');
     }
   }
   render() {
@@ -21,7 +21,7 @@ export default class Recover extends React.Component {
               <div className="divider cyan darken-3"></div>
 
               <div className="section">
-
+                
                 <h4>Recover</h4>
 
                 <div className="row">

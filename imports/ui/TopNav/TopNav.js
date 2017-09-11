@@ -1,5 +1,5 @@
-import React from 'react';
 import {Accounts} from 'meteor/accounts-base';
+import React from 'react';
 
 export default class TopNav extends React.Component {
   componentDidMount() {
