@@ -29,6 +29,6 @@ Tracker.autorun(() => {
 
 Meteor.startup(() => {
   if (orderAssets()) {
-    ReactDOM.render(routes, document.getElementById('app'));
+    ReactDOM.render(routes, document.getElementById('root'));
   }
 });

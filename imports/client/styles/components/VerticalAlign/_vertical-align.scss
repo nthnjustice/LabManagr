@@ -1,16 +1,16 @@
-.vertical-align-outer {
+#vertical-align__outer {
     display: table;
     height: 100%;
     position: absolute;
     width: 100%;
 }
 
-.vertical-align-middle {
+#vertical-align__middle {
     display: table-cell;
     vertical-align: middle;
 }
 
-.vertical-align-inner {
+#vertical-align__inner {
     margin-left: auto;
     margin-right: auto;
     width: 100%;

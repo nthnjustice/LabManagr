@@ -1,47 +1,40 @@
 import React from 'react';
 
+import ActiveGoals from './ActiveGoals';
+import GoalsForm from './GoalsForm';
+import AchievedGoals from './AchievedGoals';
+
 export default class Live extends React.Component {
   componentDidMount() {
-    $('#collapsible-goals').collapsible();
+    $('#goals__tabs').tabs();
+
+    setTimeout(function() {
+      $('#goals__active-tab').trigger('click');
+    }, 100);
   }
   render() {
     return(
-      <div className="card-panel hoverable">
-        <h5>Writing Goals</h5>
-        <div className="divider"></div>
+      <div className="card large hoverable">
 
-        <ul  id="collapsible-goals" className="collapsible" data-collapsible="expandable">
+        <div id="goals__header" className="indigo darken-4">
+          <h5 className="white-text">Goals</h5>
+        </div>
 
-          <li>
-            <div className="collapsible-header">
-              <i className="material-icons">access_time</i> Active Goals
-            </div>
-            <div className="collapsible-body">
-              <span>active goals here</span>
-            </div>
-          </li>
+        <div className="row">
 
-          <li>
-            <div className="collapsible-header">
-              <i className="material-icons">add_circle_outline</i> Set New Goal
-            </div>
-            <div className="collapsible-body">
-              <span>new goals here</span>
-            </div>
-          </li>
+          <ul id="goals__tabs" className="tabs tabs-fixed-width">
+            <li className="tab col l4"><a id="goals__active-tab" className="active" href="#goals__active">Active</a></li>
+            <li className="tab col l4"><a href="#goals__form">New</a></li>
+            <li className="tab col l4"><a href="#goals__achieved">Achieved</a></li>
+          </ul>
 
-          <li>
-            <div className="collapsible-header">
-              <i className="material-icons">done_all</i> Achieved Goals
-            </div>
-            <div className="collapsible-body">
-              <span>achieved goals here</span>
-            </div>
-          </li>
-
-        </ul>
+          <ActiveGoals/>
+          <GoalsForm/>
+          <AchievedGoals/>
 
       </div>
+
+    </div>
     );
   }
 }

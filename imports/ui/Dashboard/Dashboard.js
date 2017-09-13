@@ -10,13 +10,19 @@ const modules = {
   'Writing Log': <WritingLog/>
 };
 
+const colors = {
+  'Bulletin Board': 'blue',
+  'Writing Log': 'indigo darken-4'
+};
+
 export default class Dashboard extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
       module: modules['Writing Log'],
-      moduleName: 'Writing Log'
+      moduleName: 'Writing Log',
+      color: colors['Writing Log']
     };
   }
   componentWillMount() {
@@ -25,14 +31,17 @@ export default class Dashboard extends React.Component {
     }
   }
   loadModule(name) {
-    this.setState({moduleName: name});
-    this.setState({module: modules[name]});
+    this.setState({
+      moduleName: name,
+      module: modules[name],
+      color: colors[name]
+    });
   }
   render() {
     return(
       <span>
 
-        <TopNav title={this.state.moduleName}/>
+        <TopNav title={this.state.moduleName} color={this.state.color}/>
         <SideNav onSelectModule={this.loadModule.bind(this)}/>
 
         <div id="dashboard">

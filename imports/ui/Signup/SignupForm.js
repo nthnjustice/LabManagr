@@ -4,7 +4,7 @@ import React from 'react';
 export default class SignupForm extends React.Component {
   constructor(props) {
     super(props);
-    
+
     this.state = {
       firstErr: '*',
       firstVal: '',
@@ -39,7 +39,7 @@ export default class SignupForm extends React.Component {
     }
   }
   validateEmail(email) {
-    let regex = /\S+@\S+\.\S+/;
+    const regex = /\S+@\S+\.\S+/;
 
     if (!email) {
       this.setState({emailErr: "* can't be blank", emailVal: 'invalid'});
@@ -91,47 +91,53 @@ export default class SignupForm extends React.Component {
   onSubmit(e) {
     e.preventDefault();
 
-    let first = this.refs.first.value.trim();
-    let last = this.refs.last.value.trim();
-    let email = this.refs.email.value.trim();
-    let emailConf = this.refs.emailConf.value.trim();
-    let pass = this.refs.pass.value.trim();
-    let passConf = this.refs.passConf.value.trim();
+    const first = this.refs.first.value.trim();
+    const last = this.refs.last.value.trim();
+    const email = this.refs.email.value.trim();
+    const emailConf = this.refs.emailConf.value.trim();
+    const pass = this.refs.pass.value.trim();
+    const passConf = this.refs.passConf.value.trim();
 
-    let firstVal = this.validateFirst(first);
-    let lastVal = this.validateLast(last);
-    let emailVal = this.validateEmail(email);
-    let emailConfVal = this.validateEmailConf(email, emailConf);
-    let passVal = this.validatePass(pass);
-    let passConfVal = this.validatePassConf(pass, passConf);
+    const firstVal = this.validateFirst(first);
+    const lastVal = this.validateLast(last);
+    const emailVal = this.validateEmail(email);
+    const emailConfVal = this.validateEmailConf(email, emailConf);
+    const passVal = this.validatePass(pass);
+    const passConfVal = this.validatePassConf(pass, passConf);
 
-    if (firstVal && lastVal && emailVal && emailConfVal
-      && passVal && passConfVal) {
-      Accounts.createUser(
-        {
-          email,
-          password: pass,
-          profile: {
-            firstName: first,
-            lastName: last,
-            emailConfirmation: emailConf,
-            passwordConfirmation: passConf
-          }
-        }, (err) =>
-        {
-          if (err) {
+    if (firstVal && lastVal && emailVal && emailConfVal && passVal && passConfVal) {
+      Accounts.createUser({
+        email,
+        password: pass,
+        profile: {
+          firstName: first,
+          lastName: last,
+          emailConfirmation: emailConf,
+          passwordConfirmation: passConf
+        }
+      }, (err) => {
+        if (!err) {
+          this.setState({
+            firstErr: '*',
+            firstVal: 'valid',
+            lastErr: '*',
+            lastVal: 'valid',
+            emailErr: '*',
+            emailVal: 'valid',
+            emailConfErr: '*',
+            emailConfVal: 'valid',
+            passErr: '*',
+            passVal: 'valid',
+            passConfErr: '*',
+            passConfVal: 'valid'
+          });
+          Materialize.toast('Welcome!', 5000, 'rounded');
+          } else {
             this.setState({
               emailErr: '* already registered',
               emailVal: 'invalid',
               emailConfErr: '* already registered',
               emailConfVal: 'invalid'
-            });
-          } else {
-            this.setState({
-              emailErr: '*',
-              emailVal: 'valid',
-              emailConfErr: '*',
-              emailConfVal: 'valid'
             });
           }
         }
@@ -145,15 +151,15 @@ export default class SignupForm extends React.Component {
         <div className="row">
 
           <div className="col l6 input-field">
-            <input id="first" className={this.state.firstVal} type="text" ref="first" name="first"/>
-            <label htmlFor="first">
+            <input id="signup__first" className={this.state.firstVal} type="text" ref="first"/>
+            <label htmlFor="signup__first">
               First Name <span className="red-text">{this.state.firstErr}</span>
             </label>
           </div>
 
           <div className="col l6 input-field">
-            <input id="last" className={this.state.lastVal} type="text" ref="last" name="last"/>
-            <label htmlFor="last">
+            <input id="signup__last" className={this.state.lastVal} type="text" ref="last"/>
+            <label htmlFor="signup__last">
               Last Name <span className="red-text">{this.state.lastErr}</span>
             </label>
           </div>
@@ -163,15 +169,15 @@ export default class SignupForm extends React.Component {
         <div className="row">
 
           <div className="col l6 input-field">
-            <input id="email" className={this.state.emailVal} type="email" ref="email" name="email"/>
-            <label htmlFor="email">
+            <input id="signup__email" className={this.state.emailVal} type="email" ref="email"/>
+            <label htmlFor="signup__email">
               Email <span className="red-text">{this.state.emailErr}</span>
             </label>
           </div>
 
           <div className="col l6 input-field">
-            <input id="emailConf" className={this.state.emailConfVal} type="email" ref="emailConf" name="emailConf"/>
-            <label htmlFor="emailConfirmation">
+            <input id="signup__emailConf" className={this.state.emailConfVal} type="email" ref="emailConf"/>
+            <label htmlFor="signup__emailConf">
               Confirm Email <span className="red-text">{this.state.emailConfErr}</span>
             </label>
           </div>
@@ -181,22 +187,22 @@ export default class SignupForm extends React.Component {
         <div className="row">
 
           <div className="col l6 input-field">
-            <input id="pass" className={this.state.passVal} type="password" ref="pass" name="pass" autoComplete="new-password"/>
-            <label htmlFor="passw">
+            <input id="signup__pass" className={this.state.passVal} type="password" ref="pass" autoComplete="new-password"/>
+            <label htmlFor="signup__pass">
               Password <span className="red-text">{this.state.passErr}</span>
             </label>
           </div>
 
           <div className="col l6 input-field">
-            <input id="passConf" className={this.state.passConfVal} type="password" ref="passConf" name="passConf" autoComplete="new-password"/>
-            <label htmlFor="passConf">
+            <input id="signup__passConf" className={this.state.passConfVal} type="password" ref="passConf" autoComplete="new-password"/>
+            <label htmlFor="signup__passConf">
               Confirm Password <span className="red-text">{this.state.passConfErr}</span>
             </label>
           </div>
 
         </div>
 
-        <div className="section row center">
+        <div id="signup__btn" className="section row center">
           <button className="btn waves-effect waves-light" type="submit">
             Sign Up <i className="material-icons right">send</i>
           </button>

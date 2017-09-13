@@ -7,7 +7,7 @@ import VerticalAlign from '../VerticalAlign/VerticalAlign';
 export default class Recover extends React.Component {
   componentWillMount() {
     if (Meteor.userId()) {
-      this.props.history.replace('/');
+      this.props.history.replace('/dashboard');
     }
   }
   render() {
@@ -21,12 +21,12 @@ export default class Recover extends React.Component {
               <div className="divider cyan darken-3"></div>
 
               <div className="section">
-                
+
                 <h4>Recover</h4>
 
                 <div className="row">
                   <p className="center-align">
-                    To recover login credentials for your account, please email
+                    To recover the login credentials for your account, please email
                     <strong> n(dot)justice(at)outlook(dot)com</strong>.
                   </p>
                 </div>

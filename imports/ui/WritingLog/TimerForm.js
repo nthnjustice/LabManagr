@@ -5,7 +5,7 @@ import {secureTimerTime} from './Timer';
 export default class TimerForm extends React.Component {
   constructor(props) {
     super(props);
-    
+
     this.state = {
       titleErr: '*',
       titleVal: ''
@@ -23,10 +23,10 @@ export default class TimerForm extends React.Component {
   onSubmit(e) {
     e.preventDefault();
 
-    let title = this.refs.title.value.trim();
-    let seconds = secureTimerTime();
+    const title = this.refs.title.value.trim();
+    const seconds = secureTimerTime();
 
-    let titleVal = this.validateTitle(title);
+    const titleVal = this.validateTitle(title);
 
     if (titleVal) {
       let minTot = Math.round(seconds / 60)
@@ -43,9 +43,9 @@ export default class TimerForm extends React.Component {
               titleVal: ''
             });
 
-            $('#timer-title').val(undefined);
-            $('#timer-title-label').removeClass('active');
-            $('#timer-modal').modal('close');
+            $('#timer__title').val(undefined);
+            $('#timer__title-label').removeClass('active');
+            $('#timer__modal').modal('close');
 
             let $msg = $('<span class="green-text text-accent-3">Writing Log Saved</span>')
             Materialize.toast($msg, 5000, 'rounded');
@@ -62,8 +62,8 @@ export default class TimerForm extends React.Component {
       <form onSubmit={this.onSubmit.bind(this)} noValidate>
 
         <div className="input-field col l8 offset-l2">
-          <input id="timer-title" className={this.state.titleVal} type="text" ref="title" name="timer-title"/>
-          <label id="timer-title-label" htmlFor="timer-title">
+          <input id="timer__title" className={this.state.titleVal} type="text" ref="title"/>
+          <label id="timer__title-label" htmlFor="timer__title">
             Title <span className="red-text">{this.state.titleErr}</span>
           </label>
         </div>

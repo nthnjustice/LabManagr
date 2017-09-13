@@ -14,7 +14,7 @@ export default class LoginForm extends React.Component {
     };
   }
   validateEmail(email) {
-    let regex = /\S+@\S+\.\S+/;
+    const regex = /\S+@\S+\.\S+/;
 
     if (!email) {
       this.setState({emailErr: "* can't be blank", emailVal: 'invalid'});
@@ -39,25 +39,28 @@ export default class LoginForm extends React.Component {
   onSubmit(e) {
     e.preventDefault();
 
-    let email = this.refs.email.value.trim();
-    let pass = this.refs.pass.value.trim();
+    const email = this.refs.email.value.trim();
+    const pass = this.refs.pass.value.trim();
 
-    let emailVal = this.validateEmail(email);
-    let passVal = this.validatePass(pass);
+    const emailVal = this.validateEmail(email);
+    const passVal = this.validatePass(pass);
 
     if (emailVal && passVal) {
       Meteor.loginWithPassword({email}, pass, (err) => {
-        if (err) {
+        if (!err) {
+          this.setState({
+            error: '',
+            emailErr: '*',
+            emailVal: 'valid',
+            passErr: '*',
+            passVal: 'valid'
+          });
+          Materialize.toast('Welcome Back!', 5000, 'rounded');
+        } else {
           this.setState({
             error: 'invalid Email/Password combination',
             emailVal: 'invalid',
             passVal: 'invalid'
-          });
-        } else {
-          this.setState({
-            error: '',
-            emailVal: 'valid',
-            passVal: 'valid'
           });
         }
       });
@@ -70,23 +73,23 @@ export default class LoginForm extends React.Component {
         <div className="row red lighten-5">
           {
             this.state.error
-              ? <p id="login-form-error" className="center-align red-text text-darken-4">{this.state.error}</p>
+              ? <p id="login__error" className="center-align red-text text-darken-4">{this.state.error}</p>
               : undefined
           }
         </div>
 
         <div className="input-field">
           <i className="material-icons prefix">email</i>
-          <input id="email" className={this.state.emailVal} type="email" ref="email" name="email"/>
-          <label htmlFor="email">
+          <input id="login__email" className={this.state.emailVal} type="email" ref="email"/>
+          <label htmlFor="login__email">
             Email <span className="red-text">{this.state.emailErr}</span>
           </label>
         </div>
 
         <div className="input-field">
           <i className="material-icons prefix">lock</i>
-          <input id="pass" className={this.state.passVal} type="password" ref="pass" name="pass" autoComplete="new-password"/>
-          <label htmlFor="pass">
+          <input id="login__pass" className={this.state.passVal} type="password" ref="pass" autoComplete="new-password"/>
+          <label htmlFor="login__pass">
             Password <span className="red-text">{this.state.passErr}</span>
           </label>
         </div>

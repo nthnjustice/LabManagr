@@ -6,24 +6,27 @@ import Stopwatch from './Stopwatch';
 
 export default class Live extends React.Component {
   componentDidMount() {
-    $('#tabs-clocks').tabs();
+    $('#live__tabs-clock').tabs();
+
+    setTimeout(function() {
+      $('#live__timer-tab').trigger('click');
+    }, 100);
   }
   render() {
     return(
-      <div className="card-panel hoverable">
+      <div className="card large hoverable">
 
-        <h5>Live Writing Session</h5>
-        <div className="divider"></div>
+        <div id="live__header" className="indigo darken-4">
+          <h5 className="white-text">Live Session</h5>
+        </div>
 
         <div className="row">
 
-          <div className="col l12">
-            <ul id="tabs-clocks" className="tabs">
-              <li className="tab col l4"><a href="#alarm">Alarm</a></li>
-              <li className="tab col l4"><a className="active" href="#timer">Timer</a></li>
-              <li className="tab col l4"><a href="#stopwatch">Stopwatch</a></li>
-            </ul>
-          </div>
+          <ul id="live__tabs-clock" className="tabs tabs-fixed-width">
+            <li className="tab col l4"><a href="#alarm">Alarm</a></li>
+            <li className="tab col l4"><a id="live__timer-tab" className="active" href="#timer">Timer</a></li>
+            <li className="tab col l4"><a href="#stopwatch">Stopwatch</a></li>
+          </ul>
 
           <Alarm/>
           <Timer/>

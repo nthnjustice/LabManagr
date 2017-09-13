@@ -5,7 +5,7 @@ import {secureAlarmStart, secureAlarmFinished, secureAlarmExcess} from './Alarm'
 export default class AlarmForm extends React.Component {
   constructor(props) {
     super(props);
-    
+
     this.state = {
       titleErr: '*',
       titleVal: ''
@@ -23,13 +23,13 @@ export default class AlarmForm extends React.Component {
   onSubmit(e) {
     e.preventDefault();
 
-    let title = this.refs.title.value.trim();
-    let start = secureAlarmStart();
-    let finished = secureAlarmFinished();
-    let excess = secureAlarmExcess();
-    let milliseconds = (finished - start) + (excess * 1000);
+    const title = this.refs.title.value.trim();
+    const start = secureAlarmStart();
+    const finished = secureAlarmFinished();
+    const excess = secureAlarmExcess();
+    const milliseconds = (finished - start) + (excess * 1000);
 
-    let titleVal = this.validateTitle(title);
+    const titleVal = this.validateTitle(title);
 
     if (titleVal) {
       let seconds = Math.round(milliseconds / 1000)
@@ -47,9 +47,9 @@ export default class AlarmForm extends React.Component {
               titleVal: ''
             });
 
-            $('#alarm-title').val(undefined);
-            $('#alarm-title-label').removeClass('active');
-            $('#alarm-modal').modal('close');
+            $('#alarm__title').val(undefined);
+            $('#alarm__title-label').removeClass('active');
+            $('#alarm__modal').modal('close');
 
             let $msg = $('<span class="green-text text-accent-3">Writing Log Saved</span>')
             Materialize.toast($msg, 5000, 'rounded');
@@ -66,8 +66,8 @@ export default class AlarmForm extends React.Component {
       <form onSubmit={this.onSubmit.bind(this)} noValidate>
 
         <div className="input-field col l8 offset-l2">
-          <input id="alarm-title" className={this.state.titleVal} type="text" ref="title" name="alarm-title"/>
-          <label id="alarm-title-label" htmlFor="alarm-title">
+          <input id="alarm__title" className={this.state.titleVal} type="text" ref="title"/>
+          <label id="alarm__title-label" htmlFor="alarm__title">
             Title <span className="red-text">{this.state.titleErr}</span>
           </label>
         </div>

@@ -1,9 +1,10 @@
 import {Accounts} from 'meteor/accounts-base';
 import React from 'react';
+import ReactDOM from 'react-dom';
 
 export default class TopNav extends React.Component {
   componentDidMount() {
-    $('#dropdown-button-account').dropdown();
+    $(ReactDOM.findDOMNode(this.refs.dropdown)).dropdown();
   }
   onLogout() {
     Accounts.logout();
@@ -13,13 +14,13 @@ export default class TopNav extends React.Component {
       <span>
 
         <nav>
-          <div className="nav-wrapper cyan darken-3">
+          <div className={`nav-wrapper ${this.props.color}`}>
 
-            <a href="#" className="brand-logo center">{this.props.title}</a>
+            <a className="brand-logo center">{this.props.title}</a>
 
             <ul id="nav-mobile" className="right">
               <li>
-                <a id="dropdown-button-account" className="dropdown-button" data-activates="account-dropdown">
+                <a id="dropdown__account-btn" className="dropdown-button" ref="dropdown" data-activates="dropdown__account">
                   <i className="material-icons">account_circle</i>
                 </a>
               </li>
@@ -28,7 +29,7 @@ export default class TopNav extends React.Component {
           </div>
         </nav>
 
-        <ul id="account-dropdown" className="dropdown-content">
+        <ul id="dropdown__account" className="dropdown-content">
           <li>
             <a className="black-text" onClick={this.onLogout.bind(this)}>Logout</a>
           </li>

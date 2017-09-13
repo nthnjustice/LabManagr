@@ -17,10 +17,10 @@ function initAlarmGlobals() {
   alarmFinishedDate = new Date();
 
   alarmClock = $('#alarm').find('.clock');
-  alarmInput = $('#alarm-input');
-  alarmInputLabel = $('#alarm-input-label');
-  alarmButton = $('#alarm-switch');
-  alarmSoundsButton = $('#alarm-sounds');
+  alarmInput = $('#alarm__input');
+  alarmInputLabel = $('#alarm__input-label');
+  alarmButton = $('#alarm__switch');
+  alarmSoundsButton = $('#alarm__sounds');
 }
 
 function initAlarmInput() {
@@ -86,7 +86,7 @@ function turnAlarmOn() {
           alarmSound.play();
       }
 
-      $('#alarm-modal').modal('open');
+      $('#alarm__modal').modal('open');
     }
   }, 1000);
 
@@ -97,7 +97,6 @@ function turnAlarmOn() {
 
 function turnAlarmOff() {
   clearInterval(alarmInterval);
-  clearInterval(alarmExcessInterval);
 
   alarmClock.addClass('inactive');
   alarmInput.prop('disabled', false);
@@ -154,17 +153,18 @@ export function secureAlarmExcess() {
 
 export default class Alarm extends React.Component {
   componentDidMount() {
-    $('#alarm-input').pickatime({
+    $('#alarm__input').pickatime({
       twelvehour: true,
       ampmclickable: true
     });
 
-    $('#alarm-modal').modal({
+    $('#alarm__modal').modal({
       ready: function(modal, trigger) {
         alarmFinishedDate = new Date;
         alarmExcess();
       },
       complete: function() {
+        clearInterval(alarmExcessInterval);
         turnAlarmOff();
       }
     });
@@ -178,27 +178,27 @@ export default class Alarm extends React.Component {
           <div id="alarm" className="container">
 
             <div className="col l12 center">
-              <div id="alarm-controls-wrapper">
+              <div id="alarm__controls-wrapper">
 
-                <div id="alarm-input-wrapper" className="alarm-inline input-field ">
-                  <input id="alarm-input" type="text" ref="min" name="alarm-input"/>
-                  <label id="alarm-input-label" htmlFor="alarm-input">
+                <div id="alarm__input-wrapper" className="alarm__inline input-field ">
+                  <input id="alarm__input" type="text" ref="min"/>
+                  <label id="alarm__input-label" htmlFor="alarm__input">
                     Set Time <span className="red-text">*</span>
                   </label>
                 </div>
 
-                <div className="switch alarm-inline">
+                <div className="switch alarm__inline">
                   <label>
                     Off
-                    <input id="alarm-switch" type="checkbox" disabled/>
+                    <input id="alarm__switch" type="checkbox" disabled/>
                     <span className="lever"></span>
                     On
                   </label>
                 </div>
 
-                <form id="alarm-sounds-wrapper" className="alarm-inline">
-                  <input id="alarm-sounds" type="checkbox" ref="sounds" name="alarm-sounds"/>
-                  <label htmlFor="alarm-sounds">Sounds</label>
+                <form id="alarm__sounds-wrapper" className="alarm__inline">
+                  <input id="alarm__sounds" type="checkbox" ref="sounds"/>
+                  <label htmlFor="alarm__sounds">Sounds</label>
                 </form>
 
               </div>
@@ -212,22 +212,25 @@ export default class Alarm extends React.Component {
         </div>
 
 
-        <div id="alarm-modal" className="modal modal-fixed-footer">
+        <div id="alarm__modal" className="modal modal-fixed-footer">
 
           <div className="modal-content">
 
             <h4 className="center-align">Time's Up!</h4>
+
             <div className="section">
               <h5 className="grey-text">Submit this log when you are ready.</h5>
               <h6 className="grey-text">(The time is still counting.)</h6>
             </div>
 
-            <AlarmForm/>
+            <div className="section">
+              <AlarmForm/>
+            </div>
 
           </div>
 
           <div className="modal-footer">
-            <a id="alarm-modal-close" className="modal-action modal-close btn-flat grey lighten-4 red-text waves-effect waves-red">
+            <a id="alarm__modal-btn" className="modal-action modal-close btn-flat grey lighten-4 red-text waves-effect waves-red">
               Close
             </a>
           </div>

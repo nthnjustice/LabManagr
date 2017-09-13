@@ -35,14 +35,13 @@ function formatMonth(month) {
     return 10;
   } else if (month === 'December') {
     return 11;
-  } else {
-    return undefined;
   }
 }
 
 export default class Log extends React.Component {
   constructor(props) {
     super(props);
+
     this.state = {
       error: '',
       dateErr: '*',
@@ -54,7 +53,9 @@ export default class Log extends React.Component {
     };
   }
   componentDidMount() {
-    $('#log-date').pickadate();
+    $('#log__date').pickadate({
+      closeOnSelect: true
+    });
   }
   validateDate(date) {
     if (!date) {
@@ -89,16 +90,26 @@ export default class Log extends React.Component {
       return true;
     }
   }
+  resetForm() {
+    $('#log__date').val(undefined);
+    $('#log__date-label').removeClass('active');
+    $('#log__title').val(undefined);
+    $('#log__title-label').removeClass('active');
+    $('#log__hr').val(undefined);
+    $('#log__hr-label').removeClass('active');
+    $('#log__min').val(undefined);
+    $('#log__min-label').removeClass('active');
+  }
   onSubmit(e) {
     e.preventDefault();
 
     let date = this.refs.date.value.trim();
-    let title = this.refs.title.value.trim();
-    let hr = Number(this.refs.hr.value.trim());
-    let min = Number(this.refs.min.value.trim());
+    const title = this.refs.title.value.trim();
+    const hr = Number(this.refs.hr.value.trim());
+    const min = Number(this.refs.min.value.trim());
 
-    let dateVal = this.validateDate(date);
-    let titleVal = this.validateTitle(title);
+    const dateVal = this.validateDate(date);
+    const titleVal = this.validateTitle(title);
     let timeVal = false;
 
     if (dateVal && titleVal) {
@@ -115,6 +126,7 @@ export default class Log extends React.Component {
         (error, results) => {
           if (!error) {
             this.setState({
+              error: '',
               dateErr: '*',
               dateVal: 'datepicker',
               titleErr: '*',
@@ -123,19 +135,11 @@ export default class Log extends React.Component {
               minVal: ''
             });
 
-            $('#log-date').val(undefined);
-            $('#log-date-label').removeClass('active');
-            $('#log-title').val(undefined);
-            $('#log-title-label').removeClass('active');
-            $('#log-hr').val(undefined);
-            $('#log-hr-label').removeClass('active');
-            $('#log-min').val(undefined);
-            $('#log-min-label').removeClass('active');
-
-            let $msg = $('<span class="green-text text-accent-3">Writing Log Saved</span>')
+            this.resetForm();
+            const $msg = $('<span class="green-text text-accent-3">Writing Log Saved</span>')
             Materialize.toast($msg, 5000, 'rounded');
           } else {
-            let $msg = $('<span class="red-text">Error: Writing Log Not Saved</span>')
+            const $msg = $('<span class="red-text">Error: Writing Log Not Saved</span>')
             Materialize.toast($msg, 5000, 'rounded');
           }
         }
@@ -144,25 +148,27 @@ export default class Log extends React.Component {
   }
   render() {
     return(
-      <div className="card-panel hoverable">
-        <h5>Log Writing Session</h5>
-        <div className="divider"></div>
+      <div className="card large hoverable">
 
-        <div className="section">
+        <div id="log__header" className="indigo darken-4">
+          <h5 className="white-text">Log Session</h5>
+        </div>
+
+        <div className="container valign-wrapper">
           <form onSubmit={this.onSubmit.bind(this)} noValidate>
 
-            <div id="log-form-error-wrapper" className="row red lighten-5">
+            <div className="row red lighten-5">
               {
                 this.state.error
-                  ? <p id="log-form-error" className="center-align red-text text-darken-4">{this.state.error}</p>
+                  ? <p id="log__error" className="center-align red-text text-darken-4">{this.state.error}</p>
                   : undefined
               }
             </div>
 
             <div className="row">
               <div className="input-field col l12">
-                <input id="log-date" className={this.state.dateVal} type="text" ref="date" name="log-date"/>
-                <label id="log-date-label" htmlFor="log-date">
+                <input id="log__date" className={this.state.dateVal} type="text" ref="date"/>
+                <label id="log__date-label" htmlFor="log__date">
                   Date <span className="red-text">{this.state.dateErr}</span>
                 </label>
               </div>
@@ -170,8 +176,8 @@ export default class Log extends React.Component {
 
             <div className="row">
               <div className="input-field col l12">
-                  <input id="log-title" className={this.state.titleVal} type="text" ref="title" name="log-title"/>
-                  <label id="log-title-label" htmlFor="log-title">
+                  <input id="log__title" className={this.state.titleVal} type="text" ref="title"/>
+                  <label id="log__title-label" htmlFor="log__title">
                     Title <span className="red-text">{this.state.titleErr}</span>
                   </label>
               </div>
@@ -180,22 +186,22 @@ export default class Log extends React.Component {
             <div className="row">
 
               <div className="input-field col l6">
-                  <input id="log-hr" className={this.state.hrVal} type="number" ref="hr" name="log-hr"/>
-                  <label id="log-hr-label" htmlFor="log-hr">
+                  <input id="log__hr" className={this.state.hrVal} type="number" ref="hr"/>
+                  <label id="log__hr-label" htmlFor="log__hr">
                     Hours
                   </label>
               </div>
 
               <div className="input-field col l6">
-                  <input id="log-min" className={this.state.minVal} type="number" ref="min" name="log-min"/>
-                  <label id="log-min-label" htmlFor="log-min">
+                  <input id="log__min" className={this.state.minVal} type="number" ref="min"/>
+                  <label id="log__min-label" htmlFor="log__min">
                     Minutes
                   </label>
               </div>
 
             </div>
 
-            <div className="section row center">
+            <div id="log__btn-wrapper" className="row center">
               <button className="btn waves-effect waves-light" type="submit">
                 Post <i className="material-icons right">send</i>
               </button>

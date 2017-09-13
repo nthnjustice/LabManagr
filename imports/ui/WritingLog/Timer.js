@@ -18,9 +18,9 @@ function initTimerGlobals() {
 
   timerClock = $('#timer').find('.clock');
   timerClock.text(returnFormattedToSeconds(timerTime));
-  timerInput = $('#timer-input');
-  timerInputLabel = $('#timer-input-label');
-  timerSoundsButton = $('#timer-sounds');
+  timerInput = $('#timer__input');
+  timerInputLabel = $('#timer__input-label');
+  timerSoundsButton = $('#timer__sounds');
 }
 
 function initTimerInput() {
@@ -39,17 +39,17 @@ function initTimerInput() {
 }
 
 function initTimerControls() {
-  $('#timer-start').on('click', function() {
+  $('#timer__start').on('click', function() {
     if (timerTime > 0) {
       startTimer();
     }
   });
 
-  $('#timer-pause').on('click', function() {
+  $('#timer__pause').on('click', function() {
     pauseTimer();
   });
 
-  $('#timer-reset').on('click', function() {
+  $('#timer__reset').on('click', function() {
     resetTimer();
   });
 }
@@ -84,7 +84,7 @@ function startTimer() {
 
       timerClock.text(returnFormattedToSeconds(0));
 
-      $('#timer-modal').modal('open');
+      $('#timer__modal').modal('open');
     }
   }, 1000);
 }
@@ -123,9 +123,9 @@ export function secureTimerTime() {
   return secureTimerFinishedTime + timerExcessTime;
 }
 
-export default class Live extends React.Component {
+export default class Timer extends React.Component {
   componentDidMount() {
-    $('#timer-modal').modal({
+    $('#timer__modal').modal({
       ready: function(modal, trigger) {
         secureTimerFinishedTime = timerFinishedTime;
         resetTimer();
@@ -144,30 +144,30 @@ export default class Live extends React.Component {
         <div id="timer" className="container">
           <div className="col l12 center">
 
-            <div id="timer-input-wrapper" className="timer-inline input-field ">
-              <input id="timer-input" type="number" ref="min" name="timer-input"/>
-              <label id="timer-input-label" htmlFor="timer-input">
+            <div id="timer__input-wrapper" className="timer__inline input-field ">
+              <input id="timer__input" type="number" ref="min"/>
+              <label id="timer__input-label" htmlFor="timer__input">
                 Minutes <span className="red-text">*</span>
               </label>
             </div>
 
-            <div id="timer-btn-wrapper" className="timer-inline">
-              <a id="timer-start" className="timer-btn waves-effect">
+            <div id="timer__btn-wrapper" className="timer__inline">
+              <a id="timer__start" className="timer__btn waves-effect">
                 <i className="material-icons small">play_arrow</i>
               </a>
 
-              <a id="timer-pause" className="timer-btn waves-effect">
+              <a id="timer__pause" className="timer__btn waves-effect">
                 <i className="material-icons small">pause</i>
               </a>
 
-              <a id="timer-reset" className="timer-btn waves-effect">
+              <a id="timer__reset" className="timer__btn waves-effect">
                 <i className="material-icons small">loop</i>
               </a>
             </div>
 
-            <form className="timer-inline">
-              <input id="timer-sounds" type="checkbox" ref="sounds" name="timer-sounds"/>
-              <label htmlFor="timer-sounds">Sounds</label>
+            <form className="timer__inline">
+              <input id="timer__sounds" type="checkbox" ref="sounds"/>
+              <label htmlFor="timer__sounds">Sounds</label>
             </form>
 
           </div>
@@ -176,22 +176,25 @@ export default class Live extends React.Component {
 
         </div>
 
-        <div id="timer-modal" className="modal modal-fixed-footer">
+        <div id="timer__modal" className="modal modal-fixed-footer">
 
           <div className="modal-content">
 
             <h4 className="center-align">Time's Up!</h4>
+
             <div className="section">
               <h5 className="grey-text">Submit this log when you are ready.</h5>
               <h6 className="grey-text">(The timer is still running.)</h6>
             </div>
 
-            <TimerForm/>
-
+            <div className="section">
+              <TimerForm/>
+            </div>
+            
           </div>
 
           <div className="modal-footer">
-            <a id="timer-modal-close" className="modal-action modal-close btn-flat grey lighten-4 red-text waves-effect waves-red">
+            <a className="modal-action modal-close btn-flat grey lighten-4 red-text waves-effect waves-red">
               Close
             </a>
           </div>

@@ -4,7 +4,7 @@ import {Link} from 'react-router-dom';
 export default class SignupFooter extends React.Component {
   render() {
     return(
-      <div className="row">
+      <div id="signup__link-wrapper" className="row">
 
         <div className="col l6 left-align">
           <Link to="/">Login with Existing Account</Link>

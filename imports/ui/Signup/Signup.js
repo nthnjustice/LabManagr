@@ -9,7 +9,7 @@ import SignupFooter from './SignupFooter';
 export default class Signup extends React.Component {
   componentWillMount() {
     if (Meteor.userId()) {
-      this.props.history.replace('/');
+      this.props.history.replace('/dashboard');
     }
   }
   render() {

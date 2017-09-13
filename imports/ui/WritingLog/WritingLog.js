@@ -16,22 +16,22 @@ export default class WritingLog extends React.Component {
           <Log/>
         </div>
 
-        <div className="col l6">
-          <Live/>
+        <div className="col l5">
+            <Live/>
         </div>
 
-        <div className="col l3">
+        <div className="col l4">
           <Goals/>
         </div>
 
-        <div className="col l3">
+        {/* <div className="col l3">
           <UserLogs/>
-        </div>
+        </div> */}
 
-        <WeeklyLogs/>
-        <TotalLogs/>
+        {/* <WeeklyLogs/>
+        <TotalLogs/> */}
 
       </div>
     );
   }
-};
+}

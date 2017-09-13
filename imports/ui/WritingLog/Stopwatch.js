@@ -17,17 +17,17 @@ function initStopwatchGlobals() {
 }
 
 function initStopwatchControls() {
-  $('#stopwatch-start').on('click', function() {
+  $('#stopwatch__start').on('click', function() {
     if (stopwatchClock.hasClass('inactive')) {
       startStopwatch();
     }
   });
 
-  $('#stopwatch-pause').on('click', function() {
+  $('#stopwatch__pause').on('click', function() {
     pauseStopwatch();
   });
 
-  $('#stopwatch-reset').on('click', function() {
+  $('#stopwatch__reset').on('click', function() {
     resetStopwatch();
   });
 }
@@ -63,7 +63,7 @@ function startStopwatch() {
   }, 100);
 
   stopwatchClock.removeClass('inactive');
-  $('#stopwatch-submit').removeClass('disabled');
+  $('#stopwatch__submit').removeClass('disabled');
 }
 
 function pauseStopwatch() {
@@ -88,7 +88,7 @@ export function resetStopwatch(){
   localStorage.stopwatchRunningTime = 0;
 
   stopwatchClock.addClass('inactive');
-  $('#stopwatch-submit').addClass('disabled');
+  $('#stopwatch__submit').addClass('disabled');
 }
 
 function returnFormattedToMilliseconds(time){
@@ -120,21 +120,19 @@ export default class Stopwatch extends React.Component {
       <div id="stopwatch" className="container">
 
         <div className="col l12 center">
-          <div className="stopwatch-inline section">
 
-            <a id="stopwatch-start" className="stopwatch-btn waves-effect">
-              <i className="material-icons small">play_arrow</i>
-            </a>
+          <a id="stopwatch__start" className="stopwatch__btn waves-effect">
+            <i className="material-icons small">play_arrow</i>
+          </a>
 
-            <a id="stopwatch-pause" className="stopwatch-btn waves-effect">
-              <i className="material-icons small">pause</i>
-            </a>
+          <a id="stopwatch__pause" className="stopwatch__btn waves-effect">
+            <i className="material-icons small">pause</i>
+          </a>
 
-            <a id="stopwatch-reset" className="stopwatch-btn waves-effect">
-              <i className="material-icons small">loop</i>
-            </a>
+          <a id="stopwatch__reset" className="stopwatch__btn waves-effect">
+            <i className="material-icons small">loop</i>
+          </a>
 
-          </div>
         </div>
 
         <div className="clock inactive z-depth-1 waves-effect">
