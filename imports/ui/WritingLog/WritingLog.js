@@ -3,8 +3,8 @@ import React from 'react';
 import Log from './Log';
 import Live from './Live';
 import Goals from './Goals';
-import UserLogs from './UserLogs';
-import WeeklyLogs from './WeeklyLogs';
+import UserLogsWrapper from './UserLogsWrapper';
+//import WeeklyLogs from './WeeklyLogs';
 import TotalLogs from './TotalLogs';
 
 export default class WritingLog extends React.Component {
@@ -24,9 +24,9 @@ export default class WritingLog extends React.Component {
           <Goals/>
         </div>
 
-        {/* <div className="col l3">
-          <UserLogs/>
-        </div> */}
+        <div className="col l4">
+          <UserLogsWrapper/>
+        </div>
 
         {/* <WeeklyLogs/>
         <TotalLogs/> */}

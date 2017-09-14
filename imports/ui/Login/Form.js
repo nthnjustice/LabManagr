@@ -1,10 +1,9 @@
 import {Meteor} from 'meteor/meteor';
 import React from 'react';
 
-export default class LoginForm extends React.Component {
+export default class Form extends React.Component {
   constructor(props) {
     super(props);
-
     this.state = {
       error: '',
       emailErr: '*',
@@ -69,37 +68,32 @@ export default class LoginForm extends React.Component {
   render() {
     return(
       <form onSubmit={this.onSubmit.bind(this)} noValidate>
-
         <div className="row red lighten-5">
           {
             this.state.error
-              ? <p id="login__error" className="center-align red-text text-darken-4">{this.state.error}</p>
+              ? <p className="error red-text text-darken-4 center-align">{this.state.error}</p>
               : undefined
           }
         </div>
-
         <div className="input-field">
           <i className="material-icons prefix">email</i>
-          <input id="login__email" className={this.state.emailVal} type="email" ref="email"/>
-          <label htmlFor="login__email">
+          <input id="email" className={this.state.emailVal} type="email" ref="email"/>
+          <label htmlFor="email">
             Email <span className="red-text">{this.state.emailErr}</span>
           </label>
         </div>
-
         <div className="input-field">
           <i className="material-icons prefix">lock</i>
-          <input id="login__pass" className={this.state.passVal} type="password" ref="pass" autoComplete="new-password"/>
-          <label htmlFor="login__pass">
+          <input id="pass" className={this.state.passVal} type="password" ref="pass" autoComplete="new-password"/>
+          <label htmlFor="pass">
             Password <span className="red-text">{this.state.passErr}</span>
           </label>
         </div>
-
         <div className="section row center">
           <button className="btn waves-effect waves-light" type="submit">
             Sign In <i className="material-icons right">send</i>
           </button>
         </div>
-
       </form>
     );
   }

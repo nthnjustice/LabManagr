@@ -22,10 +22,29 @@ export default class AchievedGoals extends React.Component {
       Meteor.subscribe('directory');
       Meteor.subscribe('writingGoals');
 
+      const currUser = Meteor.users.find({
+        _id: Meteor.userId()
+      }).fetch();
+
       this.setState({selectedUser: Meteor.userId()})
 
-      const users = Meteor.users.find().fetch();
-      this.setState({users});
+      const users = Meteor.users.find({
+        _id: {
+          $ne: Meteor.userId()
+        }
+      }, {
+        sort: {
+          "profile.firstName": 1
+        }
+      }
+      ).fetch();
+
+      const sortedUsers = [currUser[0]];
+      for (let i = 0; i < users.length; i++) {
+        sortedUsers.push(users[i]);
+      }
+
+      this.setState({users: sortedUsers});
 
       const achievedGoals = WritingGoals.find({
         owner: this.state.selectedUser,
@@ -37,6 +56,10 @@ export default class AchievedGoals extends React.Component {
       }).fetch();
 
       this.setState({achievedGoals});
+
+      if (currUser.length >= 1) {
+        $('#achievedGoals__select').val(`${currUser[0].profile.firstName} ${currUser[0].profile.lastName}`);
+      }
 
       $('#achievedGoals__select').material_select();
       $(ReactDOM.findDOMNode(this.refs.select)).on('change', this.handleSelectChange.bind(this));

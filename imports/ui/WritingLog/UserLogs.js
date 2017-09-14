@@ -1,109 +1,120 @@
 import {Meteor} from 'meteor/meteor';
 import {Tracker} from 'meteor/tracker';
 import React from 'react';
+import ReactDOM from 'react-dom';
 
 import {WritingLogs} from '../../api/writingLogs';
+
+import UserLogsList from './UserLogsList'
 
 export default class UserLogs extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      logs: [],
-      currentPage: 1,
-      logsPerPage: 3
+      selectedUser: '',
+      users: [],
+      selectedLogs: []
     };
   }
   componentDidMount() {
-    this.writingLogsTracker = Tracker.autorun(() => {
+    this.userLogsTracker = Tracker.autorun(() => {
+      Meteor.subscribe('directory');
       Meteor.subscribe('writingLogs');
-      const logs = WritingLogs.find().fetch();
-      this.setState({logs});
+
+      const currUser = Meteor.users.find({
+        _id: Meteor.userId()
+      }).fetch();
+
+      this.setState({selectedUser: Meteor.userId()})
+
+      const users = Meteor.users.find({
+        _id: {
+          $ne: Meteor.userId()
+        }
+      }, {
+        sort: {
+          "profile.firstName": 1
+        }
+      }
+      ).fetch();
+
+      const sortedUsers = [currUser[0]];
+      for (let i = 0; i < users.length; i++) {
+        sortedUsers.push(users[i]);
+      }
+
+      this.setState({users: sortedUsers});
+
+      const selectedLogs = WritingLogs.find({
+        owner: this.state.selectedUser
+      }, {
+        sort: {
+          createdAt: -1
+        }
+      }).fetch();
+
+      this.setState({selectedLogs});
+
+      if (currUser.length >= 1) {
+        $('#userLogs__select').val(`${currUser[0].profile.firstName} ${currUser[0].profile.lastName}`);
+      }
+
+      $('#userLogs__select').material_select();
+      $(ReactDOM.findDOMNode(this.refs.select)).on('change', this.handleSelectChange.bind(this));
     });
   }
   componentWillUnmount() {
-    this.writingLogsTracker.stop();
+    this.userLogsTracker.stop();
   }
-  renderPreloader() {
-    return(
-      <div className="spinner-layer spinner-red">
-        <div className="circle-clipper left">
-          <div className="circle"></div>
-        </div>
-        <div className="gap-patch">
-          <div className="circle"></div>
-        </div>
-        <div className="circle-clipper right">
-          <div className="circle"></div>
-        </div>
-      </div>
-    );
-  }
-  formatDate(date) {
-    let str = date.toString();
-    let arr = str.split(' ');
-    return arr[0] + ', ' + arr[1] + ' ' + arr[2] + ', ' + arr[3];
-  }
-  onDeleteLog(e) {
-    e.preventDefault();
-  }
-  onPageClick(e) {
-    e.preventDefault();
+  renderUsers() {
+    if (this.state.users.length > 1) {
+      let renderedUsers = '';
 
-    this.setState({
-      currentPage: Number(e.target.id)
-    });
+      renderedUsers = this.state.users.map((user) => {
+        let name = `${user.profile.firstName} ${user.profile.lastName}`;
+        return(
+          <option key={user._id}>{name}</option>
+        );
+      });
+
+      return renderedUsers;
+    }
+  }
+  handleSelectChange(e) {
+    let fullName = e.target.value;
+    let nameArr = fullName.split(' ');
+
+    const user = Meteor.users.find({
+      $and: [
+        {"profile.firstName": nameArr[0]},
+        {"profile.lastName": nameArr[1]}
+      ]
+    }).fetch()[0];
+
+    this.setState({selectedUser: user._id})
+
+    const selectedLogs = WritingLogs.find({
+      owner: this.state.selectedUser
+    }, {
+      sort: {
+        createdAt: -1
+      }
+    }).fetch();
+
+    this.setState({selectedLogs});
   }
   render() {
-    const {logs, currentPage, logsPerPage} = this.state;
-
-    const indexofLastLog = currentPage * logsPerPage;
-    const indexofFirstLog = indexofLastLog - logsPerPage;
-    const currentLogs = logs.slice(indexofFirstLog, indexofLastLog);
-
-    const renderLogs = currentLogs.map((log, index) => {
-      return(
-        <li key={index} className="writing-log-item collection-item">
-          <p className="truncate"><strong>{log.title}</strong></p>
-          <p>Duration: <strong>{log.hours}</strong> hour(s) and <strong>{log.minutes}</strong> minutes(s)</p>
-          <p>Posted: <strong>{this.formatDate(log.createdAt)}</strong></p>
-          <a className="red-text align" onClick={this.onDeleteLog.bind(this)}>
-            <em>Delete</em>
-          </a>
-        </li>
-      );
-    });
-
-    const pageNumbers = [];
-    for (let i = 1; i <= Math.ceil(logs.length / logsPerPage); i++) {
-      pageNumbers.push(i);
-    }
-
-    const renderPageNumbers = pageNumbers.map(number => {
-      return (
-        <a key={number} id={number} onClick={this.onPageClick.bind(this)}>
-          {number}
-        </a>
-      );
-    });
-
     return (
-      <div className="card-panel hoverable">
-        <h5>Posted Writing Logs</h5>
-        <div className="divider"></div>
-        {
-          this.state.logs
-          ?
-            <span>
-              <ul className="collection">
-                {renderLogs}
-              </ul>
-              <ul id="writing-log-page-numbers">
-                {renderPageNumbers}
-              </ul>
-            </span>
-          : this.renderPreloader()
-        }
+      <div id="userLogs">
+
+        <div className="input-field col l12">
+          <select id="userLogs__select" ref="select">
+            {this.renderUsers()}
+          </select>
+        </div>
+
+        <UserLogsList selectedUser={this.state.selectedUser} selectedLogs={this.state.selectedLogs}/>
 
       </div>
     );
