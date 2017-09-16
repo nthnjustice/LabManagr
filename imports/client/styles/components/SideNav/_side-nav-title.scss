@@ -1,0 +1,9 @@
+#side-nav .title {
+	display: none;
+	height: 64px;
+	margin-top: -5%;
+}
+
+#side-nav:hover .title {
+	display: inline;
+}

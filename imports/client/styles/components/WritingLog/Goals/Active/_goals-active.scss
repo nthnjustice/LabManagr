@@ -1,0 +1,17 @@
+#active #goals {
+  height: 391px;
+  overflow-y: scroll;
+}
+
+#active #goals .delete-btn {
+  cursor: pointer;
+}
+
+#active #goals .modal-btn {
+  margin-left: 2.5%;
+  text-transform: none;
+}
+
+#active #goals .modal .text {
+  text-decoration: line-through;
+}

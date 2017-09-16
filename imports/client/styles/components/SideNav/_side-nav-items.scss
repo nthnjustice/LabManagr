@@ -1,0 +1,45 @@
+#side-nav .items {
+	padding-top: 10%;
+}
+
+#side-nav .item-text {
+	display: none;
+}
+
+#side-nav:hover .item-text {
+	display: inline;
+}
+
+#side-nav .items li a {
+	span {
+		color: #9e9e9e;
+	}
+
+	i.material-icons {
+		color: #9e9e9e;
+	}
+}
+
+#side-nav .items li:hover {
+	border: 1px solid white;
+
+	a span {
+		color: white;
+	}
+
+	a i.material-icons {
+		color: white;
+	}
+}
+
+#side-nav .items li.active {
+	background: #00838f;
+
+	a span {
+		color: white;
+	}
+
+	a i.material-icons {
+		color: white;
+	}
+}

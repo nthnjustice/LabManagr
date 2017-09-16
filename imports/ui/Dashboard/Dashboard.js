@@ -1,3 +1,4 @@
+import {Meteor} from 'meteor/meteor';
 import React from 'react';
 
 import SideNav from '../SideNav/SideNav';
@@ -18,7 +19,6 @@ const colors = {
 export default class Dashboard extends React.Component {
   constructor(props) {
     super(props);
-
     this.state = {
       module: modules['Writing Log'],
       moduleName: 'Writing Log',
@@ -40,14 +40,11 @@ export default class Dashboard extends React.Component {
   render() {
     return(
       <span>
-
         <TopNav title={this.state.moduleName} color={this.state.color}/>
         <SideNav onSelectModule={this.loadModule.bind(this)}/>
-
         <div id="dashboard">
           {this.state.module}
         </div>
-
       </span>
     );
   }

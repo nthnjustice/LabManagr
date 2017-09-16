@@ -13,12 +13,12 @@ Meteor.methods({
   'writingLogs.insert'(title, hours, minutes, date) {
     const author = `${Meteor.user().profile.firstName} ${Meteor.user().profile.lastName}`;
     WritingLogs.insert({
-        title,
-        hours,
-        minutes,
-        author,
-        owner: Meteor.userId(),
-        createdAt: date
+      title,
+      hours,
+      minutes,
+      author,
+      owner: Meteor.userId(),
+      createdAt: date
     });
   },
   'writingLogs.remove'(id) {
