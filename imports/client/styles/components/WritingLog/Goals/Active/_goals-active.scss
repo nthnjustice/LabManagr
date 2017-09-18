@@ -3,6 +3,10 @@
   overflow-y: scroll;
 }
 
+#active #goals .collection-item {
+  padding: 3.4%;
+}
+
 #active #goals .delete-btn {
   cursor: pointer;
 }

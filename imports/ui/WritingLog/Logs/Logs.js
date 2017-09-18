@@ -28,7 +28,7 @@ export default class Logs extends React.Component {
         _id: Meteor.userId()
       }).fetch();
 
-      this.setState({selectedUserId: Meteor.userId()})
+      this.setState({selectedUserId: Meteor.userId()});
 
       const users = Meteor.users.find({
         _id: {
@@ -94,7 +94,7 @@ export default class Logs extends React.Component {
       ]
     }).fetch()[0];
 
-    this.setState({selectedUser: user._id})
+    this.setState({selectedUserId: user._id});
 
     const selectedLogs = WritingLogs.find({
       owner: this.state.selectedUserId
