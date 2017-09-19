@@ -3,11 +3,9 @@ import React from 'react';
 import {Chart} from 'react-google-charts';
 import ReactDOM from 'react-dom';
 
-import Title from './Title';
+import {WritingLogs} from '../../../../api/writingLogs';
 
-import {WritingLogs} from '../../../api/writingLogs';
-
-export default class Weekly extends React.Component {
+export default class Charts extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -226,30 +224,27 @@ export default class Weekly extends React.Component {
   render() {
     return(
       <span id="weekly">
-        <div className="card large hoverable">
-          <Title/>
-          <div className="row">
-            <div className="input-field col l12">
-              <select className="select" ref="select">
-                {this.renderUsers()}
-              </select>
-            </div>
+        <div className="row">
+          <div className="input-field col l12">
+            <select className="select" ref="select">
+              {this.renderUsers()}
+            </select>
           </div>
-          <div className="row">
-            {
-              this.state.data ?
-                <Chart
-                  chartType="ColumnChart"
-                  data={this.state.data}
-                  options={this.state.options}
-                  graph_id="ScatterChart"
-                  width="100%"
-                  height="305px"
-                  legend_toggle
-                />
-              : undefined
-            }
-          </div>
+        </div>
+        <div className="row">
+          {
+            this.state.data ?
+              <Chart
+                chartType="ColumnChart"
+                data={this.state.data}
+                options={this.state.options}
+                graph_id="ScatterChart"
+                width="100%"
+                height="275px"
+                legend_toggle
+              />
+            : undefined
+          }
         </div>
       </span>
     );

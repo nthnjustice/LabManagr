@@ -4,7 +4,7 @@ import Log from './Log/Log';
 import Live from './Live/Live';
 import Goals from './Goals/Goals';
 import Logs from './Logs/Logs';
-import Weekly from './Weekly/Weekly';
+import Charts from './Charts/Charts';
 
 export default class Container extends React.Component {
   render() {
@@ -26,7 +26,7 @@ export default class Container extends React.Component {
             <Logs/>
           </div>
           <div className="col l8">
-            <Weekly/>
+            <Charts/>
           </div>
         </div>
       </span>
