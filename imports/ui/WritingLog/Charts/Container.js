@@ -3,37 +3,27 @@ import React from 'react';
 import {Chart} from 'react-google-charts';
 import ReactDOM from 'react-dom';
 
-import {WritingLogs} from '../../../../api/writingLogs';
+import {WritingLogs} from '../../../api/writingLogs';
 
-export default class Charts extends React.Component {
+import Week from './Week';
+import Total from './Total';
+
+export default class Container extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       selectedUserId: '',
       users: [],
-      options: {
-        title: '',
-        hAxis: {
-          title: 'Day',
-          minValue: 0,
-          maxValue: 7
-        },
-        vAxis: {
-          title: 'Minutes',
-          minValue: 0,
-          maxValue: 120
-        },
-        legend: 'none',
-      },
-      data: ''
+      weekData: '',
+      totalData: ''
     };
   }
   componentDidMount() {
-    this.weeklyTracker = Tracker.autorun(() => {
+    this.chartsTracker = Tracker.autorun(() => {
       Meteor.subscribe('directory');
       Meteor.subscribe('writingLogs');
 
-      $('#weekly .select').material_select('destroy');
+      $('#charts .wrapper .select').material_select('destroy');
 
       const currUser = Meteor.users.find({
         _id: Meteor.userId()
@@ -63,7 +53,7 @@ export default class Charts extends React.Component {
       let weekAgo = new Date();
       weekAgo.setUTCDate(weekAgo.getDate() - 7);
 
-      const selectedLogs = WritingLogs.find(
+      const selectedWeekLogs = WritingLogs.find(
         {
           $and: [
             {owner: this.state.selectedUserId},
@@ -81,17 +71,29 @@ export default class Charts extends React.Component {
         }
       ).fetch();
 
-      this.prepData(selectedLogs);
+      this.prepWeekData(selectedWeekLogs);
+
+      const selectedTotalLogs = WritingLogs.find(
+        {
+          owner: this.state.selectedUserId
+        }, {
+          sort: {
+            createdAt: 1
+          }
+        }
+      ).fetch();
+
+      this.prepTotalData(selectedTotalLogs);
 
       if (currUser.length >= 1 && this.state.users.length > 1) {
-        $('#weekly .select').val(`${currUser[0].profile.firstName} ${currUser[0].profile.lastName}`);
-        $('#weekly .select').material_select();
+        $('#charts .wrapper .select').val(`${currUser[0].profile.firstName} ${currUser[0].profile.lastName}`);
+        $('#charts .wrapper .select').material_select();
         $(ReactDOM.findDOMNode(this.refs.select)).change(this.handleSelectChange.bind(this));
       }
     });
   }
   componentWillUnmount() {
-    this.weeklyTracker.stop();
+    this.chartsTracker.stop();
   }
   renderUsers() {
     if (this.state.users.length > 1) {
@@ -125,7 +127,7 @@ export default class Charts extends React.Component {
     let weekAgo = new Date();
     weekAgo.setUTCDate(weekAgo.getDate() - 7);
 
-    const selectedLogs = WritingLogs.find(
+    const selectedWeekLogs = WritingLogs.find(
       {
         $and: [
           {owner: this.state.selectedUserId},
@@ -143,11 +145,23 @@ export default class Charts extends React.Component {
       }
     ).fetch();
 
-    this.prepData(selectedLogs);
+    this.prepWeekData(selectedWeekLogs);
+
+    const selectedTotalLogs = WritingLogs.find(
+      {
+        owner: this.state.selectedUserId
+      }, {
+        sort: {
+          createdAt: 1
+        }
+      }
+    ).fetch();
+
+    this.prepTotalData(selectedTotalLogs);
   }
-  prepData(selectedLogs) {
-    let hAxis = this.setHaxis();
-    const vAxis = this.setVaxis(selectedLogs, hAxis);
+  prepWeekData(selectedWeekLogs) {
+    let hAxis = this.setWeekHaxis();
+    const vAxis = this.setWeekVaxis(selectedWeekLogs, hAxis);
 
     hAxis = this.numToDay(hAxis);
 
@@ -159,9 +173,9 @@ export default class Charts extends React.Component {
 
     data.push([hAxis[6], vAxis[6], '#01579b']);
 
-    this.setState({data});
+    this.setState({weekData: data});
   }
-  setHaxis() {
+  setWeekHaxis() {
     const today = new Date();
     const todayNum = today.getDay();
     const dayNums = [0, 1, 2, 3, 4, 5, 6];
@@ -201,16 +215,70 @@ export default class Charts extends React.Component {
 
     return converted;
   }
-  setVaxis(logs, hAxis) {
+  setWeekVaxis(selectedWeekLogs, hAxis) {
     let hours = 0;
     let minutes = 0;
     let times = [];
 
     for (let i = 0; i < 7; i++) {
-      for (let j = 0; j < logs.length; j++) {
-        if (logs[j].createdAt.getDay() == hAxis[i]) {
-          hours = hours + logs[j].hours;
-          minutes = minutes + logs[j].minutes;
+      for (let j = 0; j < selectedWeekLogs.length; j++) {
+        if (selectedWeekLogs[j].createdAt.getDay() == hAxis[i]) {
+          hours = hours + selectedWeekLogs[j].hours;
+          minutes = minutes + selectedWeekLogs[j].minutes;
+        }
+      }
+      minutes = minutes + (hours * 60);
+      times.push(minutes);
+      hours = 0;
+      minutes = 0;
+    }
+
+    return times;
+  }
+  prepTotalData(selectedTotalLogs) {
+    const hAxis = this.setTotalHaxis(selectedTotalLogs);
+    const vAxis = this.setTotalVaxis(selectedTotalLogs, hAxis);
+
+    let data = [['Day', 'Minutes']];
+
+    for (let i = 0; i < selectedTotalLogs.length; i++) {
+      data.push([hAxis[i], vAxis[i]]);
+    }
+
+    this.setState({totalData: data});
+  }
+  setTotalHaxis(selectedTotalLogs) {
+    let allDates = selectedTotalLogs.map((log) => {
+      const month = log.createdAt.getMonth() + 1;
+      const day = log.createdAt.getDate();
+      const year = log.createdAt.getFullYear();
+
+      return `${month}/${day}/${year}`;
+    });
+
+    let filteredDates = (arrArg) => {
+      return arrArg.filter((elem, pos, arr) => {
+        return arr.indexOf(elem) == pos;
+      });
+    }
+
+    return filteredDates(allDates);
+  }
+  setTotalVaxis(selectedTotalLogs, hAxis) {
+    let hours = 0;
+    let minutes = 0;
+    let times = [];
+
+    for (let i = 0; i < hAxis.length; i++) {
+      for (let j = 0; j < selectedTotalLogs.length; j++) {
+        let month = selectedTotalLogs[j].createdAt.getMonth() + 1;
+        let day = selectedTotalLogs[j].createdAt.getDate();
+        let year = selectedTotalLogs[j].createdAt.getFullYear();
+        let date = `${month}/${day}/${year}`;
+
+        if (hAxis[i] == date) {
+          hours = hours + selectedTotalLogs[j].hours;
+          minutes = minutes + selectedTotalLogs[j].minutes;
         }
       }
       minutes = minutes + (hours * 60);
@@ -223,7 +291,7 @@ export default class Charts extends React.Component {
   }
   render() {
     return(
-      <span id="weekly">
+      <span className="wrapper">
         <div className="row">
           <div className="input-field col l12">
             <select className="select" ref="select">
@@ -232,19 +300,8 @@ export default class Charts extends React.Component {
           </div>
         </div>
         <div className="row">
-          {
-            this.state.data ?
-              <Chart
-                chartType="ColumnChart"
-                data={this.state.data}
-                options={this.state.options}
-                graph_id="ScatterChart"
-                width="100%"
-                height="275px"
-                legend_toggle
-              />
-            : undefined
-          }
+          <Week data={this.state.weekData}/>
+          <Total data={this.state.totalData}/>
         </div>
       </span>
     );

@@ -1,7 +1,9 @@
 import React from 'react';
 
 import Title from './Title';
-import Tabs from './Tabs';
+import Container from './Container';
+// import Weekly from './Weekly';
+// import Total from './Total';
 
 export default class Charts extends React.Component {
 
@@ -10,9 +12,9 @@ export default class Charts extends React.Component {
       <span id="charts">
         <div className="card large hoverable">
           <Title/>
-          <div className="row">
-            <Tabs/>
-          </div>
+          <Container/>
+          {/* <Weekly/> */}
+          {/* <Total/> */}
         </div>
       </span>
     );
