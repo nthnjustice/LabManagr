@@ -11,7 +11,8 @@ if (Meteor.isServer) {
 
 Meteor.methods({
   'writingLogs.insert'(title, hours, minutes, date) {
-    const author = `${Meteor.user().profile.firstName} ${Meteor.user().profile.lastName}`;
+    let author = `${Meteor.user().profile.firstName} ${Meteor.user().profile.lastName}`;
+
     WritingLogs.insert({
       title,
       hours,

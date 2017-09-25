@@ -3,6 +3,10 @@
   overflow-y: scroll;
 }
 
+#achieved .no-goal-text {
+  margin-left: 5%;
+}
+
 #achieved #goals .collection-item {
   padding: 3.4%;
 }
@@ -13,7 +17,6 @@
 
 #achieved #goals .modal-btn {
   margin-left: 2.5%;
-  text-transform: none;
 }
 
 #achieved #goals .modal .text {

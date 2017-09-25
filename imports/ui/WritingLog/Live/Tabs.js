@@ -14,7 +14,7 @@ export default class Tabs extends React.Component {
   render() {
     return(
       <span>
-        <ul className="tabs tabs-fixed-width" ref="tabs">
+        <ul className="tabs tabs-fixed-width">
           <li className="tab col l4">
             <a href="#alarm">Alarm</a>
           </li>

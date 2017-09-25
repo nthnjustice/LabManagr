@@ -15,7 +15,7 @@ export default class TopNav extends React.Component {
             <a className="brand-logo center">{this.props.title}</a>
             <ul id="nav-mobile" className="right">
               <li>
-                <a className="dropdown-button" ref="dropdown" data-activates="dropdown__account">
+                <a className="dropdown-button" ref="dropdown" data-activates="account-dropdown">
                   <i className="material-icons">account_circle</i>
                 </a>
               </li>

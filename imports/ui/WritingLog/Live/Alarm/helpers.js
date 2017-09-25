@@ -21,12 +21,12 @@ function initAlarmGlobals() {
 
 function initAlarmInput() {
   alarmInput.change(function() {
-    const today = new Date();
-    const year = today.getFullYear();
-    const month = today.getMonth();
-    const day = today.getDate();
+    let today = new Date();
+    let year = today.getFullYear();
+    let month = today.getMonth();
+    let day = today.getDate();
 
-    const time = formatTime(alarmInput.val());
+    let time = formatTime(alarmInput.val());
 
     alarmTime = new Date(year, month, day, time.hour, time.minutes)
 
@@ -34,7 +34,7 @@ function initAlarmInput() {
       alarmButton.prop('disabled', false);
       alarmClock.find('span').text(alarmInput.val());
     } else {
-      alarmButton.prop("disabled", true);
+      alarmButton.prop('disabled', true);
       alarmClock.find('span').text('Not Set');
     }
   });
@@ -56,7 +56,7 @@ function initAlarmObjects() {
       if(alarmTime) {
         turnAlarmOn();
       }
-    } else{
+    } else {
       turnAlarmOff();
     }
   });
@@ -65,8 +65,8 @@ function initAlarmObjects() {
 function turnAlarmOn() {
   clearInterval(alarmInterval);
 
-  const hours = alarmTime.getHours();
-  const minutes = alarmTime.getMinutes();
+  let hours = alarmTime.getHours();
+  let minutes = alarmTime.getMinutes();
 
   alarmStartDate = new Date();
   let date = new Date();
@@ -136,15 +136,15 @@ function formatTime(timeStr) {
   }
 }
 
-function secureAlarmStart() {
+function fetchAlarmStart() {
   return alarmStartDate;
 }
 
-function secureAlarmFinished() {
+function fetchAlarmFinished() {
   return alarmFinishedDate;
 }
 
-function secureAlarmExcess() {
+function fetchAlarmExcess() {
   return alarmExcessTime;
 }
 
@@ -152,7 +152,7 @@ export {
   initAlarm,
   alarmExcess,
   turnAlarmOff,
-  secureAlarmStart,
-  secureAlarmFinished,
-  secureAlarmExcess
+  fetchAlarmStart,
+  fetchAlarmFinished,
+  fetchAlarmExcess
 };

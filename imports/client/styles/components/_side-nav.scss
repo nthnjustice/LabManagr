@@ -1,3 +1,21 @@
+#side-nav {
+	width: 50px;
+}
+
+#side-nav:hover {
+	width: 300px;
+}
+
+#side-nav .title {
+	display: none;
+	height: 64px;
+	margin-top: -5%;
+}
+
+#side-nav:hover .title {
+	display: inline;
+}
+
 #side-nav .items {
 	padding-top: 10%;
 }

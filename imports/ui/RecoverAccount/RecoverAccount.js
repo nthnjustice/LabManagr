@@ -2,7 +2,10 @@ import {Meteor} from 'meteor/meteor';
 import {Link} from 'react-router-dom';
 import React from 'react';
 
-import Container from './Container';
+import VerticalAlign from '../VerticalAlign/VerticalAlign';
+import Title from './Title';
+import Body from './Body';
+import Footer from './Footer';
 
 export default class RecoverAccount extends React.Component {
   componentWillMount() {
@@ -13,7 +16,19 @@ export default class RecoverAccount extends React.Component {
   render() {
     return(
       <span id="recover-account">
-        <Container/>
+        <VerticalAlign>
+          <div className="row">
+            <div className="col l4 offset-l4">
+              <div className="card-panel hoverable">
+                <Title/>
+                <div className="section">
+                  <Body/>
+                  <Footer/>
+                </div>
+              </div>
+            </div>
+          </div>
+        </VerticalAlign>
       </span>
     );
   }

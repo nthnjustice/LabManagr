@@ -11,7 +11,8 @@ if (Meteor.isServer) {
 
 Meteor.methods({
   'writingGoals.insert'(desc, date) {
-    const author = `${Meteor.user().profile.firstName} ${Meteor.user().profile.lastName}`;
+    let author = `${Meteor.user().profile.firstName} ${Meteor.user().profile.lastName}`;
+
     WritingGoals.insert({
       description: desc,
       deadline: date,

@@ -1,15 +1,11 @@
 import React from 'react';
 
-import {initAlarm} from './helpers';
-
 export default class Controls extends React.Component {
   componentDidMount() {
     $('#alarm #input').pickatime({
       twelvehour: true,
       ampmclickable: true
     });
-
-    initAlarm();
   }
   render() {
     return(

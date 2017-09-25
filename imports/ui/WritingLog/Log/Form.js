@@ -9,7 +9,7 @@ export default class Log extends React.Component {
     this.state = {
       error: '',
       dateErr: '*',
-      dateVal: 'datepicker',
+      dateVal: '',
       titleErr: '*',
       titleVal: '',
       hrVal: '',
@@ -22,6 +22,7 @@ export default class Log extends React.Component {
   validateDate(date) {
     if (!date) {
       this.setState({dateErr: "* can't be blank", dateVal: 'datepicker invalid'});
+      $('#log #date-label').removeClass('active');
       return false;
     } else {
       this.setState({dateErr: '*', dateVal: 'datepicker valid'});
@@ -67,12 +68,12 @@ export default class Log extends React.Component {
 
     let date = this.refs.date.value.trim();
 
-    const title = this.refs.title.value.trim();
-    const hr = Number(this.refs.hr.value.trim());
-    const min = Number(this.refs.min.value.trim());
+    let title = this.refs.title.value.trim();
+    let hr = Number(this.refs.hr.value.trim());
+    let min = Number(this.refs.min.value.trim());
 
-    const dateVal = this.validateDate(date);
-    const titleVal = this.validateTitle(title);
+    let dateVal = this.validateDate(date);
+    let titleVal = this.validateTitle(title);
 
     let timeVal = false;
 
@@ -81,9 +82,9 @@ export default class Log extends React.Component {
     }
 
     if (timeVal) {
-      const minTot = min + (hr * 60);
-      const hours = Math.floor(minTot / 60);
-      const minutes = minTot % 60;
+      let minTot = min + (hr * 60);
+      let hours = Math.floor(minTot / 60);
+      let minutes = minTot % 60;
       date = formatDate(date);
 
       Meteor.call('writingLogs.insert', title, hours, minutes, date, (err) => {
@@ -91,17 +92,19 @@ export default class Log extends React.Component {
           this.setState({
             error: '',
             dateErr: '*',
-            dateVal: 'datepicker',
+            dateVal: '',
             titleErr: '*',
             titleVal: '',
             hrVal: '',
             minVal: ''
           });
+
           this.resetForm();
-          const $msg = $('<span class="green-text text-accent-3">Writing Log Saved</span>')
+          
+          let $msg = $('<span class="green-text text-accent-3">Writing Log Saved</span>')
           Materialize.toast($msg, 5000, 'rounded');
         } else {
-          const $msg = $('<span class="red-text">Error: Writing Log Not Saved</span>')
+          let $msg = $('<span class="red-text">Error: Writing Log Not Saved</span>')
           Materialize.toast($msg, 5000, 'rounded');
         }
       });
@@ -119,7 +122,7 @@ export default class Log extends React.Component {
         </div>
         <div className="row">
           <div className="input-field col l12">
-            <input id="date" className={this.state.dateVal} type="text" ref="date"/>
+            <input id="date" className={`datepicker ${this.state.dateVal}`} type="text" ref="date"/>
             <label id="date-label" htmlFor="date">
               Date <span className="red-text">{this.state.dateErr}</span>
             </label>

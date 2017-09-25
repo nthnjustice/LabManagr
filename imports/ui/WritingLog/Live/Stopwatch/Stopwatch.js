@@ -16,8 +16,10 @@ export default class Stopwatch extends React.Component {
     return(
       <span id="stopwatch">
         <div className="section container">
-          <div className="col l12 center">
-            <Controls/>
+          <div className="row">
+            <div className="col l12 center">
+              <Controls/>
+            </div>
           </div>
           <div className="clock inactive z-depth-1 waves-effect">
             <span>0:00:00.0</span>

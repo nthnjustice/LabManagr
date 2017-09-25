@@ -1,13 +1,12 @@
 import React from 'react';
 
 import Active from './Active/Active';
-import Form from './Form';
+import NewGoal from './NewGoal';
 import Achieved from './Achieved/Achieved';
 
 export default class Tabs extends React.Component {
   componentDidMount() {
     $('#goals .tabs').tabs();
-
     setTimeout(function() {
       $('#goals .tab .active').trigger('click');
     }, 100);
@@ -20,14 +19,14 @@ export default class Tabs extends React.Component {
             <a className="active" href="#active">Active</a>
           </li>
           <li className="tab col l4">
-            <a href="#form">New</a>
+            <a href="#new-goal">New</a>
           </li>
           <li className="tab col l4">
             <a href="#achieved">Achieved</a>
           </li>
         </ul>
         <Active/>
-        <Form/>
+        <NewGoal/>
         <Achieved/>
       </span>
     );

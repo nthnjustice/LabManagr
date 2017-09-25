@@ -41,7 +41,7 @@ function initStopwatchObjects() {
 function startStopwatch() {
   clearInterval(stopwatchInterval);
 
-  const startTimestamp = new Date().getTime();
+  let startTimestamp = new Date().getTime();
   let runningTime = 0;
 
   localStorage.stopwatchBeginingTimestamp = startTimestamp;
@@ -66,8 +66,8 @@ function pauseStopwatch() {
   clearInterval(stopwatchInterval);
 
   if (Number(localStorage.stopwatchBeginingTimestamp)) {
-    const beginning = Number(localStorage.stopwatchBeginingTimestamp);
-    const runningTime = Number(localStorage.stopwatchRunningTime) + new Date().getTime() - beginning;
+    let beginning = Number(localStorage.stopwatchBeginingTimestamp);
+    let runningTime = Number(localStorage.stopwatchRunningTime) + new Date().getTime() - beginning;
 
     localStorage.stopwatchBeginingTimestamp = 0;
     localStorage.stopwatchRunningTime = runningTime;
@@ -90,7 +90,7 @@ function resetStopwatch(){
 function returnFormattedToMilliseconds(time){
   let seconds = Math.floor((time/1000) % 60);
   let minutes = Math.floor((time/(1000*60)) % 60);
-  const hours = Math.floor((time/(1000*60*60)) % 24);
+  let hours = Math.floor((time/(1000*60*60)) % 24);
 
   seconds = seconds < 10 ? '0' + seconds : seconds;
   minutes = minutes < 10 ? '0' + minutes : minutes;

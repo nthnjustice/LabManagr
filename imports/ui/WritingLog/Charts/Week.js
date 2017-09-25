@@ -32,16 +32,17 @@ export default class Week extends React.Component {
     return(
       <span id="week">
         {
-          this.dataLoaded() ?
-            <Chart
-              chartType="ColumnChart"
-              data={this.props.data}
-              options={this.state.options}
-              width="100%"
-              height="170px"
-              legend_toggle
-            />
-          : undefined
+          this.dataLoaded()
+            ?
+              <Chart
+                chartType="ColumnChart"
+                data={this.props.data}
+                options={this.state.options}
+                width="100%"
+                height="165px"
+                legend_toggle
+              />
+            : undefined
         }
       </span>
     );

@@ -13,7 +13,7 @@ export default class Form extends React.Component {
     };
   }
   validateEmail(email) {
-    const regex = /\S+@\S+\.\S+/;
+    let regex = /\S+@\S+\.\S+/;
 
     if (!email) {
       this.setState({emailErr: "* can't be blank", emailVal: 'invalid'});
@@ -38,11 +38,11 @@ export default class Form extends React.Component {
   onSubmit(e) {
     e.preventDefault();
 
-    const email = this.refs.email.value.trim();
-    const pass = this.refs.pass.value.trim();
+    let email = this.refs.email.value.trim();
+    let pass = this.refs.pass.value.trim();
 
-    const emailVal = this.validateEmail(email);
-    const passVal = this.validatePass(pass);
+    let emailVal = this.validateEmail(email);
+    let passVal = this.validatePass(pass);
 
     if (emailVal && passVal) {
       Meteor.loginWithPassword({email}, pass, (err) => {

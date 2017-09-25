@@ -3,12 +3,12 @@ import React from 'react';
 
 import {formatDate, formatMonth} from './helpers';
 
-export default class Form extends React.Component {
+export default class NewGoal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       dateErr: '*',
-      dateVal: 'datepicker',
+      dateVal: '',
       descErr: '*',
       descVal: ''
     };
@@ -43,11 +43,11 @@ export default class Form extends React.Component {
   onSubmit(e) {
     e.preventDefault();
 
-    const desc = this.refs.desc.value.trim();
+    let desc = this.refs.desc.value.trim();
     let date = this.refs.date.value.trim();
 
-    const descVal = this.validateDesc(desc);
-    const dateVal = this.validateDate(date);
+    let descVal = this.validateDesc(desc);
+    let dateVal = this.validateDate(date);
 
     if (descVal && dateVal) {
       date = formatDate(date);
@@ -56,17 +56,17 @@ export default class Form extends React.Component {
         if (!err) {
           this.setState({
             dateErr: '*',
-            dateVal: 'datepicker',
+            dateVal: '',
             descErr: '*',
             descVal: ''
           });
 
           this.resetForm();
-          
-          const $msg = $('<span class="green-text text-accent-3">Writing Goal Saved</span>')
+
+          let $msg = $('<span class="green-text text-accent-3">Writing Goal Saved</span>')
           Materialize.toast($msg, 5000, 'rounded');
         } else {
-          const $msg = $('<span class="red-text">Error: Writing Goal Not Saved</span>')
+          let $msg = $('<span class="red-text">Error: Writing Goal Not Saved</span>')
           Materialize.toast($msg, 5000, 'rounded');
         }
       });
@@ -74,7 +74,7 @@ export default class Form extends React.Component {
   }
   render() {
     return(
-      <div id="form">
+      <div id="new-goal">
         <form onSubmit={this.onSubmit.bind(this)} noValidate>
           <div className="row">
             <div className="input-field col l10 offset-l1">
@@ -86,7 +86,7 @@ export default class Form extends React.Component {
           </div>
           <div className="row">
             <div className="input-field col l10 offset-l1">
-              <input id="date" className={this.state.dateVal} type="text" ref="date"/>
+              <input id="date" className={`datepicker ${this.state.dateVal}`} type="text" ref="date"/>
               <label id="date-label" htmlFor="date">
                 Deadline <span className="red-text">{this.state.dateErr}</span>
               </label>

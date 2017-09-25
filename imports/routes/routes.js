@@ -15,9 +15,9 @@ const unauthenticatedPages = ['/', '/signup', '/recover'];
 const authenticatedPages = ['/dashboard'];
 
 export const onAuthChange = (isAuthenticated) => {
-  const pathname = history.location.pathname;
-  const isUnauthenticatedPage = unauthenticatedPages.includes(pathname);
-  const isAuthenticatedPage = authenticatedPages.includes(pathname);
+  let pathname = history.location.pathname;
+  let isUnauthenticatedPage = unauthenticatedPages.includes(pathname);
+  let isAuthenticatedPage = authenticatedPages.includes(pathname);
 
   if (isUnauthenticatedPage && isAuthenticated) {
     history.replace('/dashboard');

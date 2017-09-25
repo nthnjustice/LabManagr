@@ -13,22 +13,26 @@ export default class List extends React.Component {
   componentDidMount() {
     $('#achieved #goals .modal').modal();
   }
-  renderAchievedGoals() {
-    return this.props.achievedGoals.map((goal) => {
-      const day = goal.deadline.getDate();
-      const month = goal.deadline.getMonth() + 1;
-      const year = goal.deadline.getFullYear();
-      const deadline = `Deadline: ${month}/${day}/${year}`;
+  renderGoals() {
+    if (this.props.goals.length > 0) {
+      return this.props.goals.map((goal) => {
+        let day = goal.deadline.getDate();
+        let month = goal.deadline.getMonth() + 1;
+        let year = goal.deadline.getFullYear();
+        let deadline = `Deadline: ${month}/${day}/${year}`;
 
-      return (
-        <li key={goal._id} className="collection-item">
-          {goal.description}
-          <br/>
-          <span>{deadline}</span>
-          {this.renderSecondaryContent(goal)}
-        </li>
-      );
-    });
+        return (
+          <li key={goal._id} className="collection-item">
+            {goal.description}
+            <br/>
+            <span>{deadline}</span>
+            {this.renderSecondaryContent(goal)}
+          </li>
+        );
+      });
+    } else {
+      return <p className="no-goal-text grey-text">No achieved goals, yet.</p>;
+    }
   }
   renderSecondaryContent(goal) {
     if (this.props.selectedUserId == Meteor.userId()) {
@@ -45,10 +49,10 @@ export default class List extends React.Component {
     setTimeout(() => {
       Meteor.call('writingGoals.setActive', id, (err) => {
         if (!err) {
-          const $msg = $('<span class="green-text text-accent-3">Goal Marked Active</span>')
+          let $msg = $('<span class="green-text text-accent-3">Goal Marked Active</span>');
           Materialize.toast($msg, 5000, 'rounded');
         } else {
-          const $msg = $('<span class="red-text">Error: Goal Did Not Update</span>')
+          let $msg = $('<span class="red-text">Error: Goal Did Not Update</span>');
           Materialize.toast($msg, 5000, 'rounded');
         }
       });
@@ -63,10 +67,10 @@ export default class List extends React.Component {
       if (!err) {
         $('#achieved #goals .modal').modal('close');
 
-        const $msg = $('<span class="green-text text-accent-3">Goal Deleted</span>')
+        let $msg = $('<span class="green-text text-accent-3">Goal Deleted</span>')
         Materialize.toast($msg, 5000, 'rounded');
       } else {
-        const $msg = $('<span class="red-text">Error: Goal Did Not Delete</span>')
+        let $msg = $('<span class="red-text">Error: Goal Did Not Delete</span>')
         Materialize.toast($msg, 5000, 'rounded');
       }
     });
@@ -75,7 +79,7 @@ export default class List extends React.Component {
     return(
       <span>
         <ul className="collection">
-          {this.renderAchievedGoals()}
+          {this.renderGoals()}
         </ul>
         <div className="modal">
           <div className="modal-content">

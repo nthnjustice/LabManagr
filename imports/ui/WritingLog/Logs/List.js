@@ -14,23 +14,27 @@ export default class List extends React.Component {
     $('#logs .modal').modal();
   }
   formatDate(date) {
-    const str = date.toString();
-    const arr = str.split(' ');
+    let str = date.toString();
+    let arr = str.split(' ');
     return `${arr[0]}, ${arr[1]} ${arr[2]}, ${arr[3]}`;
   }
   renderLogs() {
-    return this.props.selectedLogs.map((log) => {
-      return (
-        <li key={log._id} className="collection-item">
-          <strong>{log.title}</strong>
-          <br/>
-          Duration: <strong>{log.hours}</strong> hour(s) and <strong>{log.minutes}</strong> minutes(s)
-          <br/>
-          Posted: <strong>{this.formatDate(log.createdAt)}</strong>
-          {this.renderSecondaryContent(log)}
-        </li>
-      );
-    });
+    if (this.props.logs.length > 0) {
+      return this.props.logs.map((log) => {
+        return (
+          <li key={log._id} className="collection-item">
+            <strong>{log.title}</strong>
+            <br/>
+            Duration: <strong>{log.hours}</strong> hour(s) and <strong>{log.minutes}</strong> minutes(s)
+            <br/>
+            Posted: <strong>{this.formatDate(log.createdAt)}</strong>
+            {this.renderSecondaryContent(log)}
+          </li>
+        );
+      });
+    } else {
+      return <p className="no-goal-text grey-text">No posted logs.</p>;
+    }
   }
   renderSecondaryContent(log) {
     if (this.props.selectedUserId == Meteor.userId()) {
@@ -50,10 +54,10 @@ export default class List extends React.Component {
       if (!err) {
         $('#logs .modal').modal('close');
 
-        const $msg = $('<span class="green-text text-accent-3">Log Deleted</span>')
+        let $msg = $('<span class="green-text text-accent-3">Log Deleted</span>');
         Materialize.toast($msg, 5000, 'rounded');
       } else {
-        const $msg = $('<span class="red-text">Error: Log Did Not Delete</span>')
+        let $msg = $('<span class="red-text">Error: Log Did Not Delete</span>');
         Materialize.toast($msg, 5000, 'rounded');
       }
     });

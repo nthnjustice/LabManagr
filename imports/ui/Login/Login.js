@@ -1,8 +1,11 @@
 import {Meteor} from 'meteor/meteor';
-import {Link} from 'react-router-dom';
 import React from 'react';
+import {Link} from 'react-router-dom';
 
-import Container from './Container';
+import VerticalAlign from '../VerticalAlign/VerticalAlign';
+import Title from './Title';
+import Form from './Form';
+import Footer from './Footer';
 
 export default class Login extends React.Component {
   componentWillMount() {
@@ -13,7 +16,17 @@ export default class Login extends React.Component {
   render() {
     return(
       <span id="login">
-        <Container/>
+        <VerticalAlign>
+          <div className="row">
+            <div className="col l4 offset-l4">
+              <div className="card-panel hoverable">
+                <Title/>
+                <Form/>
+                <Footer/>
+              </div>
+            </div>
+          </div>
+        </VerticalAlign>
       </span>
     );
   }

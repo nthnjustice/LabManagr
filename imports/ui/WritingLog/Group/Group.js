@@ -1,9 +1,11 @@
+import {Meteor} from 'meteor/meteor';
 import {Tracker} from 'meteor/tracker';
 import React from 'react';
 import {Chart} from 'react-google-charts';
 
 import {WritingLogs} from '../../../api/writingLogs';
 
+import Preloader from '../../Preloader/Preloader';
 import Title from './Title';
 
 export default class Group extends React.Component {
@@ -34,7 +36,7 @@ export default class Group extends React.Component {
       Meteor.subscribe('directory');
       Meteor.subscribe('writingLogs');
 
-      const users = Meteor.users.find({},
+      let users = Meteor.users.find({},
         {
           sort: {
             "Profile.firstName": 1
@@ -44,7 +46,7 @@ export default class Group extends React.Component {
 
       this.setState({users});
 
-      const logs = WritingLogs.find({},
+      let logs = WritingLogs.find({},
         {
           sort: {
             createdAt: 1
@@ -59,7 +61,7 @@ export default class Group extends React.Component {
     this.groupTracker.stop();
   }
   prepData(logs) {
-    annotation = ['User'];
+    let annotation = ['User'];
 
     let names = this.state.users.map((user) => {
       return `${user.profile.firstName} ${user.profile.lastName}`;
@@ -71,8 +73,8 @@ export default class Group extends React.Component {
 
     annotation.push({role: 'annotation'});
 
-    const hAxis = this.setHaxis(logs);
-    const vAxis = this.setVaxis(logs, hAxis);
+    let hAxis = this.setHaxis(logs);
+    let vAxis = this.setVaxis(logs, hAxis);
 
     let data = [annotation];
 
@@ -89,9 +91,9 @@ export default class Group extends React.Component {
   }
   setHaxis(logs) {
     let allDates = logs.map((log) => {
-      const month = log.createdAt.getMonth() + 1;
-      const day = log.createdAt.getDate();
-      const year = log.createdAt.getFullYear();
+      let month = log.createdAt.getMonth() + 1;
+      let day = log.createdAt.getDate();
+      let year = log.createdAt.getFullYear();
 
       return `${month}/${day}/${year}`;
     });
@@ -106,7 +108,7 @@ export default class Group extends React.Component {
   }
   setVaxis(logs, dates) {
     let data = dates.map((date) => {
-      const dateSorted = logs.filter((log) => {
+      let dateSorted = logs.filter((log) => {
         let month = log.createdAt.getMonth() + 1;
         let day = log.createdAt.getDate();
         let year = log.createdAt.getFullYear();
@@ -114,7 +116,7 @@ export default class Group extends React.Component {
         return date == logDate;
       });
 
-      const userSorted = this.state.users.map((user) => {
+      let userSorted = this.state.users.map((user) => {
         let name = `${user.profile.firstName} ${user.profile.lastName}`;
         return dateSorted.filter((log) => {
           return name == log.author;
@@ -145,19 +147,20 @@ export default class Group extends React.Component {
     return(
       <span id="group">
         <div className="card large hoverable">
-          <Title/>
+          <Title color={this.props.color}/>
           <div className="row">
             {
-              this.state.data ?
-                <Chart
-                  chartType="ColumnChart"
-                  data={this.state.data}
-                  options={this.state.options}
-                  width="100%"
-                  height="425px"
-                  legend_toggle
-                />
-              : undefined
+              this.state.data
+                ?
+                  <Chart
+                    chartType="ColumnChart"
+                    data={this.state.data}
+                    options={this.state.options}
+                    width="100%"
+                    height="425px"
+                    legend_toggle
+                  />
+                : <Preloader/>
             }
           </div>
         </div>

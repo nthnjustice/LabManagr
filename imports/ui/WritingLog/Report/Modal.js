@@ -3,6 +3,10 @@ import {Tracker} from 'meteor/tracker';
 import React from 'react';
 import {Chart} from 'react-google-charts';
 
+import {WritingLogs} from '../../../api/writingLogs';
+
+import Preloader from '../../Preloader/Preloader';
+
 export default class Modal extends React.Component {
   constructor(props) {
     super(props);
@@ -14,7 +18,7 @@ export default class Modal extends React.Component {
     this.reportTracker = Tracker.autorun(() => {
       Meteor.subscribe('writingLogs');
 
-      const users = Meteor.users.find({}).fetch();
+      let users = Meteor.users.find({}).fetch();
 
       this.setState({users});
     })
@@ -26,6 +30,7 @@ export default class Modal extends React.Component {
     if (this.props.logs) {
       return true;
     } else {
+      console.log('no')
       return false;
     }
   }
@@ -44,7 +49,7 @@ export default class Modal extends React.Component {
     });
   }
   getCounts(users, logs) {
-    const counts = users.map((user) => {
+    return users.map((user) => {
       const sorted = logs.filter((log) => {
         if (user._id == log.owner) {
           return log;
@@ -52,18 +57,16 @@ export default class Modal extends React.Component {
       });
       return sorted.length;
     });
-
-    return counts;
   }
   getTotals(users, logs) {
     let totals = users.map((user) => {
-      const sorted = logs.filter((log) => {
+      let sorted = logs.filter((log) => {
         if (user._id == log.owner) {
           return log;
         }
       });
 
-      const times = sorted.map((log) => {
+      let times = sorted.map((log) => {
         return log.minutes + (log.hours * 60);
       })
 
@@ -83,11 +86,11 @@ export default class Modal extends React.Component {
     return output;
   }
   renderRows() {
-    const users = this.state.users;
-    const logs = this.props.logs;
-    const names = this.getNames(users);
-    const counts = this.getCounts(users, logs);
-    const totals = this.getTotals(users, logs);
+    let users = this.state.users;
+    let logs = this.props.logs;
+    let names = this.getNames(users);
+    let counts = this.getCounts(users, logs);
+    let totals = this.getTotals(users, logs);
 
     let rows = [];
 
@@ -101,16 +104,10 @@ export default class Modal extends React.Component {
     }
 
     return rows;
-
-    return (
-      [
-        ['Mike', {v: 10, f: '10 Logs'}, {v: 160, f: '160 Minutes'}]
-      ]
-    );
   }
   render() {
     return(
-      <div className="modal modal-fixed-footer">
+      <div className="modal">
         <div className="modal-content">
           {
             this.logsLoaded() ?
@@ -124,14 +121,16 @@ export default class Modal extends React.Component {
                   rows={this.renderRows()}
                   chartPackages={["table"]}
                 />
-              </span>  
-            : undefined
+              </span>
+            : <Preloader/>
           }
-        </div>
-        <div className="modal-footer">
-          <a className="modal-action modal-close btn-flat grey lighten-4 red-text waves-effect waves-red">
-            Close
-          </a>
+          <div className="footer">
+            <p className="right-align">
+              <a className="modal-action modal-close btn-flat grey lighten-4 red-text waves-effect waves-red">
+                Close
+              </a>
+            </p>
+          </div>
         </div>
       </div>
     );

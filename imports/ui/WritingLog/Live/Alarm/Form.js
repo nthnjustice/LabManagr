@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {secureAlarmStart, secureAlarmFinished, secureAlarmExcess} from './helpers';
+import {fetchAlarmStart, fetchAlarmFinished, fetchAlarmExcess} from './helpers';
 
 export default class Form extends React.Component {
   constructor(props) {
@@ -19,24 +19,28 @@ export default class Form extends React.Component {
       return true;
     }
   }
+  resetForm() {
+    $('#alarm #title').val(undefined);
+    $('#alarm #title-label').removeClass('active');
+  }
   onSubmit(e) {
     e.preventDefault();
 
-    const title = this.refs.title.value.trim();
-    const start = secureAlarmStart();
-    const finished = secureAlarmFinished();
-    const excess = secureAlarmExcess();
-    const milliseconds = (finished - start) + (excess * 1000);
+    let title = this.refs.title.value.trim();
+    let start = fetchAlarmStart();
+    let finished = fetchAlarmFinished();
+    let excess = fetchAlarmExcess();
+    let milliseconds = (finished - start) + (excess * 1000);
 
-    const titleVal = this.validateTitle(title);
+    let titleVal = this.validateTitle(title);
 
     if (titleVal) {
-      const seconds = Math.round(milliseconds / 1000)
-      const minTot = Math.round(seconds / 60)
-      const hours = Math.floor(minTot / 60);
-      const minutes = minTot % 60;
+      let seconds = Math.round(milliseconds / 1000)
+      let minTot = Math.round(seconds / 60)
+      let hours = Math.floor(minTot / 60);
+      let minutes = minTot % 60;
 
-      const date = new Date();
+      let date = new Date();
 
       Meteor.call('writingLogs.insert', title, hours, minutes, date, (err) => {
         if (!err) {
@@ -45,8 +49,7 @@ export default class Form extends React.Component {
             titleVal: ''
           });
 
-          $('#alarm #title').val(undefined);
-          $('#alarm #title-label').removeClass('active');
+          this.resetForm();
           $('#alarm .modal').modal('close');
 
           let $msg = $('<span class="green-text text-accent-3">Writing Log Saved</span>')

@@ -33,16 +33,17 @@ export default class Total extends React.Component {
     return(
       <span id="total">
         {
-          this.dataLoaded() ?
-            <Chart
-              chartType="ScatterChart"
-              data={this.props.data}
-              options={this.state.options}
-              width="100%"
-              height="190px"
-              legend_toggle
-            />
-          : undefined
+          this.dataLoaded()
+            ?
+              <Chart
+                chartType="ScatterChart"
+                data={this.props.data}
+                options={this.state.options}
+                width="100%"
+                height="185px"
+                legend_toggle
+              />
+            : undefined
         }
       </span>
     );

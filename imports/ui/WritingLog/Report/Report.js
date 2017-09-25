@@ -8,7 +8,7 @@ export default class Report extends React.Component {
     return(
       <span id="report">
         <div className="card large hoverable">
-          <Title/>
+          <Title color={this.props.color}/>
           <div className="container valign-wrapper">
            <Form/>
           </div>

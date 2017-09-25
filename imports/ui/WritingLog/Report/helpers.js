@@ -1,8 +1,8 @@
 function formatDate(dateStr) {
-  const dateArr = dateStr.split(' ');
-  const day = dateArr[0];
-  const month = formatMonth(dateArr[1].split(',')[0]);
-  const year = dateArr[2];
+  let dateArr = dateStr.split(' ');
+  let day = dateArr[0];
+  let month = formatMonth(dateArr[1].split(',')[0]);
+  let year = dateArr[2];
   return new Date(year, month, day);
 }
 

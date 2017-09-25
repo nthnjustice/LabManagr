@@ -1,6 +1,26 @@
-@import './live-title';
-@import './live-tabs';
-@import './Clock/clock';
-@import './Alarm/alarm';
-@import './Timer/timer';
-@import './Stopwatch/stopwatch';
+@import './clock';
+@import './alarm';
+@import './timer';
+@import './stopwatch';
+
+#live .title h5 {
+  padding: 2%;
+}
+
+#live .tabs {
+  .tab a {
+    color: #9e9e9e;
+  }
+
+  .tab a:hover {
+    color: #00b8d4;
+  }
+
+  .tab a.active {
+  	color: #263238;
+  }
+
+  .indicator {
+    background-color: #263238;
+  }
+}

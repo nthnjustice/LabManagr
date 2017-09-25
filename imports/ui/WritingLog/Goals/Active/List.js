@@ -13,35 +13,39 @@ export default class List extends React.Component {
   componentDidMount() {
     $('#active #goals .modal').modal();
   }
-  renderActiveGoals() {
-    const today = new Date();
-    const yesterday = new Date(today.getTime() - 24 * 60 * 60 * 1000);
-    const threeDays  = new Date(today.getTime() + 3 * 24 * 60 * 60 * 1000);
+  renderGoals() {
+    if (this.props.goals.length > 0) {
+      let today = new Date();
+      let yesterday = new Date(today.getTime() - 24 * 60 * 60 * 1000);
+      let threeDays  = new Date(today.getTime() + 3 * 24 * 60 * 60 * 1000);
 
-    return this.props.activeGoals.map((goal) => {
-      const day = goal.deadline.getDate();
-      const month = goal.deadline.getMonth() + 1;
-      const year = goal.deadline.getFullYear();
-      const deadline = `Deadline: ${month}/${day}/${year}`;
-      let color = '';
+      return this.props.goals.map((goal) => {
+        let day = goal.deadline.getDate();
+        let month = goal.deadline.getMonth() + 1;
+        let year = goal.deadline.getFullYear();
+        let deadline = `Deadline: ${month}/${day}/${year}`;
+        let color = '';
 
-      if (goal.deadline < yesterday) {
-        color = 'red-text';
-      } else if (goal.deadline < threeDays) {
-        color = 'yellow-text text-darken-4';
-      } else {
-        color = 'black-text'
-      }
+        if (goal.deadline < yesterday) {
+          color = 'red-text';
+        } else if (goal.deadline < threeDays) {
+          color = 'yellow-text text-darken-4';
+        } else {
+          color = 'black-text'
+        }
 
-      return (
-        <li key={goal._id} className="collection-item">
-          {goal.description}
-          <br/>
-          <span className={color}>{deadline}</span>
-          {this.renderSecondaryContent(goal)}
-        </li>
-      );
-    });
+        return (
+          <li key={goal._id} className="collection-item">
+            {goal.description}
+            <br/>
+            <span className={color}>{deadline}</span>
+            {this.renderSecondaryContent(goal)}
+          </li>
+        );
+      });
+    } else {
+      return <p className="no-goal-text grey-text">No active goals set.</p>;
+    }
   }
   renderSecondaryContent(goal) {
     if (this.props.selectedUserId == Meteor.userId()) {
@@ -58,10 +62,10 @@ export default class List extends React.Component {
     setTimeout(() => {
       Meteor.call('writingGoals.setAchieved', id, (err) => {
         if (!err) {
-          const $msg = $('<span class="green-text text-accent-3">Goal Marked Achieved</span>')
+          let $msg = $('<span class="green-text text-accent-3">Goal Marked Achieved</span>')
           Materialize.toast($msg, 5000, 'rounded');
         } else {
-          const $msg = $('<span class="red-text">Error: Goal Did Not Update</span>')
+          let $msg = $('<span class="red-text">Error: Goal Did Not Update</span>')
           Materialize.toast($msg, 5000, 'rounded');
         }
       });
@@ -76,10 +80,10 @@ export default class List extends React.Component {
       if (!err) {
         $('#active #goals .modal').modal('close');
 
-        const $msg = $('<span class="green-text text-accent-3">Goal Deleted</span>')
+        let $msg = $('<span class="green-text text-accent-3">Goal Deleted</span>');
         Materialize.toast($msg, 5000, 'rounded');
       } else {
-        const $msg = $('<span class="red-text">Error: Goal Did Not Delete</span>')
+        let $msg = $('<span class="red-text">Error: Goal Did Not Delete</span>');
         Materialize.toast($msg, 5000, 'rounded');
       }
     });
@@ -88,7 +92,7 @@ export default class List extends React.Component {
     return(
       <span>
         <ul className="collection">
-          {this.renderActiveGoals()}
+          {this.renderGoals()}
         </ul>
         <div className="modal">
           <div className="modal-content">

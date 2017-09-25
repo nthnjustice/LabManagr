@@ -8,9 +8,9 @@ export default class Log extends React.Component {
     return(
       <span id="log">
         <div className="card large hoverable">
-          <Title/>
+          <Title color={this.props.color}/>
           <div className="container valign-wrapper">
-           <Form/>
+            <Form/>
           </div>
         </div>
       </span>

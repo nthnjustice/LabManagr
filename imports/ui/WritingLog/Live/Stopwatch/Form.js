@@ -19,20 +19,24 @@ export default class StopwatchForm extends React.Component {
       return true;
     }
   }
+  resetForm() {
+    $('#stopwatch #title').val(undefined);
+    $('#stopwatch #title-label').removeClass('active');
+  }
   onSubmit(e) {
     e.preventDefault();
 
-    const title = this.refs.title.value.trim();
-    const milliseconds = secureStopwatchTime();
+    let title = this.refs.title.value.trim();
+    let milliseconds = secureStopwatchTime();
 
-    const titleVal = this.validateTitle(title);
+    let titleVal = this.validateTitle(title);
 
     if (titleVal) {
-      const seconds = Math.round(milliseconds / 1000)
-      const minTot = Math.round(seconds / 60)
-      const hours = Math.floor(minTot / 60);
-      const minutes = minTot % 60;
-      const date = new Date();
+      let seconds = Math.round(milliseconds / 1000)
+      let minTot = Math.round(seconds / 60)
+      let hours = Math.floor(minTot / 60);
+      let minutes = minTot % 60;
+      let date = new Date();
 
       Meteor.call('writingLogs.insert', title, hours, minutes, date, (err) => {
         if (!err) {
@@ -42,8 +46,7 @@ export default class StopwatchForm extends React.Component {
           });
 
           resetStopwatch();
-          $('#stopwatch #title').val(undefined);
-          $('#stopwatch #title-label').removeClass('active');
+          this.resetForm();
 
           let $msg = $('<span class="green-text text-accent-3">Writing Log Saved</span>')
           Materialize.toast($msg, 5000, 'rounded');

@@ -7,7 +7,7 @@ export default class Dropdown extends React.Component {
   }
   render() {
     return(
-      <ul id="dropdown__account" className="dropdown-content">
+      <ul id="account-dropdown" className="dropdown-content">
         <li>
           <a className="black-text" onClick={this.onLogout.bind(this)}>Logout</a>
         </li>

@@ -38,7 +38,7 @@ export default class Form extends React.Component {
     }
   }
   validateEmail(email) {
-    const regex = /\S+@\S+\.\S+/;
+    let regex = /\S+@\S+\.\S+/;
 
     if (!email) {
       this.setState({emailErr: "* can't be blank", emailVal: 'invalid'});
@@ -90,19 +90,19 @@ export default class Form extends React.Component {
   onSubmit(e) {
     e.preventDefault();
 
-    const first = this.refs.first.value.trim();
-    const last = this.refs.last.value.trim();
-    const email = this.refs.email.value.trim();
-    const emailConf = this.refs.emailConf.value.trim();
-    const pass = this.refs.pass.value.trim();
-    const passConf = this.refs.passConf.value.trim();
+    let first = this.refs.first.value.trim();
+    let last = this.refs.last.value.trim();
+    let email = this.refs.email.value.trim();
+    let emailConf = this.refs.emailConf.value.trim();
+    let pass = this.refs.pass.value.trim();
+    let passConf = this.refs.passConf.value.trim();
 
-    const firstVal = this.validateFirst(first);
-    const lastVal = this.validateLast(last);
-    const emailVal = this.validateEmail(email);
-    const emailConfVal = this.validateEmailConf(email, emailConf);
-    const passVal = this.validatePass(pass);
-    const passConfVal = this.validatePassConf(pass, passConf);
+    let firstVal = this.validateFirst(first);
+    let lastVal = this.validateLast(last);
+    let emailVal = this.validateEmail(email);
+    let emailConfVal = this.validateEmailConf(email, emailConf);
+    let passVal = this.validatePass(pass);
+    let passConfVal = this.validatePassConf(pass, passConf);
 
     if (firstVal && lastVal && emailVal && emailConfVal && passVal && passConfVal) {
       Accounts.createUser({

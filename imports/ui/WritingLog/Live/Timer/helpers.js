@@ -24,7 +24,7 @@ function initTimerInput() {
   timerInputLabel.removeClass('active');
 
   timerInput.change(function() {
-    const newTime = Number(timerInput.val().trim());
+    let newTime = Number(timerInput.val().trim());
 
     if (newTime && newTime >= 0) {
       timerFinishedTime = newTime * 60;
@@ -107,7 +107,7 @@ function timerExcess() {
 }
 
 function returnFormattedToSeconds(time) {
-  const minutes = Math.floor(time / 60);
+  let minutes = Math.floor(time / 60);
   let seconds = Math.round(time - minutes * 60);
 
   seconds = seconds < 10 ? '0' + seconds : seconds;
@@ -115,8 +115,8 @@ function returnFormattedToSeconds(time) {
   return `${minutes}:${seconds}`;
 }
 
-function secureTimerTime() {
+function fetchTimerTime() {
   return secureTimerFinishedTime + timerExcessTime;
 }
 
-export {initTimer, resetTimer, timerExcess, secureTimerTime};
+export {initTimer, resetTimer, timerExcess, fetchTimerTime};

@@ -6,14 +6,14 @@ import TopNav from '../TopNav/TopNav';
 import BulletinBoard from '../BulletinBoard/BulletinBoard';
 import WritingLog from '../WritingLog/WritingLog';
 
-const modules = {
-  'Bulletin Board': <BulletinBoard/>,
-  'Writing Log': <WritingLog/>
-};
-
 const colors = {
   'Bulletin Board': 'blue',
-  'Writing Log': 'indigo darken-4'
+  'Writing Log': 'deep-purple darken-4'
+};
+
+const modules = {
+  'Bulletin Board': <BulletinBoard/>,
+  'Writing Log': <WritingLog color={colors['Writing Log']}/>
 };
 
 export default class Dashboard extends React.Component {

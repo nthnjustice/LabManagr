@@ -19,21 +19,21 @@ export default class Modal extends React.Component {
   }
   render() {
     return(
-      <div className="modal modal-fixed-footer">
+      <div className="modal">
         <div className="modal-content">
           <h4 className="center-align">Time's Up!</h4>
           <div className="section">
             <h5 className="grey-text">Submit this log when you are ready.</h5>
-            <h6 className="grey-text">(The time is still counting.)</h6>
+            <p className="grey-text">(The time is still counting.)</p>
           </div>
-          <div className="section">
-            <Form/>
+          <Form/>
+          <div className="footer">
+            <p className="right-align">
+              <a className="modal-action modal-close btn-flat grey lighten-4 red-text waves-effect waves-red">
+                Close
+              </a>
+            </p>
           </div>
-        </div>
-        <div className="modal-footer">
-          <a className="modal-action modal-close btn-flat grey lighten-4 red-text waves-effect waves-red">
-            Close
-          </a>
         </div>
       </div>
     );

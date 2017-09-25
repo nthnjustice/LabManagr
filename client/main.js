@@ -8,7 +8,7 @@ function orderAssets() {
   const links = [
     'https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.1/css/materialize.min.css'
   ];
-  const firstChild = $('head link').first();
+  let firstChild = $('head link').first();
 
   links.map(link => {
     let tag = $('<link/>');
@@ -23,7 +23,7 @@ function orderAssets() {
 }
 
 Tracker.autorun(() => {
-  const isAuthenticated = !!Meteor.userId();
+  let isAuthenticated = !!Meteor.userId();
   onAuthChange(isAuthenticated);
 });
 

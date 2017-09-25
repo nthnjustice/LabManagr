@@ -5,6 +5,7 @@ import ReactDOM from 'react-dom';
 
 import {WritingGoals} from '../../../../api/writingGoals';
 
+import Preloader from '../../../Preloader/Preloader';
 import List from './List';
 
 export default class Active extends React.Component {
@@ -13,7 +14,7 @@ export default class Active extends React.Component {
     this.state = {
       selectedUserId: '',
       users: [],
-      activeGoals: []
+      goals: []
     };
   }
   componentDidMount() {
@@ -23,43 +24,16 @@ export default class Active extends React.Component {
 
       $('#active #goals .select').material_select('destroy');
 
-      const currUser = Meteor.users.find({
-        _id: Meteor.userId()
-      }).fetch();
+      this.setState({selectedUserId: Meteor.userId()});
 
-      this.setState({selectedUserId: Meteor.userId()})
+      this.setUsersState();
 
-      const users = Meteor.users.find({
-        _id: {
-          $ne: Meteor.userId()
-        }
-      }, {
-        sort: {
-          "profile.firstName": 1
-        }
-      }
-      ).fetch();
+      this.setGoalsState();
 
-      let sortedUsers = [currUser[0]];
-      for (let i = 0; i < users.length; i++) {
-        sortedUsers.push(users[i]);
-      }
+      let currUser = this.getCurrUser();
 
-      this.setState({users: sortedUsers});
-
-      const activeGoals = WritingGoals.find({
-        owner: this.state.selectedUserId,
-        active: true
-      }, {
-        sort: {
-          deadline: 1
-        }
-      }).fetch();
-
-      this.setState({activeGoals});
-
-      if (currUser.length >= 1 && this.state.users.length > 1) {
-        $('#active #goals .select').val(`${currUser[0].profile.firstName} ${currUser[0].profile.lastName}`);
+      if (currUser && this.state.users.length > 0) {
+        $('#active #goals .select').val(`${currUser.profile.firstName} ${currUser.profile.lastName}`);
         $('#active #goals .select').material_select();
         $(ReactDOM.findDOMNode(this.refs.select)).change(this.handleSelectChange.bind(this));
       }
@@ -68,35 +42,31 @@ export default class Active extends React.Component {
   componentWillUnmount() {
     this.activeTracker.stop();
   }
-  renderUsers() {
-    if (this.state.users.length > 1) {
-      let renderedUsers = '';
-
-      renderedUsers = this.state.users.map((user) => {
-        const name = `${user.profile.firstName} ${user.profile.lastName}`;
-        return(
-          <option key={user._id}>{name}</option>
-        );
-      });
-
-      return renderedUsers;
-    }
+  getCurrUser() {
+    return Meteor.users.find({_id: Meteor.userId()}).fetch()[0];
   }
-  handleSelectChange(e) {
-    const fullName = e.target.value;
+  setUsersState() {
+    let users = Meteor.users.find(
+      {
+        _id: {
+          $ne: Meteor.userId()
+        }
+      }, {
+        sort: {
+          "profile.firstName": 1
+        }
+      }
+    ).fetch();
 
-    const nameArr = fullName.split(' ');
+    let sorted = [this.getCurrUser()];
+    for (let i = 0; i < users.length; i++) {
+      sorted.push(users[i]);
+    }
 
-    const user = Meteor.users.find({
-      $and: [
-        {"profile.firstName": nameArr[0]},
-        {"profile.lastName": nameArr[1]}
-      ]
-    }).fetch()[0];
-
-    this.setState({selectedUserId: user._id})
-
-    const activeGoals = WritingGoals.find({
+    this.setState({users: sorted});
+  }
+  setGoalsState() {
+    let goals = WritingGoals.find({
       owner: this.state.selectedUserId,
       active: true
     }, {
@@ -105,7 +75,34 @@ export default class Active extends React.Component {
       }
     }).fetch();
 
-    this.setState({activeGoals});
+    this.setState({goals});
+  }
+  renderUsers() {
+    if (this.state.users.length > 1) {
+      return this.state.users.map((user) => {
+        let name = `${user.profile.firstName} ${user.profile.lastName}`;
+        return <option key={user._id}>{name}</option>;
+      });
+    } else {
+      return false;
+    }
+  }
+  getUser(name) {
+    let nameArr = name.split(' ');
+
+    let user = Meteor.users.find({
+      $and: [
+        {"profile.firstName": nameArr[0]},
+        {"profile.lastName": nameArr[1]}
+      ]
+    }).fetch()[0];
+
+    this.setState({selectedUserId: user._id})
+  }
+  handleSelectChange(e) {
+    let name = e.target.value;
+    this.getUser(name);
+    this.setGoalsState();
   }
   render() {
     return(
@@ -116,7 +113,11 @@ export default class Active extends React.Component {
               {this.renderUsers()}
             </select>
           </div>
-          <List selectedUserId={this.state.selectedUserId} activeGoals={this.state.activeGoals}/>
+          {
+            this.state.goals
+              ? <List selectedUserId={this.state.selectedUserId} goals={this.state.goals}/>
+              : <Preloader/>
+          }
         </div>
       </span>
     );

@@ -1,6 +1,14 @@
+#logs .title h5 {
+  padding: 2.5%;
+}
+
 #logs .wrapper {
   height: 440px;
   overflow-y: scroll;
+}
+
+#logs .no-goal-text {
+  margin-left: 5%;
 }
 
 #logs .delete-btn {

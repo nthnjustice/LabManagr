@@ -9,7 +9,7 @@ export default class Goals extends React.Component {
     return(
       <span id="goals">
         <div className="card large hoverable">
-          <Title/>
+          <Title color={this.props.color}/>
           <div className="row">
             <Tabs/>
           </div>

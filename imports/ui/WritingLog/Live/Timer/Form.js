@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {secureTimerTime} from './helpers';
+import {fetchTimerTime} from './helpers';
 
 export default class Form extends React.Component {
   constructor(props) {
@@ -19,20 +19,24 @@ export default class Form extends React.Component {
       return true;
     }
   }
+  resetForm() {
+    $('#timer #title').val(undefined);
+    $('#timer #title-label').removeClass('active');
+  }
   onSubmit(e) {
     console.log('submit');
     e.preventDefault();
 
-    const title = this.refs.title.value.trim();
-    const seconds = secureTimerTime();
+    let title = this.refs.title.value.trim();
+    let seconds = secureTimerTime();
 
-    const titleVal = this.validateTitle(title);
+    let titleVal = this.validateTitle(title);
 
     if (titleVal) {
-      const minTot = Math.round(seconds / 60)
-      const hours = Math.floor(minTot / 60);
-      const minutes = minTot % 60;
-      const date = new Date();
+      let minTot = Math.round(seconds / 60)
+      let hours = Math.floor(minTot / 60);
+      let minutes = minTot % 60;
+      let date = new Date();
 
       Meteor.call('writingLogs.insert', title, hours, minutes, date, (err) => {
         if (!err) {
@@ -41,8 +45,7 @@ export default class Form extends React.Component {
             titleVal: ''
           });
 
-          $('#timer #title').val(undefined);
-          $('#timer #title-label').removeClass('active');
+          this.resetForm();
           $('#timer .modal').modal('close');
 
           let $msg = $('<span class="green-text text-accent-3">Writing Log Saved</span>')
