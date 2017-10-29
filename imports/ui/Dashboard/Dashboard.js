@@ -3,16 +3,16 @@ import React from 'react';
 
 import SideNav from '../SideNav/SideNav';
 import TopNav from '../TopNav/TopNav';
-import BulletinBoard from '../BulletinBoard/BulletinBoard';
+import TaskList from '../TaskList/TaskList';
 import WritingLog from '../WritingLog/WritingLog';
 
 const colors = {
-  'Bulletin Board': 'blue',
+  'Task List': 'red darken-1',
   'Writing Log': 'deep-purple darken-4'
 };
 
 const modules = {
-  'Bulletin Board': <BulletinBoard/>,
+  'Task List': <TaskList color={colors['Task List']}/>,
   'Writing Log': <WritingLog color={colors['Writing Log']}/>
 };
 

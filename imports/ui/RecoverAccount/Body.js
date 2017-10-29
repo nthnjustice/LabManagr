@@ -5,8 +5,7 @@ export default class Body extends React.Component {
     return(
       <div className="row">
         <p className="center-align">
-          To recover the login credentials for your account, please email
-          <strong> n(dot)justice(at)outlook(dot)com</strong>.
+          To recover the login credentials for your account, please email <strong>nthnjustice@gmail.com</strong>.
         </p>
       </div>
     );

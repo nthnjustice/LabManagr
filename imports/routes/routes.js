@@ -9,10 +9,10 @@ import RecoverAccount from '../ui/RecoverAccount/RecoverAccount';
 import Dashboard from '../ui/Dashboard/Dashboard';
 import PageNotFound from '../ui/PageNotFound/PageNotFound';
 
-const history = createBrowserHistory();
+let history = createBrowserHistory();
 
-const unauthenticatedPages = ['/', '/signup', '/recover'];
-const authenticatedPages = ['/dashboard'];
+let unauthenticatedPages = ['/', '/signup', '/recover'];
+let authenticatedPages = ['/dashboard'];
 
 export const onAuthChange = (isAuthenticated) => {
   let pathname = history.location.pathname;

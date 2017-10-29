@@ -3,7 +3,7 @@ import React from 'react';
 
 import {formatDate, formatMonth} from './helpers';
 
-export default class Log extends React.Component {
+export default class Form extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -67,7 +67,6 @@ export default class Log extends React.Component {
     e.preventDefault();
 
     let date = this.refs.date.value.trim();
-
     let title = this.refs.title.value.trim();
     let hr = Number(this.refs.hr.value.trim());
     let min = Number(this.refs.min.value.trim());
@@ -100,7 +99,7 @@ export default class Log extends React.Component {
           });
 
           this.resetForm();
-          
+
           let $msg = $('<span class="green-text text-accent-3">Writing Log Saved</span>')
           Materialize.toast($msg, 5000, 'rounded');
         } else {
@@ -112,50 +111,52 @@ export default class Log extends React.Component {
   }
   render() {
     return(
-      <form onSubmit={this.onSubmit.bind(this)} noValidate>
-        <div className="row red lighten-5">
+      <div className="container">
+        <form onSubmit={this.onSubmit.bind(this)} noValidate>
+          <div className="row">
+            <div className="input-field col l12">
+              <input id="date" className={`datepicker ${this.state.dateVal}`} type="text" ref="date"/>
+              <label id="date-label" htmlFor="date">
+                Date <span className="red-text">{this.state.dateErr}</span>
+              </label>
+            </div>
+          </div>
+          <div className="row">
+            <div className="input-field col l12">
+                <input id="title" className={this.state.titleVal} type="text" ref="title"/>
+                <label id="title-label" htmlFor="title">
+                  Title <span className="red-text">{this.state.titleErr}</span>
+                </label>
+            </div>
+          </div>
           {
             this.state.error
-              ? <p className="error center-align red-text text-darken-4">{this.state.error}</p>
+              ? <div className="row red lighten-5">
+                  <p className="error center-align red-text text-darken-4">{this.state.error}</p>
+                </div>
               : undefined
           }
-        </div>
-        <div className="row">
-          <div className="input-field col l12">
-            <input id="date" className={`datepicker ${this.state.dateVal}`} type="text" ref="date"/>
-            <label id="date-label" htmlFor="date">
-              Date <span className="red-text">{this.state.dateErr}</span>
-            </label>
+          <div className="row">
+            <div className="input-field col l6">
+                <input id="hr" className={this.state.hrVal} type="number" ref="hr"/>
+                <label id="hr-label" htmlFor="hr">
+                  Hours
+                </label>
+            </div>
+            <div className="input-field col l6">
+                <input id="min" className={this.state.minVal} type="number" ref="min"/>
+                <label id="min-label" htmlFor="min">
+                  Minutes
+                </label>
+            </div>
           </div>
-        </div>
-        <div className="row">
-          <div className="input-field col l12">
-              <input id="title" className={this.state.titleVal} type="text" ref="title"/>
-              <label id="title-label" htmlFor="title">
-                Title <span className="red-text">{this.state.titleErr}</span>
-              </label>
+          <div className="row center section">
+            <button className="btn waves-effect waves-light" type="submit">
+              Post <i className="material-icons right">send</i>
+            </button>
           </div>
-        </div>
-        <div className="row">
-          <div className="input-field col l6">
-              <input id="hr" className={this.state.hrVal} type="number" ref="hr"/>
-              <label id="hr-label" htmlFor="hr">
-                Hours
-              </label>
-          </div>
-          <div className="input-field col l6">
-              <input id="min" className={this.state.minVal} type="number" ref="min"/>
-              <label id="min-label" htmlFor="min">
-                Minutes
-              </label>
-          </div>
-        </div>
-        <div className="row center">
-          <button className="btn waves-effect waves-light" type="submit">
-            Post <i className="material-icons right">send</i>
-          </button>
-        </div>
-      </form>
+        </form>
+      </div>
     );
   }
 }

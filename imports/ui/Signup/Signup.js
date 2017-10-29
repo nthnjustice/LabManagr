@@ -18,7 +18,7 @@ export default class Signup extends React.Component {
       <span id="signup">
         <VerticalAlign>
           <div className="row">
-            <div className="col l6 offset-l3">
+            <div className="col s12 m10 l6 offset-m1 offset-l3">
               <div className="card-panel hoverable">
                 <Title/>
                 <Form/>

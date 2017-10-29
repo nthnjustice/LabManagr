@@ -104,7 +104,7 @@ export default class List extends React.Component {
             </p>
           </div>
         </div>
-    </span>
+      </span>
     );
   }
 }

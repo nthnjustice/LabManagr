@@ -18,10 +18,12 @@ export default class Login extends React.Component {
       <span id="login">
         <VerticalAlign>
           <div className="row">
-            <div className="col l4 offset-l4">
+            <div className="col s12 m6 l4 offset-m3 offset-l4">
               <div className="card-panel hoverable">
                 <Title/>
+                <div className="container">
                 <Form/>
+              </div>
                 <Footer/>
               </div>
             </div>

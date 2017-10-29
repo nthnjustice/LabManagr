@@ -5,10 +5,10 @@ export default class Footer extends React.Component {
   render() {
     return(
       <div className="footer row">
-        <div className="col l6 left-align">
+        <div className="col s7 m7 l6 left-align">
           <Link className="link" to="/recover">Recover Email/Password</Link>
         </div>
-        <div className="col l6 right-align">
+        <div className="col s5 m5 l6 right-align">
           <Link className="link" to="/signup">Create Account</Link>
         </div>
       </div>

@@ -35,6 +35,15 @@ export default class Form extends React.Component {
       return true;
     }
   }
+  resetForm() {
+    this.setState({
+      error: '',
+      emailErr: '*',
+      emailVal: 'valid',
+      passErr: '*',
+      passVal: 'valid'
+    });
+  }
   onSubmit(e) {
     e.preventDefault();
 
@@ -47,13 +56,7 @@ export default class Form extends React.Component {
     if (emailVal && passVal) {
       Meteor.loginWithPassword({email}, pass, (err) => {
         if (!err) {
-          this.setState({
-            error: '',
-            emailErr: '*',
-            emailVal: 'valid',
-            passErr: '*',
-            passVal: 'valid'
-          });
+          this.resetForm();
           Materialize.toast('Welcome Back!', 5000, 'rounded');
         } else {
           this.setState({

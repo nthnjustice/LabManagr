@@ -87,6 +87,22 @@ export default class Form extends React.Component {
       return true;
     }
   }
+  resetForm() {
+    this.setState({
+      firstErr: '*',
+      firstVal: 'valid',
+      lastErr: '*',
+      lastVal: 'valid',
+      emailErr: '*',
+      emailVal: 'valid',
+      emailConfErr: '*',
+      emailConfVal: 'valid',
+      passErr: '*',
+      passVal: 'valid',
+      passConfErr: '*',
+      passConfVal: 'valid'
+    });
+  }
   onSubmit(e) {
     e.preventDefault();
 
@@ -116,20 +132,7 @@ export default class Form extends React.Component {
         }
       }, (err) => {
         if (!err) {
-          this.setState({
-            firstErr: '*',
-            firstVal: 'valid',
-            lastErr: '*',
-            lastVal: 'valid',
-            emailErr: '*',
-            emailVal: 'valid',
-            emailConfErr: '*',
-            emailConfVal: 'valid',
-            passErr: '*',
-            passVal: 'valid',
-            passConfErr: '*',
-            passConfVal: 'valid'
-          });
+          this.resetForm();
           Materialize.toast('Welcome!', 5000, 'rounded');
           } else {
             this.setState({
@@ -147,13 +150,13 @@ export default class Form extends React.Component {
     return(
       <form onSubmit={this.onSubmit.bind(this)} noValidate>
         <div className="row">
-          <div className="col l6 input-field">
+          <div className="col s12 m6 l6 input-field">
             <input id="first" className={this.state.firstVal} type="text" ref="first"/>
             <label htmlFor="first">
               First Name <span className="red-text">{this.state.firstErr}</span>
             </label>
           </div>
-          <div className="col l6 input-field">
+          <div className="col s12 m6 l6 input-field">
             <input id="last" className={this.state.lastVal} type="text" ref="last"/>
             <label htmlFor="last">
               Last Name <span className="red-text">{this.state.lastErr}</span>
@@ -161,13 +164,13 @@ export default class Form extends React.Component {
           </div>
         </div>
         <div className="row">
-          <div className="col l6 input-field">
+          <div className="col s12 m6 l6 input-field">
             <input id="email" className={this.state.emailVal} type="email" ref="email"/>
             <label htmlFor="email">
               Email <span className="red-text">{this.state.emailErr}</span>
             </label>
           </div>
-          <div className="col l6 input-field">
+          <div className="col s12 m6 l6 input-field">
             <input id="emailConf" className={this.state.emailConfVal} type="email" ref="emailConf"/>
             <label htmlFor="emailConf">
               Confirm Email <span className="red-text">{this.state.emailConfErr}</span>
@@ -175,13 +178,13 @@ export default class Form extends React.Component {
           </div>
         </div>
         <div className="row">
-          <div className="col l6 input-field">
+          <div className="col s12 m6 l6 input-field">
             <input id="pass" className={this.state.passVal} type="password" ref="pass" autoComplete="new-password"/>
             <label htmlFor="pass">
               Password <span className="red-text">{this.state.passErr}</span>
             </label>
           </div>
-          <div className="col l6 input-field">
+          <div className="col s12 m6 l6 input-field">
             <input id="passConf" className={this.state.passConfVal} type="password" ref="passConf" autoComplete="new-password"/>
             <label htmlFor="passConf">
               Confirm Password <span className="red-text">{this.state.passConfErr}</span>

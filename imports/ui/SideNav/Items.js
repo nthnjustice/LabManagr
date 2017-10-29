@@ -19,9 +19,9 @@ export default class Items extends React.Component {
         <li className="no-padding">
           <ul className="items collapsible">
             <li className="item">
-              <a className="collapsible-header" onClick={() => {this.handleModuleChange('Bulletin Board');}}>
-                <i className="material-icons">dashboard</i>
-            	  <span className="item-text">Bulletin Board</span>
+              <a className="collapsible-header" onClick={() => {this.handleModuleChange('Task List');}}>
+                <i className="material-icons">list</i>
+            	  <span className="item-text">Task List</span>
               </a>
             </li>
             <li className="item">

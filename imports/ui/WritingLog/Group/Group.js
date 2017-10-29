@@ -61,6 +61,17 @@ export default class Group extends React.Component {
     this.groupTracker.stop();
   }
   prepData(logs) {
+    if (logs.length < 1) {
+      logs = [
+        {
+          hours: 0,
+          minutes: 0,
+          author: '',
+          createdAt: new Date()
+        }
+      ];
+    }
+
     let annotation = ['User'];
 
     let names = this.state.users.map((user) => {
