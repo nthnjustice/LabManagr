@@ -1,6 +1,8 @@
 import {Meteor} from 'meteor/meteor';
 import React from 'react';
 import ReactPaginate from 'react-paginate';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import Dialog from 'material-ui/Dialog';
 
 export default class List extends React.Component {
   constructor(props) {
@@ -9,20 +11,28 @@ export default class List extends React.Component {
       viewLogs: [],
       offset: 0,
       currLog: '',
-      initialPage: 0
+      initialPage: 0,
+      open: false
     };
-  }
-  componentDidMount() {
-    $('#logs .modal').modal();
   }
   formatDate(date) {
     let str = date.toString();
     let arr = str.split(' ');
+
     return `${arr[0]}, ${arr[1]} ${arr[2]}, ${arr[3]}`;
+  }
+  formatDateModal() {
+    if (this.state.currLog) {
+      let date = this.state.currLog.createdAt;
+      let str = date.toString();
+      let arr = str.split(' ');
+
+      return `${arr[0]}, ${arr[1]} ${arr[2]}, ${arr[3]}`;
+    }
   }
   renderLogs() {
     if (this.props.logs.length > 0) {
-      let logs = this.props.logs.slice(this.state.offset, this.state.offset + 3).map((log) => {
+      return this.props.logs.slice(this.state.offset, this.state.offset + 3).map((log) => {
         return (
           <li key={log._id} className="collection-item">
             <strong>{log.title}</strong>
@@ -34,8 +44,6 @@ export default class List extends React.Component {
           </li>
         );
       });
-
-      return logs;
     } else {
       return <p className="no-logs-text grey-text">No posted logs.</p>;
     }
@@ -44,26 +52,10 @@ export default class List extends React.Component {
     if (this.props.selectedUserId == Meteor.userId()) {
       return (
         <a className="secondary-content">
-          <i className="delete-btn material-icons red-text text-lighten-3" onClick={() => {this.onDelete(log);}}>delete</i>
+          <i className="delete-btn material-icons red-text text-lighten-3" onClick={() => this.onDelete(log)}>delete</i>
         </a>
       );
     }
-  }
-  onDelete(log) {
-    this.setState({currLog: log});
-    $('#logs .modal').modal('open');
-  }
-  confDelete() {
-    Meteor.call('writingLogs.remove', this.state.currLog._id, (err) => {
-      $('#logs .modal').modal('close');
-      if (!err) {
-        let $msg = $('<span class="green-text text-accent-3">Log Deleted</span>');
-        Materialize.toast($msg, 5000, 'rounded');
-      } else {
-        let $msg = $('<span class="red-text">Error: Log Did Not Delete</span>');
-        Materialize.toast($msg, 5000, 'rounded');
-      }
-    });
   }
   showPagination() {
     if (this.props.logs.length > 3) {
@@ -75,7 +67,31 @@ export default class List extends React.Component {
   handlePageClick(selected) {
     this.setState({offset: Math.ceil(selected * 3)});
   }
+  onDelete(log) {
+    this.setState({currLog: log});
+    this.setState({open: true});
+  }
+  confDelete() {
+    Meteor.call('writingLogs.remove', this.state.currLog._id, (err) => {
+      this.handleClose();
+      if (!err) {
+        let $msg = $('<span class="green-text text-accent-3">Log Deleted</span>');
+        Materialize.toast($msg, 5000, 'rounded');
+      } else {
+        let $msg = $('<span class="red-text">Error: Log Did Not Delete</span>');
+        Materialize.toast($msg, 5000, 'rounded');
+      }
+    });
+  }
+  handleClose() {
+    this.setState({open: false})
+  }
   render() {
+    let actions = [
+      <a className="mui-modal-btn btn-flat red-text waves-effect" onClick={() => {this.confDelete()}}>Delete</a>,
+      <a className="mui-modal-btn btn-flat waves-effect" onClick={() => {this.handleClose()}}>Cancel</a>
+    ];
+
     return(
       <span>
         <ul className="collection">
@@ -85,8 +101,8 @@ export default class List extends React.Component {
           this.showPagination()
             ? <span className="center-align">
                 <ReactPaginate
-                  previousLabel={"previous"}
-                  nextLabel={"next"}
+                  previousLabel={"<"}
+                  nextLabel={">"}
                   breakLabel={<a href="">...</a>}
                   breakClassName={"break-me"}
                   pageCount={this.props.pageCount}
@@ -102,16 +118,29 @@ export default class List extends React.Component {
               </span>
             : undefined
         }
-        <div className="modal">
-          <div className="modal-content">
-            <p className="center-align">Delete goal?</p>
-            <p className="text center-align">{this.state.currLog.title}</p>
-            <p className="center-align">
-              <a className="modal-btn btn-flat grey lighten-4 red-text waves-effect" onClick={() => {this.confDelete();}}>Delete</a>
-              <a className="modal-btn btn-flat modal-action modal-close grey lighten-4 waves-effect">Cancel</a>
-            </p>
+        <MuiThemeProvider>
+          <div>
+            <Dialog
+              title={'Delete log?'}
+              actions={actions}
+              modal={false}
+              open={this.state.open}
+              onRequestClose={this.handleClose.bind(this)}
+            >
+              {
+                this.state.currLog
+                  ? <div className="mui-modal">
+                      <p className="center-align"><strong>{this.state.currLog.title}</strong></p>
+                      <p className="center-align">
+                        Duration: <strong>{this.state.currLog.hours}</strong> hour(s) and <strong>{this.state.currLog.minutes}</strong> minutes(s)
+                      </p>
+                      <p className="center-align">Posted: <strong>{this.formatDateModal()}</strong></p>
+                    </div>
+                  : undefined
+              }
+            </Dialog>
           </div>
-        </div>
+        </MuiThemeProvider>
       </span>
     );
   }

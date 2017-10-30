@@ -6,11 +6,13 @@
   },
   "dependencies": {
     "babel-runtime": "^6.26.0",
+    "material-ui": "^0.19.4",
     "meteor-node-stubs": "~0.2.4",
     "prop-types": "^15.5.10",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
     "react-google-charts": "^1.5.5",
+    "react-modal-dialog": "^4.0.7",
     "react-paginate": "^5.0.0",
     "react-router-dom": "^4.2.2"
   }

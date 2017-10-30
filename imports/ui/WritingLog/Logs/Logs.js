@@ -105,7 +105,9 @@ export default class Logs extends TrackerReact(React.Component) {
                 {this.renderUsers()}
               </select>
             </div>
-            {this.renderLogs()}
+            <div className="col s12 m12 l12">
+              {this.renderLogs()}
+            </div>
           </div>
         </div>
       </span>

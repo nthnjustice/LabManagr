@@ -1,3 +1,9 @@
+@media only screen and (min-width: 601px) {
+  #logs .card-panel {
+    margin-top: -1.7rem;
+  }
+}
+
 #logs .card-panel {
   height: 500px;
   padding: 0%;
@@ -20,13 +26,8 @@
   cursor: pointer;
 }
 
-#logs .modal .text {
-  text-decoration: line-through;
-}
-
-#logs .modal-btn {
-  margin-left: 2.5%;
-  text-transform: none;
+#logs .pagination {
+  margin-top: 2rem;
 }
 
 #logs .pagination li {

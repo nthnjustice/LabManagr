@@ -1,3 +1,9 @@
+@media only screen and (max-width: 600px) {
+  #log .card-panel {
+    margin-top: -.1rem;
+  }
+}
+
 #log .card-panel {
   height: 500px;
   padding: 0%;

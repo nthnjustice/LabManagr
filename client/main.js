@@ -8,7 +8,7 @@ function orderAssets() {
   let links = [
     'https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.1/css/materialize.min.css'
   ];
-  
+
   let firstChild = $('head link').first();
 
   links.map(link => {
