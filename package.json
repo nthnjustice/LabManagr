@@ -10,6 +10,7 @@
     "meteor-node-stubs": "~0.2.4",
     "prop-types": "^15.5.10",
     "react": "^15.6.1",
+    "react-addons-create-fragment": "^15.6.2",
     "react-dom": "^15.6.1",
     "react-google-charts": "^1.5.5",
     "react-modal-dialog": "^4.0.7",

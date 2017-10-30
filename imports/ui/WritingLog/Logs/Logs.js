@@ -1,7 +1,9 @@
 import {Meteor} from 'meteor/meteor';
 import TrackerReact from 'meteor/ultimatejs:tracker-react';
 import React from 'react';
-import ReactDOM from 'react-dom';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import SelectField from 'material-ui/SelectField';
+import MenuItem from 'material-ui/MenuItem';
 
 import {WritingLogs} from '../../../api/writingLogs';
 
@@ -19,10 +21,6 @@ export default class Logs extends TrackerReact(React.Component) {
         logs: Meteor.subscribe('writingLogs')
       }
     };
-  }
-  componentDidMount() {
-    $('#logs .select').material_select('destroy');
-    $(ReactDOM.findDOMNode(this.refs.select)).change(this.handleSelectChange.bind(this));
   }
   componentWillUnmount() {
     this.state.subscription.users.stop();
@@ -57,31 +55,18 @@ export default class Logs extends TrackerReact(React.Component) {
     }
 
     if (currUser && users.length > 0) {
-      $('#logs .select').material_select('destroy');
-
       let options = users.map((user) => {
         let name = `${user.profile.firstName} ${user.profile.lastName}`;
-        return <option key={user._id} value={name}>{name}</option>;
+        return <MenuItem key={user._id} insetChildren={true} value={user._id} primaryText={name}/>;
       });
-
-      $('#logs .select').material_select();
 
       return options;
     } else {
       return false;
     }
   }
-  handleSelectChange() {
-    let nameArr = $('#logs .select-dropdown').val().split(' ');
-
-    let selectedUserId = Meteor.users.find({
-      $and: [
-        {"profile.firstName": nameArr[0]},
-        {"profile.lastName": nameArr[1]}
-      ]
-    }).fetch()[0]._id;
-
-    this.setState({selectedUserId});
+  handleSelectChange(event, index, value){
+    this.setState({selectedUserId: value});
   }
   renderLogs() {
     let logs = WritingLogs.find({
@@ -101,9 +86,15 @@ export default class Logs extends TrackerReact(React.Component) {
           <Title color={this.props.color}/>
           <div className="wrapper">
             <div className="input-field col s12 m12 l12">
-              <select className="select" ref="select">
-                {this.renderUsers()}
-              </select>
+              <MuiThemeProvider>
+                <SelectField
+                  value={this.state.selectedUserId}
+                  onChange={this.handleSelectChange.bind(this)}
+                  fullWidth={true}
+                >
+                  {this.renderUsers()}
+                </SelectField>
+              </MuiThemeProvider>
             </div>
             <div className="col s12 m12 l12">
               {this.renderLogs()}
