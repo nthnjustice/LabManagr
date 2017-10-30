@@ -12,12 +12,12 @@ export default class SideNav extends React.Component {
   }
   render() {
     return(
-      <span>
-        <ul id="side-nav" className="side-nav fixed grey darken-4">
+      <span id="side-nav">
+        <ul id="side-nav-el" className="side-nav fixed grey darken-4">
           <Title/>
           <Items onSelectModule={this.catchModule.bind(this)}/>
         </ul>
-        <a className="button-collapse hide-on-large-only" data-activates="side-nav">
+        <a className="button-collapse hide-on-large-only" data-activates="side-nav-el">
           <i className="material-icons">menu</i>
         </a>
       </span>

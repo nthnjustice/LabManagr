@@ -1,3 +1,4 @@
+
 import {Meteor} from 'meteor/meteor';
 import React from 'react';
 
@@ -6,12 +7,12 @@ import TopNav from '../TopNav/TopNav';
 import TaskList from '../TaskList/TaskList';
 import WritingLog from '../WritingLog/WritingLog';
 
-const colors = {
+let colors = {
   'Task List': 'red darken-1',
   'Writing Log': 'deep-purple darken-4'
 };
 
-const modules = {
+let modules = {
   'Task List': <TaskList color={colors['Task List']}/>,
   'Writing Log': <WritingLog color={colors['Writing Log']}/>
 };

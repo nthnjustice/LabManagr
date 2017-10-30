@@ -1,34 +1,34 @@
-#side-nav {
+#side-nav-el {
 	width: 50px;
 }
 
-#side-nav:hover {
+#side-nav-el:hover {
 	width: 300px;
 }
 
-#side-nav .title {
+#side-nav-el .title {
 	display: none;
 	height: 64px;
 	margin-top: -5%;
 }
 
-#side-nav:hover .title {
+#side-nav-el:hover .title {
 	display: inline;
 }
 
-#side-nav .items {
+#side-nav-el .items {
 	padding-top: 10%;
 }
 
-#side-nav .item-text {
+#side-nav-el .item-text {
 	display: none;
 }
 
-#side-nav:hover .item-text {
+#side-nav-el:hover .item-text {
 	display: inline;
 }
 
-#side-nav .items li a {
+#side-nav-el .items li a {
 	span {
 		color: #9e9e9e;
 	}
@@ -38,7 +38,7 @@
 	}
 }
 
-#side-nav .items li:hover {
+#side-nav-el .items li:hover {
 	border: 1px solid white;
 
 	a span {
@@ -50,7 +50,7 @@
 	}
 }
 
-#side-nav .items li.active {
+#side-nav-el .items li.active {
 	background: #00838f;
 
 	a span {
