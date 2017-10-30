@@ -114,7 +114,7 @@ export default class Form extends React.Component {
       <div className="container">
         <form onSubmit={this.onSubmit.bind(this)} noValidate>
           <div className="row">
-            <div className="input-field col l12">
+            <div className="input-field col s12 m12 l12">
               <input id="date" className={`datepicker ${this.state.dateVal}`} type="text" ref="date"/>
               <label id="date-label" htmlFor="date">
                 Date <span className="red-text">{this.state.dateErr}</span>
@@ -122,7 +122,7 @@ export default class Form extends React.Component {
             </div>
           </div>
           <div className="row">
-            <div className="input-field col l12">
+            <div className="input-field col s12 m12 l12">
                 <input id="title" className={this.state.titleVal} type="text" ref="title"/>
                 <label id="title-label" htmlFor="title">
                   Title <span className="red-text">{this.state.titleErr}</span>
@@ -137,13 +137,13 @@ export default class Form extends React.Component {
               : undefined
           }
           <div className="row">
-            <div className="input-field col l6">
+            <div className="input-field col s6 m6 l6">
                 <input id="hr" className={this.state.hrVal} type="number" ref="hr"/>
                 <label id="hr-label" htmlFor="hr">
                   Hours
                 </label>
             </div>
-            <div className="input-field col l6">
+            <div className="input-field col s6 m6 l6">
                 <input id="min" className={this.state.minVal} type="number" ref="min"/>
                 <label id="min-label" htmlFor="min">
                   Minutes

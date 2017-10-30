@@ -1,13 +1,15 @@
 import {Meteor} from 'meteor/meteor';
 import React from 'react';
-
-import {WritingLogs} from '../../../api/writingLogs';
+import ReactPaginate from 'react-paginate';
 
 export default class List extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      currLog: ''
+      viewLogs: [],
+      offset: 0,
+      currLog: '',
+      initialPage: 0
     };
   }
   componentDidMount() {
@@ -20,7 +22,7 @@ export default class List extends React.Component {
   }
   renderLogs() {
     if (this.props.logs.length > 0) {
-      return this.props.logs.map((log) => {
+      let logs = this.props.logs.slice(this.state.offset, this.state.offset + 3).map((log) => {
         return (
           <li key={log._id} className="collection-item">
             <strong>{log.title}</strong>
@@ -32,8 +34,10 @@ export default class List extends React.Component {
           </li>
         );
       });
+
+      return logs;
     } else {
-      return <p className="no-goal-text grey-text">No posted logs.</p>;
+      return <p className="no-logs-text grey-text">No posted logs.</p>;
     }
   }
   renderSecondaryContent(log) {
@@ -51,9 +55,8 @@ export default class List extends React.Component {
   }
   confDelete() {
     Meteor.call('writingLogs.remove', this.state.currLog._id, (err) => {
+      $('#logs .modal').modal('close');
       if (!err) {
-        $('#logs .modal').modal('close');
-
         let $msg = $('<span class="green-text text-accent-3">Log Deleted</span>');
         Materialize.toast($msg, 5000, 'rounded');
       } else {
@@ -62,12 +65,43 @@ export default class List extends React.Component {
       }
     });
   }
+  showPagination() {
+    if (this.props.logs.length > 3) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+  handlePageClick(selected) {
+    this.setState({offset: Math.ceil(selected * 3)});
+  }
   render() {
     return(
       <span>
         <ul className="collection">
           {this.renderLogs()}
         </ul>
+        {
+          this.showPagination()
+            ? <span className="center-align">
+                <ReactPaginate
+                  previousLabel={"previous"}
+                  nextLabel={"next"}
+                  breakLabel={<a href="">...</a>}
+                  breakClassName={"break-me"}
+                  pageCount={this.props.pageCount}
+                  marginPagesDisplayed={1}
+                  pageRangeDisplayed={2}
+                  disableInitialCallback={true}
+                  initialPage={this.state.initialPage}
+                  onPageChange={({selected}) => {this.handlePageClick(selected)}}
+                  containerClassName={"pagination"}
+                  subContainerClassName={"pages pagination"}
+                  activeClassName={"active"}
+                />
+              </span>
+            : undefined
+        }
         <div className="modal">
           <div className="modal-content">
             <p className="center-align">Delete goal?</p>
@@ -78,7 +112,7 @@ export default class List extends React.Component {
             </p>
           </div>
         </div>
-    </span>
+      </span>
     );
   }
 }

@@ -18,7 +18,7 @@ export default class SideNav extends React.Component {
           <Items onSelectModule={this.catchModule.bind(this)}/>
         </ul>
         <a className="button-collapse hide-on-large-only" data-activates="side-nav-el">
-          <i className="material-icons">menu</i>
+          <i className="material-icons white-text">menu</i>
         </a>
       </span>
     );

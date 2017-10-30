@@ -1,13 +1,18 @@
-#logs .title h5 {
-  padding: 2.5%;
+#logs .card-panel {
+  height: 500px;
+  padding: 0%;
+  width: 100%;
 }
 
-#logs .wrapper {
-  height: 440px;
-  overflow-y: scroll;
+#logs .info-btn {
+  margin-top: 0.78rem;
 }
 
-#logs .no-goal-text {
+#logs .input-field {
+  margin-top: 0%;
+}
+
+#logs .no-logs-text {
   margin-left: 5%;
 }
 
@@ -22,4 +27,12 @@
 #logs .modal-btn {
   margin-left: 2.5%;
   text-transform: none;
+}
+
+#logs .pagination li {
+  cursor: pointer;
+}
+
+#logs .pagination li.break-me a {
+  cursor: default;
 }

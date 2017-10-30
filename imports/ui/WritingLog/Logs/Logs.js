@@ -1,5 +1,5 @@
 import {Meteor} from 'meteor/meteor';
-import {Tracker} from 'meteor/tracker';
+import TrackerReact from 'meteor/ultimatejs:tracker-react';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
@@ -9,64 +9,81 @@ import Preloader from '../../Preloader/Preloader';
 import Title from './Title';
 import List from './List';
 
-export default class Logs extends React.Component {
+export default class Logs extends TrackerReact(React.Component) {
   constructor(props) {
     super(props);
     this.state = {
-      selectedUserId: '',
-      users: [],
-      logs: []
+      selectedUserId: Meteor.userId(),
+      subscription: {
+        users: Meteor.subscribe('directory'),
+        logs: Meteor.subscribe('writingLogs')
+      }
     };
   }
   componentDidMount() {
-    this.logsTracker = Tracker.autorun(() => {
-      Meteor.subscribe('directory');
-      Meteor.subscribe('writingLogs');
-
-      $('#logs .select').material_select('destroy');
-
-      this.setState({selectedUserId: Meteor.userId()});
-
-      this.setUsersState();
-
-      this.setLogsState();
-
-      let currUser = this.getCurrUser();
-
-      if (currUser && this.state.users.length > 0) {
-        $('#logs .select').val(`${currUser.profile.firstName} ${currUser.profile.lastName}`);
-        $('#logs .select').material_select();
-        $(ReactDOM.findDOMNode(this.refs.select)).change(this.handleSelectChange.bind(this));
-      }
-    });
+    $('#logs .select').material_select('destroy');
+    $(ReactDOM.findDOMNode(this.refs.select)).change(this.handleSelectChange.bind(this));
   }
   componentWillUnmount() {
-    this.logsTracker.stop();
+    this.state.subscription.users.stop();
+    this.state.subscription.logs.stop();
   }
-  getCurrUser() {
-    return Meteor.users.find({_id: Meteor.userId()}).fetch()[0];
-  }
-  setUsersState() {
-    let users = Meteor.users.find(
-      {
-        _id: {
-          $ne: Meteor.userId()
-        }
-      }, {
-        sort: {
-          "profile.firstName": 1
-        }
-      }
-    ).fetch();
+  renderUsers() {
+    let currUser = Meteor.users.find({_id: Meteor.userId()}).fetch()[0];
+    let users = [];
 
-    let sorted = [this.getCurrUser()];
-    for (let i = 0; i < users.length; i++) {
-      sorted.push(users[i]);
+    if (currUser) {
+      users = Meteor.users.find(
+        {
+          _id: {
+            $ne: Meteor.userId()
+          }
+        }, {
+          sort: {
+            "profile.firstName": 1
+          }
+        }
+      ).fetch();
     }
 
-    this.setState({users: sorted});
+    if (users.length > 0) {
+      let sorted = [currUser];
+
+      users.map((user) => {
+        sorted.push(user);
+      });
+
+      users = sorted;
+    }
+
+    if (currUser && users.length > 0) {
+      $('#logs .select').material_select('destroy');
+
+      let options = users.map((user) => {
+        let name = `${user.profile.firstName} ${user.profile.lastName}`;
+        return <option key={user._id} value={name}>{name}</option>;
+      });
+
+      $('#logs .select').material_select();
+
+      return options;
+    } else {
+      return false;
+    }
   }
-  setLogsState() {
+  handleSelectChange() {
+    let nameArr = $('#logs .select-dropdown').val().split(' ');
+
+    let selectedUserId = Meteor.users.find({
+      $and: [
+        {"profile.firstName": nameArr[0]},
+        {"profile.lastName": nameArr[1]}
+      ]
+    }).fetch()[0]._id;
+
+    this.setState({selectedUserId});
+  }
+  renderLogs() {
     let logs = WritingLogs.find({
       owner: this.state.selectedUserId
     }, {
@@ -75,51 +92,20 @@ export default class Logs extends React.Component {
       }
     }).fetch();
 
-    this.setState({logs});
-  }
-  renderUsers() {
-    if (this.state.users.length > 1) {
-      return this.state.users.map((user) => {
-        let name = `${user.profile.firstName} ${user.profile.lastName}`;
-        return <option key={user._id}>{name}</option>;
-      });
-    } else {
-      return false;
-    }
-  }
-  getUser(name) {
-    let nameArr = name.split(' ');
-
-    let user = Meteor.users.find({
-      $and: [
-        {"profile.firstName": nameArr[0]},
-        {"profile.lastName": nameArr[1]}
-      ]
-    }).fetch()[0];
-
-    this.setState({selectedUserId: user._id})
-  }
-  handleSelectChange(e) {
-    let name = e.target.value;
-    this.getUser(name);
-    this.setLogsState();
+    return <List selectedUserId={this.state.selectedUserId} logs={logs} pageCount={Math.ceil(logs.length / 3)}/>
   }
   render() {
     return (
       <span id="logs">
-        <div className="card large hoverable">
+        <div className="card-panel hoverable">
           <Title color={this.props.color}/>
           <div className="wrapper">
-            <div className="input-field col l12">
+            <div className="input-field col s12 m12 l12">
               <select className="select" ref="select">
                 {this.renderUsers()}
               </select>
             </div>
-            {
-              this.state.logs
-                ? <List selectedUserId={this.state.selectedUserId} logs={this.state.logs}/>
-                : <Preloader/>
-            }
+            {this.renderLogs()}
           </div>
         </div>
       </span>

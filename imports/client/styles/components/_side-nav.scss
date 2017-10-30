@@ -1,3 +1,11 @@
+@media only screen and (max-width: 991px) {
+	#side-nav .button-collapse {
+		left: 1.16rem;
+		position: absolute;
+		top: 1.15rem;
+	}
+}
+
 #side-nav-el {
 	width: 50px;
 }
