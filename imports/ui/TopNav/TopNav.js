@@ -10,19 +10,21 @@ export default class TopNav extends React.Component {
   render() {
     return(
       <span id="top-nav">
-        <nav>
-          <div className={`nav-wrapper ${this.props.color}`}>
-            <a className="brand-logo center">{this.props.title}</a>
-            <ul className="right">
-              <li>
-                <a className="dropdown-button" ref="dropdown" data-activates="account-dropdown">
-                  <i className="material-icons">account_circle</i>
-                </a>
-              </li>
-            </ul>
-          </div>
-        </nav>
-        <Dropdown/>
+        <div className="navbar-fixed">
+          <nav>
+            <div className={`nav-wrapper ${this.props.color}`}>
+              <a className="brand-logo center">{this.props.title}</a>
+              <ul className="right">
+                <li>
+                  <a className="dropdown-button" ref="dropdown" data-activates="account-dropdown">
+                    <i className="material-icons">account_circle</i>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </nav>
+          <Dropdown/>
+        </div>
       </span>
     );
   }

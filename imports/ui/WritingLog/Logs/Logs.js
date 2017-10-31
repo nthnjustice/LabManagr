@@ -77,7 +77,7 @@ export default class Logs extends TrackerReact(React.Component) {
       }
     }).fetch();
 
-    return <List selectedUserId={this.state.selectedUserId} logs={logs} pageCount={Math.ceil(logs.length / 3)}/>
+    return <List selectedUserId={this.state.selectedUserId} logs={logs} pageCount={Math.ceil(logs.length / 4)}/>
   }
   render() {
     return (
@@ -85,17 +85,15 @@ export default class Logs extends TrackerReact(React.Component) {
         <div className="card-panel hoverable">
           <Title color={this.props.color}/>
           <div className="wrapper">
-            <div className="input-field col s12 m12 l12">
-              <MuiThemeProvider>
-                <SelectField
-                  value={this.state.selectedUserId}
-                  onChange={this.handleSelectChange.bind(this)}
-                  fullWidth={true}
-                >
-                  {this.renderUsers()}
-                </SelectField>
-              </MuiThemeProvider>
-            </div>
+            <MuiThemeProvider>
+              <SelectField
+                value={this.state.selectedUserId}
+                onChange={this.handleSelectChange.bind(this)}
+                className="select"
+              >
+                {this.renderUsers()}
+              </SelectField>
+            </MuiThemeProvider>
             <div className="col s12 m12 l12">
               {this.renderLogs()}
             </div>

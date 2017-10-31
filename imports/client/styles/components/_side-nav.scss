@@ -1,8 +1,9 @@
 @media only screen and (max-width: 991px) {
 	#side-nav .button-collapse {
 		left: 1.16rem;
-		position: absolute;
+		position: fixed;
 		top: 1.15rem;
+		z-index: 1000;
 	}
 }
 
@@ -25,7 +26,7 @@
 }
 
 #side-nav-el .items {
-	padding-top: 10%;
+	padding-top: 4rem;
 }
 
 #side-nav-el .item-text {

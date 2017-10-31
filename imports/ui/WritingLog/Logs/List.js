@@ -12,7 +12,7 @@ export default class List extends React.Component {
       offset: 0,
       currLog: '',
       initialPage: 0,
-      open: false
+      showingModal: false
     };
   }
   formatDate(date) {
@@ -32,7 +32,7 @@ export default class List extends React.Component {
   }
   renderLogs() {
     if (this.props.logs.length > 0) {
-      return this.props.logs.slice(this.state.offset, this.state.offset + 3).map((log) => {
+      return this.props.logs.slice(this.state.offset, this.state.offset + 4).map((log) => {
         return (
           <li key={log._id} className="collection-item">
             <strong>{log.title}</strong>
@@ -58,18 +58,18 @@ export default class List extends React.Component {
     }
   }
   showPagination() {
-    if (this.props.logs.length > 3) {
+    if (this.props.logs.length > 4) {
       return true;
     } else {
       return false;
     }
   }
   handlePageClick(selected) {
-    this.setState({offset: Math.ceil(selected * 3)});
+    this.setState({offset: Math.ceil(selected * 4)});
   }
   onDelete(log) {
     this.setState({currLog: log});
-    this.setState({open: true});
+    this.setState({showingModal: true});
   }
   confDelete() {
     Meteor.call('writingLogs.remove', this.state.currLog._id, (err) => {
@@ -84,7 +84,7 @@ export default class List extends React.Component {
     });
   }
   handleClose() {
-    this.setState({open: false})
+    this.setState({showingModal: false})
   }
   render() {
     let actions = [
@@ -124,7 +124,7 @@ export default class List extends React.Component {
               title={'Delete log?'}
               actions={actions}
               modal={false}
-              open={this.state.open}
+              open={this.state.showingModal}
               onRequestClose={this.handleClose.bind(this)}
             >
               {

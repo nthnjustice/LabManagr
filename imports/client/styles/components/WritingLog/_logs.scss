@@ -14,8 +14,16 @@
   margin-top: 0.78rem;
 }
 
-#logs .input-field {
-  margin-top: 0%;
+#logs .wrapper {
+  margin-top: -10%;
+}
+
+#logs .select {
+  margin-left: 1rem;
+}
+
+#logs .collection {
+  margin-top: -1rem;
 }
 
 #logs .no-logs-text {
@@ -27,7 +35,7 @@
 }
 
 #logs .pagination {
-  margin-top: 2rem;
+  margin-top: -0.25rem;
 }
 
 #logs .pagination li {
