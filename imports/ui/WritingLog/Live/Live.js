@@ -7,7 +7,7 @@ export default class Live extends React.Component {
   render() {
     return(
       <span id="live">
-        <div className="card large hoverable">
+        <div className="card-panel hoverable">
           <Title color={this.props.color}/>
           <Tabs/>
         </div>

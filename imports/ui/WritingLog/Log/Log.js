@@ -9,7 +9,14 @@ export default class Log extends React.Component {
       <span id="log">
         <div className="card-panel hoverable">
           <Title color={this.props.color}/>
-          <Form/>
+          <div className="hide-on-med-and-down">
+            <Form/>
+          </div>
+          <div className="hide-on-large-only">
+            <div className="container">
+              <Form/>
+            </div>
+          </div>
         </div>
       </span>
     );

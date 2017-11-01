@@ -1,7 +1,5 @@
 import React from 'react';
 
-import {fetchTimerTime} from './helpers';
-
 export default class Form extends React.Component {
   constructor(props) {
     super(props);
@@ -24,11 +22,10 @@ export default class Form extends React.Component {
     $('#timer #title-label').removeClass('active');
   }
   onSubmit(e) {
-    console.log('submit');
     e.preventDefault();
 
     let title = this.refs.title.value.trim();
-    let seconds = secureTimerTime();
+    let seconds = this.props.time;
 
     let titleVal = this.validateTitle(title);
 
@@ -46,7 +43,7 @@ export default class Form extends React.Component {
           });
 
           this.resetForm();
-          $('#timer .modal').modal('close');
+          this.props.closeModal();
 
           let $msg = $('<span class="green-text text-accent-3">Writing Log Saved</span>')
           Materialize.toast($msg, 5000, 'rounded');
@@ -59,19 +56,21 @@ export default class Form extends React.Component {
   }
   render() {
     return(
-      <form onSubmit={this.onSubmit.bind(this)} noValidate>
-        <div className="input-field col l8 offset-l2">
-          <input id="title" className={this.state.titleVal} type="text" ref="title"/>
-          <label id="title-label" htmlFor="title">
-            Title <span className="red-text">{this.state.titleErr}</span>
-          </label>
-        </div>
-        <div className="section row center">
-          <button className="btn waves-effect waves-light" type="submit">
-            Post <i className="material-icons right">send</i>
-          </button>
-        </div>
-      </form>
+      <div className="section container">
+        <form onSubmit={this.onSubmit.bind(this)} noValidate>
+          <div className="input-field col s12 m12 l12">
+            <input id="title" className={this.state.titleVal} type="text" ref="title"/>
+            <label id="title-label" htmlFor="title">
+              Title <span className="red-text">{this.state.titleErr}</span>
+            </label>
+          </div>
+          <div className="section row center">
+            <button className="btn waves-effect waves-light" type="submit">
+              Post <i className="material-icons right">send</i>
+            </button>
+          </div>
+        </form>
+      </div>
     );
   }
 }

@@ -3,24 +3,18 @@
 @import './timer';
 @import './stopwatch';
 
-#live .title h5 {
-  padding: 2%;
+@media only screen and (max-width: 600px) {
+  #live .card-panel {
+    margin-top: -.1rem;
+  }
 }
 
-#live .tabs {
-  .tab a {
-    color: #9e9e9e;
-  }
+#live .card-panel {
+  height: 500px;
+  padding: 0%;
+  width: 100%;
+}
 
-  .tab a:hover {
-    color: #00b8d4;
-  }
-
-  .tab a.active {
-  	color: #263238;
-  }
-
-  .indicator {
-    background-color: #263238;
-  }
+#live .info-btn {
+  margin-top: 0.78rem;
 }

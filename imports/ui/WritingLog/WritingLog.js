@@ -17,10 +17,10 @@ export default class WritingLog extends React.Component {
             <div className="col l3">
               <Log color={this.props.color}/>
             </div>
-            {/* <div className="col l5">
+            <div className="col l5">
               <Live color={this.props.color}/>
             </div>
-            <div className="col l4">
+            {/* <div className="col l4">
               <Goals color={this.props.color}/>
             </div> */}
           </div>
@@ -43,18 +43,18 @@ export default class WritingLog extends React.Component {
         </div>
         <div className="hide-on-large-only hide-on-small-only">
           <div className="row">
-             <div className="col l3">
+             <div className="col m5">
               <Log color={this.props.color}/>
             </div>
-            {/* <div className="col l5">
+            <div className="col m7">
               <Live color={this.props.color}/>
             </div>
-            <div className="col l4">
+            {/* <div className="col l4">
               <Goals color={this.props.color}/>
             </div> */}
           </div>
           <div className="row">
-            <div className="col l4">
+            <div className="col m6">
               <Logs color={this.props.color}/>
             </div>
             {/* <div className="col l8">
@@ -74,10 +74,10 @@ export default class WritingLog extends React.Component {
           <div className="col l12">
             <Log color={this.props.color}/>
           </div>
-          {/* <div className="col l12">
+          <div className="col l12">
             <Live color={this.props.color}/>
           </div>
-          <div className="col l12">
+          {/* <div className="col l12">
             <Goals color={this.props.color}/>
           </div> */}
           <div className="col l12">
