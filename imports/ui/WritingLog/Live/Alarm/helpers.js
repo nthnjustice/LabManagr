@@ -149,6 +149,7 @@ function fetchAlarmExcess() {
 }
 
 export {
+  formatTime,
   initAlarm,
   alarmExcess,
   turnAlarmOff,

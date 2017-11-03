@@ -23,7 +23,7 @@ export default class MyTabs extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      slideIndex: 0
+      slideIndex: 1
     };
   }
   handleTabChange(value) {
@@ -37,7 +37,7 @@ export default class MyTabs extends React.Component {
           className="mui-tabs"
           tabItemContainerStyle={tabsStyles}
           inkBarStyle={indicatorStyles}
-          value={this.state.value}
+          value={this.state.slideIndex}
           onChange={this.handleTabChange.bind(this)}
         >
           <Tab label="Timer" value={0} style={tabStyles}/>

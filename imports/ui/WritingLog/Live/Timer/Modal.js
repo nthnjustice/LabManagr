@@ -2,8 +2,6 @@ import React from 'react';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Dialog from 'material-ui/Dialog';
 
-import {showingModal, resetTimer, timerExcess} from './helpers';
-
 import Form from './Form';
 
 export default class Modal extends React.Component {
@@ -12,9 +10,6 @@ export default class Modal extends React.Component {
     this.state = {
       showingModal: this.props.showModal
     };
-  }
-  componentWillUnmount() {
-    resetTimer();
   }
   handleClose() {
     this.props.closeModal(false);

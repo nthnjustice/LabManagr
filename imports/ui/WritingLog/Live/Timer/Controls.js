@@ -1,4 +1,6 @@
 import React from 'react';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import Checkbox from 'material-ui/Checkbox';
 
 import {returnFormattedToSeconds} from './helpers';
 
@@ -13,9 +15,8 @@ export default class Controls extends React.Component {
       finishedTime: 0,
       excessTime: 0,
       totalTime: 0,
-      interval: 0,
-      excessInterval: 0,
       sound: new buzz.sound('06_Urban_Beat.mp3'),
+      checked: false,
       clockText: '0:00'
     };
   }
@@ -23,6 +24,7 @@ export default class Controls extends React.Component {
     this.initTimer();
     interval = false;
     excessInterval = false;
+    Checkbox.defaultProps.disableTouchRipple = true;
   }
   componentWillUnmount() {
     this.resetTimer();
@@ -33,9 +35,8 @@ export default class Controls extends React.Component {
       finishedTime: 0,
       excessTime: 0,
       totalTime: 0,
-      interval: 0,
-      excessInterval: 0,
       sound: new buzz.sound('06_Urban_Beat.mp3'),
+      checked: false,
       clockText: '0:00'
     });
 
@@ -55,11 +56,18 @@ export default class Controls extends React.Component {
       });
     }
   }
+  updateCheck() {
+    this.setState((oldState) => {
+      return {
+        checked: !oldState.checked,
+      };
+    });
+  }
   clockClicked() {
     let clock = $('#timer').find('.clock');
 
     if (clock.hasClass('inactive')) {
-      if(this.state.time > 0) {
+      if (this.state.time > 0) {
         this.startTimer();
       }
     } else{
@@ -88,7 +96,7 @@ export default class Controls extends React.Component {
     if (this.state.time <= 0) {
       this.pauseTimer();
 
-      if ($('#timer #sounds').prop('checked')){
+      if (this.state.checked){
         this.state.sound.play().fadeIn();
       }
 
@@ -142,16 +150,22 @@ export default class Controls extends React.Component {
     this.setState({modal: value});
   }
   render() {
+    let styles = {
+      display: 'inline-block',
+      width: '50px',
+      marginLeft: '1rem'
+    };
+
     return(
       <span>
         <div className="col s12 m12 l12 center">
-          <div className="input-wrapper inline input-field ">
-            <input id="input" type="number" ref="min" onChange={() => {this.onInputChange()}}/>
+          <div className="input-wrapper inline input-field">
+            <input id="input" type="number" onChange={() => {this.onInputChange()}}/>
             <label id="input-label" htmlFor="input">
               Minutes <span className="red-text">*</span>
             </label>
           </div>
-          <div id="btn-wrapper" className="inline">
+          <div className="inline">
             <a id="start" className="btn-icon waves-effect" onClick={() => {this.startTimer()}}>
               <i className="material-icons small">play_arrow</i>
             </a>
@@ -161,11 +175,15 @@ export default class Controls extends React.Component {
             <a id="reset" className="btn-icon waves-effect" onClick={() => {this.resetTimer()}}>
               <i className="material-icons small">loop</i>
             </a>
+            <MuiThemeProvider>
+              <Checkbox
+                label="Sounds"
+                style={styles}
+                checked={this.state.checked}
+                onCheck={this.updateCheck.bind(this)}
+              />
+            </MuiThemeProvider>
           </div>
-          <form className="checkbox-wrapper inline">
-            <input id="sounds" type="checkbox" ref="sounds"/>
-            <label htmlFor="sounds">Sounds</label>
-          </form>
         </div>
         <div className="clock inactive z-depth-1 waves-effect" onClick={() => {this.clockClicked()}}>{this.state.clockText}</div>
         <Modal showModal={this.state.modal} closeModal={this.closeModal.bind(this)} time={this.state.totalTime}/>

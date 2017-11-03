@@ -1,41 +1,40 @@
 import React from 'react';
-
-import {alarmExcess, turnAlarmOff} from './helpers';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import Dialog from 'material-ui/Dialog';
 
 import Form from './Form';
 
 export default class Modal extends React.Component {
-  componentDidMount() {
-    $('#alarm .modal').modal({
-      ready: function() {
-        alarmFinishedDate = new Date;
-        alarmExcess();
-      },
-      complete: function() {
-        clearInterval(alarmExcessInterval);
-        turnAlarmOff();
-      }
-    });
+  constructor(props) {
+    super(props);
+    this.state = {
+      showingModal: this.props.showModal
+    };
+  }
+  handleClose() {
+    this.props.closeModal(false);
   }
   render() {
+    let actions = [
+      <a className="mui-modal-btn btn-flat red-text waves-effect" onClick={() => {this.handleClose()}}>Close</a>
+    ];
+
     return(
-      <div className="modal">
-        <div className="modal-content">
-          <h4 className="center-align">Time's Up!</h4>
-          <div className="section">
-            <h5 className="grey-text">Submit this log when you are ready.</h5>
-            <p className="grey-text">(The time is still counting.)</p>
-          </div>
-          <Form/>
-          <div className="footer">
-            <p className="right-align">
-              <a className="modal-action modal-close btn-flat grey lighten-4 red-text waves-effect waves-red">
-                Close
-              </a>
-            </p>
-          </div>
+      <MuiThemeProvider>
+        <div>
+          <Dialog
+            title={"Time's Up!"}
+            actions={actions}
+            modal={false}
+            open={this.props.showModal}
+            onRequestClose={this.handleClose.bind(this)}
+          >
+            <p className="grey-text"><strong>Submit this log when you are ready.</strong></p>
+            <p className="grey-text">(The timer is still running.)</p>
+            <Form start={this.props.start} closeModal={this.handleClose.bind(this)}/>
+          </Dialog>
         </div>
-      </div>
+      </MuiThemeProvider>
     );
   }
 }
