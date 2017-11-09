@@ -7,9 +7,7 @@ export default class Timer extends React.Component {
     return(
       <span id="timer">
         <div className="section container">
-          <div className="row">
-            <Controls/>
-          </div>
+          <Controls/>
         </div>
       </span>
     );

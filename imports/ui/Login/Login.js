@@ -1,6 +1,7 @@
 import {Meteor} from 'meteor/meteor';
 import React from 'react';
-import {Link} from 'react-router-dom';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import {Card, CardText} from 'material-ui/Card';
 
 import VerticalAlign from '../VerticalAlign/VerticalAlign';
 import Title from './Title';
@@ -19,13 +20,15 @@ export default class Login extends React.Component {
         <VerticalAlign>
           <div className="row">
             <div className="col s12 m6 l4 offset-m3 offset-l4">
-              <div className="card-panel hoverable">
-                <Title/>
-                <div className="container">
-                <Form/>
-              </div>
-                <Footer/>
-              </div>
+              <MuiThemeProvider>
+                <Card>
+                  <CardText>
+                    <Title/>
+                    <Form/>
+                    <Footer/>
+                  </CardText>
+                </Card>
+              </MuiThemeProvider>
             </div>
           </div>
         </VerticalAlign>

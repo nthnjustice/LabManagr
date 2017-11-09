@@ -6,63 +6,127 @@ export default class Form extends React.Component {
     super(props);
     this.state = {
       error: '',
-      emailErr: '*',
-      emailVal: '',
-      passErr: '*',
-      passVal: ''
+      emailIcon: '',
+      emailError: '',
+      emailValid: '',
+      emailInvalid: '',
+      emailValue: '',
+      passwordIcon: '',
+      passwordError: '',
+      passwordValid: '',
+      passwordInvalid: '',
+      passwordValue: ''
     };
   }
-  validateEmail(email) {
+  validateEmail() {
     let regex = /\S+@\S+\.\S+/;
 
-    if (!email) {
-      this.setState({emailErr: "* can't be blank", emailVal: 'invalid'});
+    if (!this.state.emailValue) {
+      this.setState({
+        emailIcon: 'red-text',
+        emailError: 'This field is required',
+        emailValid: '',
+        emailInvalid: 'invalid'
+      });
+
       return false;
-    } else if (!regex.test(email)) {
-      this.setState({emailErr: '* invalid format', emailVal: 'invalid'});
+    } else if (!regex.test(this.state.emailValue)) {
+      this.setState({
+        emailIcon: 'red-text',
+        emailError: 'Please use a valid format',
+        emailValid: '',
+        emailInvalid: 'invalid'
+      });
+
       return false;
     } else {
-      this.setState({emailErr: '*', emailVal: 'valid'});
+      this.setState({
+        emailIcon: 'green-text',
+        emailError: '',
+        emailValid: 'valid',
+        emailInvalid: ''
+      });
+
       return true;
     }
   }
-  validatePass(pass) {
-    if (!pass) {
-      this.setState({passErr: "* can't be blank", passVal: 'invalid'});
+  validatePass() {
+    if (!this.state.passwordValue) {
+      this.setState({
+        passwordIcon: 'red-text',
+        passwordError: 'This field is required',
+        passwordValid: '',
+        passwordInvalid: 'invalid'
+      });
+
       return false;
     } else {
-      this.setState({passErr: '*', passVal: 'valid'});
+      this.setState({
+        passwordIcon: 'green-text',
+        passwordError: '',
+        passwordValid: 'valid',
+        passwordInvalid: ''
+      });
+
       return true;
     }
   }
   resetForm() {
     this.setState({
       error: '',
-      emailErr: '*',
-      emailVal: 'valid',
-      passErr: '*',
-      passVal: 'valid'
+      emailIcon: '',
+      emailError: '',
+      emailValid: '',
+      emailInvalid: '',
+      emailValue: '',
+      passwordIcon: '',
+      passwordError: '',
+      passwordValid: '',
+      passwordInvalid: '',
+      passwordValue: ''
     });
   }
-  onSubmit(e) {
+  handleEmailChange(e) {
     e.preventDefault();
 
-    let email = this.refs.email.value.trim();
-    let pass = this.refs.pass.value.trim();
+    this.setState({
+      emailValue: e.target.value
+    });
+  }
+  handlePasswordChange(e) {
+    e.preventDefault();
 
-    let emailVal = this.validateEmail(email);
-    let passVal = this.validatePass(pass);
+    this.setState({
+      passwordValue: e.target.value
+    });
+  }
+  handleSubmit(e) {
+    e.preventDefault();
 
-    if (emailVal && passVal) {
-      Meteor.loginWithPassword({email}, pass, (err) => {
+    let validEmail = this.validateEmail();
+    let validPassword = this.validatePass();
+
+    if (validEmail && validPassword) {
+      let email = this.state.emailValue;
+      let password = this.state.passwordValue;
+
+      this.setState({
+        error: ''
+      });
+
+      Meteor.loginWithPassword({email}, password, (err) => {
         if (!err) {
           this.resetForm();
           Materialize.toast('Welcome Back!', 5000, 'rounded');
         } else {
           this.setState({
-            error: 'invalid Email/Password combination',
-            emailVal: 'invalid',
-            passVal: 'invalid'
+            error: 'Invalid Email/Password Combination',
+            emailIcon: 'red-text',
+            emailValid: '',
+            emailInvalid: 'invalid',
+            passwordIcon: 'red-text',
+            passwordValid: '',
+            passwordInvalid: 'invalid'
           });
         }
       });
@@ -70,34 +134,54 @@ export default class Form extends React.Component {
   }
   render() {
     return(
-      <form onSubmit={this.onSubmit.bind(this)} noValidate>
-        <div className="row red lighten-5">
+      <div className="section container">
+        <form onSubmit={this.handleSubmit.bind(this)} noValidate>
           {
             this.state.error
-              ? <p className="error red-text text-darken-4 center-align">{this.state.error}</p>
+              ? <span>
+                  <div className="error-wrapper row red lighten-5">
+                    <p className="error red-text text-darken-4 center-align">Invalid Email/Password Combination</p>
+                  </div>
+                </span>
               : undefined
           }
-        </div>
-        <div className="input-field">
-          <i className="material-icons prefix">email</i>
-          <input id="email" className={this.state.emailVal} type="email" ref="email"/>
-          <label htmlFor="email">
-            Email <span className="red-text">{this.state.emailErr}</span>
-          </label>
-        </div>
-        <div className="input-field">
-          <i className="material-icons prefix">lock</i>
-          <input id="pass" className={this.state.passVal} type="password" ref="pass" autoComplete="new-password"/>
-          <label htmlFor="pass">
-            Password <span className="red-text">{this.state.passErr}</span>
-          </label>
-        </div>
-        <div className="section row center">
-          <button className="btn waves-effect waves-light" type="submit">
-            Sign In <i className="material-icons right">send</i>
-          </button>
-        </div>
-      </form>
+          <div className="row input-field">
+            <i className={`${this.state.emailIcon} material-icons prefix`}>email</i>
+            <input
+              id="email"
+              className={`${this.state.emailValid} ${this.state.emailInvalid}`}
+              type="email"
+              onChange={this.handleEmailChange.bind(this)}
+            />
+            <label data-error={this.state.emailError} htmlFor="email">
+              Email <span className="red-text">*</span>
+            </label>
+          </div>
+          <div className="row input-field">
+            <i className={`${this.state.passwordIcon} material-icons prefix`}>lock</i>
+            <input
+              id="password"
+              className={`${this.state.passwordValid} ${this.state.passwordInvalid}`}
+              type="password"
+              autoComplete="new-password"
+              onChange={this.handlePasswordChange.bind(this)}
+            />
+            <label data-error={this.state.passwordError} htmlFor="password">
+              Password <span className="red-text">*</span>
+            </label>
+          </div>
+          <div className="required-wrapper">
+            <div className="row">
+              <p className="red-text center-align">* required</p>
+            </div>
+          </div>
+          <div className="row center">
+            <button className="btn waves-effect waves-light" type="submit">
+              Sign In <i className="material-icons right">send</i>
+            </button>
+          </div>
+        </form>
+      </div>
     );
   }
 }

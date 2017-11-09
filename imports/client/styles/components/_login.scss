@@ -1,8 +1,16 @@
-#login .error {
-  font-weight: bold;
-  padding: 1%;
+#login .error-wrapper {
+  margin-bottom: 2rem;
+
+  .error {
+    font-weight: bold;
+    padding: 1%;
+  }
+}
+
+#login .required-wrapper {
+  margin-top: -1rem;
 }
 
 #login .footer {
-  margin-bottom: 0;
+  margin-bottom: -1.5rem;
 }

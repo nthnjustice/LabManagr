@@ -17,7 +17,9 @@ export default class Controls extends React.Component {
       totalTime: 0,
       sound: new buzz.sound('06_Urban_Beat.mp3'),
       checked: false,
-      clockText: '0:00'
+      clockText: '0:00',
+      minErr: '*',
+      minVal: ''
     };
   }
   componentDidMount() {
@@ -37,22 +39,31 @@ export default class Controls extends React.Component {
       totalTime: 0,
       sound: new buzz.sound('06_Urban_Beat.mp3'),
       checked: false,
-      clockText: '0:00'
+      clockText: '0:00',
+      minErr: '*',
+      minVal: ''
     });
 
     $('#timer #input').val(undefined);
     $('#timer #input-label').removeClass('active');
   }
-  onInputChange() {
-    let newTime = Number($('#timer #input').val().trim());
+  onInputChange(event) {
+    let newTime = event.target.value;
 
-    if (newTime && newTime >= 0) {
+    if (newTime <= 0) {
+      this.setState({
+        minErr: '* invalid time',
+        minVal: 'invalid'
+      });
+    } else if (newTime && newTime >= 0) {
       this.setState({
         time: newTime * 60,
         finishedTime: newTime * 60,
         excessTime: 0,
         totalTime: 0,
-        clockText: returnFormattedToSeconds(newTime * 60)
+        clockText: returnFormattedToSeconds(newTime * 60),
+        minErr: '*',
+        minVal: ''
       });
     }
   }
@@ -153,39 +164,43 @@ export default class Controls extends React.Component {
     let styles = {
       display: 'inline-block',
       width: '50px',
-      marginLeft: '1rem'
+      marginLeft: '0.5rem',
+      position: 'absolute',
+      top: '3.5rem'
     };
 
     return(
       <span>
-        <div className="col s12 m12 l12 center">
-          <div className="input-wrapper inline input-field">
-            <input id="input" type="number" onChange={() => {this.onInputChange()}}/>
-            <label id="input-label" htmlFor="input">
-              Minutes <span className="red-text">*</span>
-            </label>
-          </div>
-          <div className="inline">
-            <a id="start" className="btn-icon waves-effect" onClick={() => {this.startTimer()}}>
-              <i className="material-icons small">play_arrow</i>
-            </a>
-            <a id="pause" className="btn-icon waves-effect" onClick={() => {this.pauseTimer()}}>
-              <i className="material-icons small">pause</i>
-            </a>
-            <a id="reset" className="btn-icon waves-effect" onClick={() => {this.resetTimer()}}>
-              <i className="material-icons small">loop</i>
-            </a>
-            <MuiThemeProvider>
-              <Checkbox
-                label="Sounds"
-                style={styles}
-                checked={this.state.checked}
-                onCheck={this.updateCheck.bind(this)}
-              />
-            </MuiThemeProvider>
+        <div className="controls-wrapper row">
+          <div className="col s12 m12 l12 center">
+            <div className="input-wrapper inline input-field">
+              <input id="input" className={this.state.minVal} type="number" onChange={this.onInputChange.bind(this)}/>
+              <label id="input-label" htmlFor="input">
+                Minutes <span className="red-text">{this.state.minErr}</span>
+              </label>
+            </div>
+            <div className="inline">
+              <a id="start" className="btn-icon waves-effect" onClick={() => {this.startTimer()}}>
+                <i className="material-icons small">play_arrow</i>
+              </a>
+              <a id="pause" className="btn-icon waves-effect" onClick={() => {this.pauseTimer()}}>
+                <i className="material-icons small">pause</i>
+              </a>
+              <a id="reset" className="btn-icon waves-effect" onClick={() => {this.resetTimer()}}>
+                <i className="material-icons small">loop</i>
+              </a>
+              <MuiThemeProvider>
+                <Checkbox
+                  label="Sounds"
+                  style={styles}
+                  checked={this.state.checked}
+                  onCheck={this.updateCheck.bind(this)}
+                />
+              </MuiThemeProvider>
+            </div>
           </div>
         </div>
-        <div className="clock inactive z-depth-1 waves-effect" onClick={() => {this.clockClicked()}}>{this.state.clockText}</div>
+        <div className="clock inactive z-depth-1 waves-effect" onClick={this.clockClicked.bind(this)}>{this.state.clockText}</div>
         <Modal showModal={this.state.modal} closeModal={this.closeModal.bind(this)} time={this.state.totalTime}/>
       </span>
     );

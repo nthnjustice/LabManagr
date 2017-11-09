@@ -23,7 +23,7 @@ export default class MyTabs extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      slideIndex: 1
+      slideIndex: 0
     };
   }
   handleTabChange(value) {

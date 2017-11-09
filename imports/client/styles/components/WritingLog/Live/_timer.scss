@@ -2,9 +2,14 @@
   display: inline-block;
 }
 
+#timer .controls-wrapper {
+  margin-bottom: 2.5rem;
+  margin-top: 1rem;
+}
+
 #timer .input-wrapper {
-  margin-left: -3.5rem;
-  width: 100px;
+  margin-left: -6.5rem;
+  width: 145px;
 }
 
 #timer .btn-icon {

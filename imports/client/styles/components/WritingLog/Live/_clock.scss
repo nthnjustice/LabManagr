@@ -2,7 +2,6 @@
   background-color: #fff;
   border-radius: 5px;
   color: #0277BD;
-  cursor: pointer;
   display: block;
   font-size: 100px;
   height: 150px;
@@ -13,10 +12,12 @@
   width: 100%;
 }
 
-.clock.inactive {
-  color: #9e9e9e;
+@media only screen and (min-width: 992px) {
+  .clock {
+    cursor: pointer;
+  }
 }
 
-.invalid-clock {
-  background-color: #ffcdd2;
+.clock.inactive {
+  color: #9e9e9e;
 }
