@@ -1,3 +1,11 @@
+#signup label::after {
+  width: 15rem;
+}
+
+#signup .required-wrapper {
+  margin-top: -1rem;
+}
+
 #signup .footer {
-  margin-bottom: 0;
+  margin-bottom: -1.5rem;
 }

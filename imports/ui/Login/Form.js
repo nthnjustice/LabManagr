@@ -50,7 +50,7 @@ export default class Form extends React.Component {
       return true;
     }
   }
-  validatePass() {
+  validatePassword() {
     if (!this.state.passwordValue) {
       this.setState({
         passwordIcon: 'red-text',
@@ -90,6 +90,10 @@ export default class Form extends React.Component {
     e.preventDefault();
 
     this.setState({
+      emailIcon: 'black-text',
+      emailError: '',
+      emailValid: '',
+      emailInvalid: '',
       emailValue: e.target.value
     });
   }
@@ -97,6 +101,10 @@ export default class Form extends React.Component {
     e.preventDefault();
 
     this.setState({
+      passwordIcon: 'black-text',
+      passwordError: '',
+      passwordValid: '',
+      passwordInvalid: '',
       passwordValue: e.target.value
     });
   }
@@ -104,7 +112,7 @@ export default class Form extends React.Component {
     e.preventDefault();
 
     let validEmail = this.validateEmail();
-    let validPassword = this.validatePass();
+    let validPassword = this.validatePassword();
 
     if (validEmail && validPassword) {
       let email = this.state.emailValue;
@@ -114,8 +122,8 @@ export default class Form extends React.Component {
         error: ''
       });
 
-      Meteor.loginWithPassword({email}, password, (err) => {
-        if (!err) {
+      Meteor.loginWithPassword({email}, password, (error) => {
+        if (!error) {
           this.resetForm();
           Materialize.toast('Welcome Back!', 5000, 'rounded');
         } else {
