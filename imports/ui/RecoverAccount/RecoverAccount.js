@@ -1,5 +1,6 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import {Card, CardText} from 'material-ui/Card';
 
 import VerticalAlign from '../VerticalAlign/VerticalAlign';
 import Title from './Title';
@@ -17,12 +18,16 @@ export default class RecoverAccount extends React.Component {
       <span id="recover-account">
         <VerticalAlign>
           <div className="row">
-            <div className="col s12 m10 l6 offset-m1 offset-l3">
-              <div className="card-panel hoverable">
-                <Title/>
-                <Body/>
-                <Footer/>
-              </div>
+            <div className="col s12 m6 l4 offset-m3 offset-l4">
+              <MuiThemeProvider>
+                <Card>
+                  <CardText>
+                    <Title/>
+                    <Body/>
+                    <Footer/>
+                  </CardText>
+                </Card>
+              </MuiThemeProvider>
             </div>
           </div>
         </VerticalAlign>
