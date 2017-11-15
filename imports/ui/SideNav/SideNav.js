@@ -8,14 +8,14 @@ export default class SideNav extends React.Component {
     $('#side-nav .button-collapse').sideNav();
   }
   catchModule(name) {
-    this.props.onSelectModule(name);
+    this.props.handleModuleChange(name);
   }
   render() {
     return(
       <span id="side-nav">
         <ul id="side-nav-el" className="side-nav fixed grey darken-4">
           <Title/>
-          <Items onSelectModule={this.catchModule.bind(this)}/>
+          <Items handleModuleClick={this.catchModule.bind(this)}/>
         </ul>
         <a className="button-collapse hide-on-large-only" data-activates="side-nav-el">
           <i className="material-icons white-text">menu</i>

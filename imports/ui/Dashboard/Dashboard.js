@@ -30,7 +30,7 @@ export default class Dashboard extends React.Component {
       this.props.history.replace('/');
     }
   }
-  loadModule(name) {
+  handleModuleChange(name) {
     this.setState({
       moduleName: name,
       module: modules[name],
@@ -41,7 +41,7 @@ export default class Dashboard extends React.Component {
     return(
       <span>
         <TopNav title={this.state.moduleName} color={this.state.color}/>
-        <SideNav onSelectModule={this.loadModule.bind(this)}/>
+        <SideNav handleModuleChange={this.handleModuleChange.bind(this)}/>
         <div id="dashboard">
           {this.state.module}
         </div>

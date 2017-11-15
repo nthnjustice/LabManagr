@@ -10,8 +10,8 @@ export default class Items extends React.Component {
       }
     });
   }
-  handleModuleChange(name) {
-    this.props.onSelectModule(name);
+  throwModule(name) {
+    this.props.handleModuleClick(name);
   }
   render() {
     return(
@@ -19,13 +19,13 @@ export default class Items extends React.Component {
         <li className="no-padding">
           <ul className="items collapsible">
             <li className="item">
-              <a className="collapsible-header" onClick={() => {this.handleModuleChange('Task List');}}>
+              <a className="collapsible-header" onClick={this.throwModule.bind(this, 'Task List')}>
                 <i className="material-icons">list</i>
             	  <span className="item-text">Task List</span>
               </a>
             </li>
             <li className="item">
-              <a className="collapsible-header active" onClick={() => {this.handleModuleChange('Writing Log');}}>
+              <a className="collapsible-header active" onClick={this.throwModule.bind(this, 'Writing Log')}>
                 <i className="material-icons">mode_edit</i>
             	  <span className="item-text">Writing Log</span>
               </a>
