@@ -1,156 +1,347 @@
-import {Meteor} from 'meteor/meteor';
 import React from 'react';
-
-import {formatDate, formatMonth} from './helpers';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import DatePicker from 'material-ui/DatePicker';
 
 export default class Form extends React.Component {
   constructor(props) {
     super(props);
+
     this.state = {
-      error: '',
-      dateErr: '*',
-      dateVal: '',
-      titleErr: '*',
-      titleVal: '',
-      hrVal: '',
-      minVal: ''
+      dateUnderlineStyle: {
+        borderBottom: '1px solid #9e9e9e'
+      },
+      dateError: ' ',
+      dateErrorStyle: {
+        float: 'left',
+        marginTop: '-24px',
+        color: '#9e9e9e'
+      },
+      dateValue: null,
+      titleStyle: {},
+      titleError: '',
+      titleValid: '',
+      titleInvalid: '',
+      titleValue: '',
+      timeError: '',
+      hoursError: '',
+      hoursValid: '',
+      hoursInvalid: '',
+      hoursValue: '',
+      minutesError: '',
+      minutesValid: '',
+      minutesInvalid: '',
+      minutesValue: ''
     };
   }
-  componentDidMount() {
-    $('#log #date').pickadate({closeOnSelect: true});
-  }
-  validateDate(date) {
-    if (!date) {
-      this.setState({dateErr: "* can't be blank", dateVal: 'datepicker invalid'});
-      $('#log #date-label').removeClass('active');
+  validateDate() {
+    if (!this.state.dateValue) {
+      this.setState({
+        dateUnderlineStyle: {
+          borderBottom: '1px solid #f44336',
+          boxShadow: '0 1px 0 0 #f44336'
+        },
+        dateError: 'This field is required',
+        dateErrorStyle: {
+          float: 'left',
+          marginTop: '-24px',
+          color: '#f44336'
+        },
+        titleStyle: {
+          marginTop: '2rem'
+        }
+      });
+
       return false;
     } else {
-      this.setState({dateErr: '*', dateVal: 'datepicker valid'});
+      this.setState({
+        dateUnderlineStyle: {
+          borderBottom: '1px solid #4caf50',
+          boxShadow: '0 1px 0 0 #4caf50'
+        },
+        dateError: ' ',
+        dateErrorStyle: {
+          float: 'left',
+          marginTop: '-24px',
+          color: '#4caf50'
+        },
+        titleStyle: {}
+      });
+
       return true;
     }
   }
-  validateTitle(title) {
-    if (!title) {
-      this.setState({titleErr: "* can't be blank", titleVal: 'invalid'});
+  validateTitle() {
+    if (!this.state.titleValue) {
+      this.setState({
+        titleError: 'This field is required',
+        titleValid: '',
+        titleInvalid: 'invalid'
+      });
+
       return false;
     } else {
-      this.setState({titleErr: '*', titleVal: 'valid'});
+      this.setState({
+        titleError: '',
+        titleValid: 'valid',
+        titleInvalid: ''
+      });
+
       return true;
     }
   }
-  validateTime(hr, min) {
-    if (!hr && !min) {
-      this.setState({error: 'invalid time', hrVal: 'invalid', minVal: 'invalid'});
+  validateTime() {
+    if (!this.state.hoursValue && !this.state.minutesValue) {
+      this.setState({
+        timeError: 'Invalid Time',
+        hoursError: '',
+        hoursValid: '',
+        hoursInvalid: 'invalid',
+        minutesError: '',
+        minutesValid: '',
+        minutesInvalid: 'invalid'
+      });
+
       return false;
-    } else if (hr < 0 || min < 0) {
-      this.setState({error: 'invalid time', hrVal: 'invalid', minVal: 'invalid'});
-      return false;
-    } else if (hr == 0 && min == 0) {
-      this.setState({error: 'invalid time', hrVal: 'invalid', minVal: 'invalid'});
+    } else if (this.state.hoursValue <= 0 && this.state.minutesValue <= 0) {
+      this.setState({
+        timeError: 'Invalid Time',
+        hoursError: '',
+        hoursValid: '',
+        hoursInvalid: 'invalid',
+        minutesError: '',
+        minutesValid: '',
+        minutesInvalid: 'invalid'
+      });
+
       return false;
     } else {
-      this.setState({error: '', hrVal: 'valid', minVal: 'valid'});
+      this.setState({
+        timeError: '',
+        hoursError: '',
+        hoursValid: 'valid',
+        hoursInvalid: '',
+        minutesError: '',
+        minutesValid: 'valid',
+        minutesInvalid: ''
+      });
+
       return true;
     }
   }
-  resetForm() {
-    $('#log #date').val(undefined);
-    $('#log #date-label').removeClass('active');
-    $('#log #title').val(undefined);
-    $('#log #title-label').removeClass('active');
-    $('#log #hr').val(undefined);
-    $('#log #hr-label').removeClass('active');
-    $('#log #min').val(undefined);
-    $('#log #min-label').removeClass('active');
+  formatDateText(date) {
+    let month = date.getMonth();
+
+    if (month == 0) {
+      month = "January";
+    } else if (month == 1) {
+      month = "February";
+    } else if (month == 2) {
+      month = "March";
+    } else if (month == 3) {
+      month = "April";
+    } else if (month == 4) {
+      month = "May";
+    } else if (month == 5) {
+      month = "June";
+    } else if (month == 6) {
+      month = "July";
+    } else if (month == 7) {
+      month = "August";
+    } else if (month == 8) {
+      month = "September";
+    } else if (month == 9) {
+      month = "October";
+    } else if (month == 10) {
+      month = "November";
+    } else if (month == 11) {
+      month = "December";
+    }
+
+    return `${month} ${date.getDate()}, ${date.getFullYear()}`;
   }
-  onSubmit(e) {
+  handleDateChange(e, date) {
+    this.setState({
+      dateUnderlineStyle: {
+        borderBottom: '1px solid #9e9e9'
+      },
+      dateError: ' ',
+      dateErrorStyle: {
+        float: 'left',
+        marginTop: '-24px',
+        color: '#9e9e9e'
+      },
+      dateValue: date,
+      titleStyle: {}
+    });
+  }
+  handleTitleChange(e) {
     e.preventDefault();
 
-    let date = this.refs.date.value.trim();
-    let title = this.refs.title.value.trim();
-    let hr = Number(this.refs.hr.value.trim());
-    let min = Number(this.refs.min.value.trim());
+    this.setState({
+      titleError: '',
+      titleValid: '',
+      titleInvalid: '',
+      titleValue: e.target.value
+    });
+  }
+  handleHoursChange(e) {
+    e.preventDefault();
 
-    let dateVal = this.validateDate(date);
-    let titleVal = this.validateTitle(title);
+    this.setState({
+      hoursError: '',
+      hoursValid: '',
+      hoursInvalid: '',
+      hoursValue: Number(e.target.value),
+      minutesError: '',
+      minutesValid: '',
+      minutesInvalid: '',
+      minutesValue: Number(e.target.value)
+    });
+  }
+  handleMinutesChange(e) {
+    e.preventDefault();
 
-    let timeVal = false;
+    this.setState({
+      hoursError: '',
+      hoursValid: '',
+      hoursInvalid: '',
+      hoursValue: Number(e.target.value),
+      minutesError: '',
+      minutesValid: '',
+      minutesInvalid: '',
+      minutesValue: Number(e.target.value)
+    });
+  }
+  handleSubmit(e) {
+    e.preventDefault();
 
-    if (dateVal && titleVal) {
-      timeVal = this.validateTime(hr, min);
-    }
+    let validDate = this.validateDate();
+    let validTitle = this.validateTitle();
+    let validTime = this.validateTime();
 
-    if (timeVal) {
-      let minTot = min + (hr * 60);
-      let hours = Math.floor(minTot / 60);
-      let minutes = minTot % 60;
-      date = formatDate(date);
+    if (validDate && validTitle && validTime) {
+      let totalMinutes = this.state.minutesValue + (this.state.hoursValue * 60);
+      let hours = Math.floor(totalMinutes / 60);
+      let minutes = totalMinutes % 60;
 
-      Meteor.call('writingLogs.insert', title, hours, minutes, date, (err) => {
-        if (!err) {
+      Meteor.call('writingLogs.insert', this.state.titleValue, hours, minutes, this.state.dateValue, (error) => {
+        if (!error) {
           this.setState({
-            error: '',
-            dateErr: '*',
-            dateVal: '',
-            titleErr: '*',
-            titleVal: '',
-            hrVal: '',
-            minVal: ''
+            dateUnderlineStyle: {
+              borderBottom: '1px solid #9e9e9e'
+            },
+            dateError: ' ',
+            dateErrorStyle: {
+              float: 'left',
+              marginTop: '-24px',
+              color: '#9e9e9e'
+            },
+            dateValue: null,
+            titleStyle: {},
+            titleError: '',
+            titleValid: '',
+            titleInvalid: '',
+            titleValue: '',
+            timeError: '',
+            hoursError: '',
+            hoursValid: '',
+            hoursInvalid: '',
+            hoursValue: '',
+            minutesError: '',
+            minutesValid: '',
+            minutesInvalid: '',
+            minutesValue: ''
           });
 
-          this.resetForm();
+          $('#log .title-label').removeClass('active');
+          $('#log .hours-label').removeClass('active');
+          $('#log .minutes-label').removeClass('active');
 
-          let $msg = $('<span class="green-text text-accent-3">Writing Log Saved</span>')
-          Materialize.toast($msg, 5000, 'rounded');
+          Materialize.toast($('<span class="green-text text-accent-3">Writing Log Saved</span>'), 5000, 'rounded');
         } else {
-          let $msg = $('<span class="red-text">Error: Writing Log Not Saved</span>')
-          Materialize.toast($msg, 5000, 'rounded');
+          Materialize.toast( $('<span class="red-text">Error: Writing Log Not Saved</span>'), 5000, 'rounded');
         }
       });
     }
   }
   render() {
+    let dateLabel = <span className="input-label">
+                      Date
+                      <span className="red-text"> *</span>
+                    </span>;
+
     return(
       <div className="container">
-        <form onSubmit={this.onSubmit.bind(this)} noValidate>
+        <form onSubmit={this.handleSubmit.bind(this)} noValidate>
           <div className="row">
-            <div className="input-field col s12 m12 l12">
-              <input id="date" className={`datepicker ${this.state.dateVal}`} type="text" ref="date"/>
-              <label id="date-label" htmlFor="date">
-                Date <span className="red-text">{this.state.dateErr}</span>
-              </label>
-            </div>
+            <MuiThemeProvider>
+              <DatePicker
+                value={this.state.dateValue}
+                textFieldStyle={{width: '100%'}}
+                floatingLabelText={dateLabel}
+                floatingLabelStyle={{fontSize: '1rem'}}
+                autoOk={true}
+                underlineStyle={this.state.dateUnderlineStyle}
+                errorText={this.state.dateError}
+                errorStyle={this.state.dateErrorStyle}
+                onChange={this.handleDateChange.bind(this)}
+                formatDate={this.formatDateText.bind(this)}
+              />
+            </MuiThemeProvider>
           </div>
-          <div className="row">
-            <div className="input-field col s12 m12 l12">
-                <input id="title" className={this.state.titleVal} type="text" ref="title"/>
-                <label id="title-label" htmlFor="title">
-                  Title <span className="red-text">{this.state.titleErr}</span>
-                </label>
-            </div>
+          <div className="row input-field" style={this.state.titleStyle}>
+            <input
+              id="title"
+              className={`${this.state.titleValid} ${this.state.titleInvalid}`}
+              type="text"
+              value={this.state.titleValue}
+              onChange={this.handleTitleChange.bind(this)}
+            />
+            <label className="title-label" data-error={this.state.titleError} htmlFor="title">
+              Title <span className="red-text">*</span>
+            </label>
           </div>
           {
-            this.state.error
-              ? <div className="row red lighten-5">
-                  <p className="error center-align red-text text-darken-4">{this.state.error}</p>
+            this.state.timeError
+              ? <div className="red lighten-5">
+                  <p className="error center-align red-text text-darken-4">
+                    {this.state.timeError}
+                  </p>
                 </div>
               : undefined
           }
-          <div className="row">
+          <div className="time-input-wrapper row">
             <div className="input-field col s6 m6 l6">
-                <input id="hr" className={this.state.hrVal} type="number" ref="hr"/>
-                <label id="hr-label" htmlFor="hr">
-                  Hours
-                </label>
+              <input
+                id="hours"
+                className={`${this.state.hoursValid} ${this.state.hoursInvalid}`}
+                type="number"
+                value={this.state.hoursValue}
+                onChange={this.handleHoursChange.bind(this)}
+              />
+              <label className="hours-label" data-error={this.state.hourError} htmlFor="hours">
+                Hours
+              </label>
             </div>
             <div className="input-field col s6 m6 l6">
-                <input id="min" className={this.state.minVal} type="number" ref="min"/>
-                <label id="min-label" htmlFor="min">
-                  Minutes
-                </label>
+              <input
+                id="minutes"
+                className={`${this.state.minutesValid} ${this.state.minutesInvalid}`}
+                type="number"
+                value={this.state.minutesValue}
+                onChange={this.handleMinutesChange.bind(this)}
+              />
+              <label className="minutes-label" data-error={this.state.minutesError} htmlFor="minutes">
+                Minutes
+              </label>
             </div>
           </div>
-          <div className="row center section">
+          <div className="required-wrapper">
+            <div className="row">
+              <p className="red-text center-align">* required</p>
+            </div>
+          </div>
+          <div className="row center">
             <button className="btn waves-effect waves-light" type="submit">
               Post <i className="material-icons right">send</i>
             </button>

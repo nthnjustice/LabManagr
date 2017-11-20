@@ -1,98 +1,19 @@
 import React from 'react';
+import Fade from 'react-fade';
 
-import Log from './Log/Log';
-import Live from './Live/Live';
-import Goals from './Goals/Goals';
-import Logs from './Logs/Logs';
-import Charts from './Charts/Charts';
-import Report from './Report/Report';
-import Group from './Group/Group';
+import WritingLogSmall from './WritingLogSmall';
+import WritingLogMedium from './WritingLogMedium';
+import WritingLogLarge from './WritingLogLarge';
 
 export default class WritingLog extends React.Component {
   render() {
     return(
       <span id="writing-log">
-        <div className="hide-on-med-and-down">
-          <div className="row">
-            <div className="col l3">
-              <Log color={this.props.color}/>
-            </div>
-            <div className="col l5">
-              <Live color={this.props.color}/>
-            </div>
-            {/* <div className="col l4">
-              <Goals color={this.props.color}/>
-            </div> */}
-          </div>
-          <div className="row">
-            <div className="col l4">
-              <Logs color={this.props.color}/>
-            </div>
-            {/* <div className="col l8">
-              <Charts color={this.props.color}/>
-            </div> */}
-          </div>
-          <div className="row">
-            {/* <div className="col l4">
-              <Report color={this.props.color}/>
-            </div>
-            <div className="col l8">
-              <Group color={this.props.color}/>
-            </div> */}
-          </div>
-        </div>
-        <div className="hide-on-large-only hide-on-small-only">
-          <div className="row">
-             <div className="col m5">
-              <Log color={this.props.color}/>
-            </div>
-            <div className="col m7">
-              <Live color={this.props.color}/>
-            </div>
-            {/* <div className="col l4">
-              <Goals color={this.props.color}/>
-            </div> */}
-          </div>
-          <div className="row">
-            <div className="col m6">
-              <Logs color={this.props.color}/>
-            </div>
-            {/* <div className="col l8">
-              <Charts color={this.props.color}/>
-            </div> */}
-          </div>
-          <div className="row">
-            {/* <div className="col l4">
-              <Report color={this.props.color}/>
-            </div>
-            <div className="col l8">
-              <Group color={this.props.color}/>
-            </div> */}
-          </div>
-        </div>
-        <div className="hide-on-large-only hide-on-med-only">
-          <div className="col l12">
-            <Log color={this.props.color}/>
-          </div>
-          <div className="col l12">
-            <Live color={this.props.color}/>
-          </div>
-          {/* <div className="col l12">
-            <Goals color={this.props.color}/>
-          </div> */}
-          <div className="col l12">
-            <Logs color={this.props.color}/>
-          </div>
-          {/* <div className="col l12">
-            <Charts color={this.props.color}/>
-          </div>
-          <div className="col l12">
-            <Report color={this.props.color}/>
-          </div>
-          <div className="col l12">
-            <Group color={this.props.color}/>
-          </div> */}
-        </div>
+        <Fade duration={0.5}>
+          <WritingLogSmall color={this.props.color}/>
+          <WritingLogMedium color={this.props.color}/>
+          <WritingLogLarge color={this.props.color}/>          
+        </Fade>
       </span>
     );
   }

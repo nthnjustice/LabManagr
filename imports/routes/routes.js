@@ -1,6 +1,7 @@
 import {Meteor} from 'meteor/meteor';
 import React from 'react';
-import {Router as Router, Route, Switch, Redirect} from 'react-router-dom';
+import {Router as Router, Route, Redirect} from 'react-router-dom';
+import {AnimatedSwitch} from 'react-router-transition'
 import createBrowserHistory from 'history/createBrowserHistory';
 
 import Login from '../ui/Login/Login';
@@ -28,12 +29,17 @@ export const onAuthChange = (isAuthenticated) => {
 
 export const routes = (
   <Router history={history}>
-    <Switch>
+    <AnimatedSwitch
+      atEnter={{opacity: 0}}
+      atLeave={{opacity: 0}}
+      atActive={{opacity: 1}}
+      className="router-wrapper"
+    >
       <Route exact path="/" component={Login}/>
       <Route path="/signup" component={Signup}/>
       <Route path="/recover" component={RecoverAccount}/>
       <Route path="/dashboard" component={Dashboard}/>
       <Route component={PageNotFound}/>
-    </Switch>
+    </AnimatedSwitch>
   </Router>
 );

@@ -11,13 +11,11 @@ if (Meteor.isServer) {
 
 Meteor.methods({
   'writingLogs.insert'(title, hours, minutes, date) {
-    let author = `${Meteor.user().profile.firstName} ${Meteor.user().profile.lastName}`;
-
     WritingLogs.insert({
       title,
       hours,
       minutes,
-      author,
+      author: `${Meteor.user().profile.firstName} ${Meteor.user().profile.lastName}`,
       owner: Meteor.userId(),
       createdAt: date
     });

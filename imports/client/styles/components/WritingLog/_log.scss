@@ -4,17 +4,38 @@
   }
 }
 
+@media only screen and (min-width: 993px) {
+  #log .card-panel {
+    margin-top: 0.7rem;
+  }
+}
+
 #log .card-panel {
   height: 500px;
   padding: 0%;
   width: 100%;
 }
 
-#log .info-btn {
-  margin-top: 0.78rem;
+#log .input-label {
+  color: #aaaaaa;
+}
+
+#log .input-field label {
+  width: 100%;
 }
 
 #log .error {
   padding: 1%;
   font-weight: bold;
+  margin-top: -0.5rem;
+  margin-bottom: 2rem;
+}
+
+#log .time-input-wrapper {
+  margin-top: -1.5rem;
+}
+
+#log .info-wrapper {
+  position: absolute;
+  top: 540px;
 }
