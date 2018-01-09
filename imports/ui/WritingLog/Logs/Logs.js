@@ -7,7 +7,6 @@ import MenuItem from 'material-ui/MenuItem';
 
 import {WritingLogs} from '../../../api/writingLogs';
 
-import Preloader from '../../Preloader/Preloader';
 import Title from './Title';
 import List from './List';
 
@@ -16,47 +15,51 @@ export default class Logs extends TrackerReact(React.Component) {
     super(props);
     this.state = {
       selectedUserId: Meteor.userId(),
-      subscription: {
+      subscriptions: {
         users: Meteor.subscribe('directory'),
         logs: Meteor.subscribe('writingLogs')
       }
     };
   }
   componentWillUnmount() {
-    this.state.subscription.users.stop();
-    this.state.subscription.logs.stop();
+    this.state.subscriptions.users.stop();
+    this.state.subscriptions.logs.stop();
   }
   renderUsers() {
-    let currUser = Meteor.users.find({_id: Meteor.userId()}).fetch()[0];
-    let users = [];
+    let currentUser = {};
+    let otherUsers = [];
+    let sortedUsers = [];
 
-    if (currUser) {
-      users = Meteor.users.find(
-        {
-          _id: {
-            $ne: Meteor.userId()
+    if (Meteor.users.find().fetch().length > 0) {
+      currentUser = Meteor.users.find({_id: Meteor.userId()}).fetch()[0];
+
+      if (currentUser) {
+        otherUsers = Meteor.users.find(
+          {
+            _id: {
+              $ne: Meteor.userId()
+            }
+          }, {
+            sort: {
+              'profile.firstName': 1
+            }
           }
-        }, {
-          sort: {
-            "profile.firstName": 1
-          }
-        }
-      ).fetch();
+        ).fetch();
+      }
     }
 
-    if (users.length > 0) {
-      let sorted = [currUser];
+    if (otherUsers.length > 0) {
+      sortedUsers.push(currentUser);
 
-      users.map((user) => {
-        sorted.push(user);
+      otherUsers.map((user) => {
+        sortedUsers.push(user);
       });
-
-      users = sorted;
     }
 
-    if (currUser && users.length > 0) {
-      let options = users.map((user) => {
+    if (currentUser && sortedUsers.length > 0) {
+      let options = sortedUsers.map((user) => {
         let name = `${user.profile.firstName} ${user.profile.lastName}`;
+
         return <MenuItem key={user._id} insetChildren={true} value={user._id} primaryText={name}/>;
       });
 
@@ -65,8 +68,12 @@ export default class Logs extends TrackerReact(React.Component) {
       return false;
     }
   }
-  handleSelectChange(event, index, value){
-    this.setState({selectedUserId: value});
+  handleSelectChange(e, index, value) {
+    e.preventDefault();
+
+    this.setState({
+      selectedUserId: value
+    });
   }
   renderLogs() {
     let logs = WritingLogs.find({
@@ -84,7 +91,7 @@ export default class Logs extends TrackerReact(React.Component) {
       <span id="logs">
         <div className="card-panel hoverable">
           <Title color={this.props.color}/>
-          <div className="wrapper">
+          <div className="dropdown-wrapper">
             <MuiThemeProvider>
               <SelectField
                 value={this.state.selectedUserId}

@@ -15,16 +15,16 @@ export default class WritingLogSmall extends React.Component {
         <div className="col l12">
           <Log color={this.props.color}/>
         </div>
-        {/* <div className="col l12">
+        <div className="col l12">
           <Live color={this.props.color}/>
         </div>
-        <div className="col l12">
+        {/* <div className="col l12">
           <Goals color={this.props.color}/>
-        </div>
+        </div> */}
         <div className="col l12">
           <Logs color={this.props.color}/>
         </div>
-        <div className="col l12">
+        {/* <div className="col l12">
           <Charts color={this.props.color}/>
         </div>
         <div className="col l12">

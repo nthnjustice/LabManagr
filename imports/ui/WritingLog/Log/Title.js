@@ -1,11 +1,16 @@
 import React from 'react';
 
+import Info from './Info';
+
 export default class Title extends React.Component {
   render() {
     return(
       <div className={`title row ${this.props.color}`}>
-        <div className="col s12 m12 l12">
-          <h5 className="white-text">Log Session</h5>
+        <div className="col s1 m1 l1">
+          <Info/>
+        </div>
+        <div className="col s11 m11 l11">
+          <h5 className="center-align white-text">Log Session</h5>
         </div>
       </div>
     );

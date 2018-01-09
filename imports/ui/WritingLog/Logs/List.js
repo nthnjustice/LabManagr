@@ -1,34 +1,43 @@
 import {Meteor} from 'meteor/meteor';
+import TrackerReact from 'meteor/ultimatejs:tracker-react';
 import React from 'react';
 import ReactPaginate from 'react-paginate';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Dialog from 'material-ui/Dialog';
 
+import {WritingLogs} from '../../../api/writingLogs';
+
 export default class List extends React.Component {
   constructor(props) {
     super(props);
+
     this.state = {
       viewLogs: [],
       offset: 0,
-      currLog: '',
+      currentLog: '',
       initialPage: 0,
-      showingModal: false
+      showingModal: false,
+      modalDate: '',
+      subscriptions: {
+        logs: Meteor.subscribe('writingLogs')
+      }
     };
   }
-  formatDate(date) {
-    let str = date.toString();
-    let arr = str.split(' ');
-
-    return `${arr[0]}, ${arr[1]} ${arr[2]}, ${arr[3]}`;
+  componentWillUnmount() {
+    this.state.subscriptions.logs.stop();
   }
-  formatDateModal() {
-    if (this.state.currLog) {
-      let date = this.state.currLog.createdAt;
-      let str = date.toString();
-      let arr = str.split(' ');
+  formatDate(date) {
+    let dateString = date.toString();
+    let dateArray = dateString.split(' ');
 
-      return `${arr[0]}, ${arr[1]} ${arr[2]}, ${arr[3]}`;
-    }
+    return `${dateArray[0]}, ${dateArray[1]} ${dateArray[2]}, ${dateArray[3]}`;
+  }
+  formatModalDate(log) {
+    let date = log.createdAt;
+    let dateString = date.toString();
+    let dateArray = dateString.split(' ');
+
+    return `${dateArray[0]}, ${dateArray[1]} ${dateArray[2]}, ${dateArray[3]}`;
   }
   renderLogs() {
     if (this.props.logs.length > 0) {
@@ -52,7 +61,7 @@ export default class List extends React.Component {
     if (this.props.selectedUserId == Meteor.userId()) {
       return (
         <a className="secondary-content">
-          <i className="delete-btn material-icons red-text text-lighten-3" onClick={() => this.onDelete(log)}>delete</i>
+          <i className="delete-btn material-icons red-text text-lighten-3" onClick={() => this.handleDelete(log)}>delete</i>
         </a>
       );
     }
@@ -64,16 +73,20 @@ export default class List extends React.Component {
       return false;
     }
   }
-  handlePageClick(selected) {
-    this.setState({offset: Math.ceil(selected * 4)});
+  handlePageClick(page) {
+    this.setState({
+      offset: Math.ceil(page.selected * 4)
+    });
   }
-  onDelete(log) {
-    this.setState({currLog: log});
-    this.setState({showingModal: true});
+  handleDelete(log) {
+    this.setState({
+      currentLog: log,
+      showingModal: true,
+      modalDate: this.formatModalDate(log)
+    });
   }
-  confDelete() {
-    Meteor.call('writingLogs.remove', this.state.currLog._id, (err) => {
-      this.handleClose();
+  confirmDelete() {
+    Meteor.call('writingLogs.remove', this.state.currentLog._id, (err) => {
       if (!err) {
         let $msg = $('<span class="green-text text-accent-3">Log Deleted</span>');
         Materialize.toast($msg, 5000, 'rounded');
@@ -82,14 +95,17 @@ export default class List extends React.Component {
         Materialize.toast($msg, 5000, 'rounded');
       }
     });
+    this.handleModalClose();
   }
-  handleClose() {
-    this.setState({showingModal: false})
+  handleModalClose() {
+    this.setState({
+      showingModal: false
+    })
   }
   render() {
     let actions = [
-      <a className="mui-modal-btn btn-flat red-text waves-effect" onClick={() => {this.confDelete()}}>Delete</a>,
-      <a className="mui-modal-btn btn-flat waves-effect" onClick={() => {this.handleClose()}}>Cancel</a>
+      <a className="mui-modal-btn btn-flat red-text waves-effect" onClick={this.confirmDelete.bind(this)}>Delete</a>,
+      <a className="mui-modal-btn btn-flat waves-effect" onClick={this.handleModalClose.bind(this)}>Cancel</a>
     ];
 
     return(
@@ -103,14 +119,14 @@ export default class List extends React.Component {
                 <ReactPaginate
                   previousLabel={"<"}
                   nextLabel={">"}
-                  breakLabel={<a href="">...</a>}
+                  breakLabel={<span href="">...</span>}
                   breakClassName={"break-me"}
                   pageCount={this.props.pageCount}
                   marginPagesDisplayed={1}
                   pageRangeDisplayed={2}
                   disableInitialCallback={true}
                   initialPage={this.state.initialPage}
-                  onPageChange={({selected}) => {this.handlePageClick(selected)}}
+                  onPageChange={this.handlePageClick.bind(this)}
                   containerClassName={"pagination"}
                   subContainerClassName={"pages pagination"}
                   activeClassName={"active"}
@@ -125,16 +141,14 @@ export default class List extends React.Component {
               actions={actions}
               modal={false}
               open={this.state.showingModal}
-              onRequestClose={this.handleClose.bind(this)}
+              onRequestClose={this.handleModalClose.bind(this)}
             >
               {
-                this.state.currLog
+                this.state.currentLog
                   ? <div className="mui-modal">
-                      <p className="center-align"><strong>{this.state.currLog.title}</strong></p>
-                      <p className="center-align">
-                        Duration: <strong>{this.state.currLog.hours}</strong> hour(s) and <strong>{this.state.currLog.minutes}</strong> minutes(s)
-                      </p>
-                      <p className="center-align">Posted: <strong>{this.formatDateModal()}</strong></p>
+                      <p className="center-align"><strong>{this.state.currentLog.title}</strong></p>
+                      <p className="center-align">Duration: <strong>{this.state.currentLog.hours}</strong> hour(s) and <strong>{this.state.currentLog.minutes}</strong> minutes(s)</p>
+                      <p className="center-align">Posted: <strong>{this.state.modalDate}</strong></p>
                     </div>
                   : undefined
               }

@@ -2,10 +2,10 @@ import React from 'react';
 
 export default class Info extends React.Component {
   componentDidMount() {
-    $('#log .info-btn').tooltip({delay: 50});
+    $('#logs .info-btn').tooltip({delay: 50});
   }
   render() {
-    let infoText = "Use this form to log a writing session completed outside of the app.";
+    let infoText = "Use the dropdown to view writing sessions logged by any user.";
 
     return(
       <div className="info-wrapper">

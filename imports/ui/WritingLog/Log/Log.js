@@ -2,7 +2,7 @@ import React from 'react';
 
 import Title from './Title';
 import Form from './Form';
-import Info from './Info';
+
 
 export default class Log extends React.Component {
   render() {
@@ -18,7 +18,6 @@ export default class Log extends React.Component {
           <div className="hide-on-med-and-down">
             <Form/>
           </div>
-          <Info/>
         </div>
       </span>
     );

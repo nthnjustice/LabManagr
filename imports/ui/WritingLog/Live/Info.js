@@ -5,7 +5,7 @@ export default class Info extends React.Component {
     $('#log .info-btn').tooltip({delay: 50});
   }
   render() {
-    let infoText = "Use this form to log a writing session completed outside of the app.";
+    let infoText = "Use this section to launch a live writing session.";
 
     return(
       <div className="info-wrapper">

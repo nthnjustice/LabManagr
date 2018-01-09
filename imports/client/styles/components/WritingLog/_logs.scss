@@ -10,12 +10,8 @@
   width: 100%;
 }
 
-#logs .info-btn {
-  margin-top: 0.78rem;
-}
-
-#logs .wrapper {
-  margin-top: -10%;
+#logs .dropdown-wrapper {
+  margin-top: -5rem;
 }
 
 #logs .select {
@@ -42,6 +38,10 @@
   cursor: pointer;
 }
 
-#logs .pagination li.break-me a {
+#logs .pagination li.break-me span {
   cursor: default;
+}
+
+#logs .info-wrapper {
+  margin-top: 1rem;
 }

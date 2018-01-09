@@ -114,6 +114,18 @@ export default class Form extends React.Component {
       });
 
       return false;
+    } else if (this.state.hoursValue < 0 || this.state.minutesValue < 0) {
+      this.setState({
+        timeError: 'Invalid Time',
+        hoursError: '',
+        hoursValid: '',
+        hoursInvalid: 'invalid',
+        minutesError: '',
+        minutesValid: '',
+        minutesInvalid: 'invalid'
+      });
+
+      return false;
     } else {
       this.setState({
         timeError: '',
@@ -195,7 +207,6 @@ export default class Form extends React.Component {
       minutesError: '',
       minutesValid: '',
       minutesInvalid: '',
-      minutesValue: Number(e.target.value)
     });
   }
   handleMinutesChange(e) {
@@ -205,7 +216,6 @@ export default class Form extends React.Component {
       hoursError: '',
       hoursValid: '',
       hoursInvalid: '',
-      hoursValue: Number(e.target.value),
       minutesError: '',
       minutesValid: '',
       minutesInvalid: '',

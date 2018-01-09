@@ -16,18 +16,18 @@ export default class WritingLogLarge extends React.Component {
           <div className="col l3">
             <Log color={this.props.color}/>
           </div>
-          {/* <div className="col l5">
+          <div className="col l5">
             <Live color={this.props.color}/>
           </div>
-          <div className="col l4">
+          {/* <div className="col l4">
             <Goals color={this.props.color}/>
           </div> */}
         </div>
-        {/* <div className="row">
+        <div className="row">
           <div className="col l4">
             <Logs color={this.props.color}/>
           </div>
-          <div className="col l8">
+          {/* <div className="col l8">
             <Charts color={this.props.color}/>
           </div>
         </div>
@@ -37,8 +37,8 @@ export default class WritingLogLarge extends React.Component {
           </div>
           <div className="col l8">
             <Group color={this.props.color}/>
-          </div>
-        </div> */}
+          </div> */}
+        </div>
       </div>
     );
   }
